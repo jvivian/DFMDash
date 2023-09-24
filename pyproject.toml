@@ -12,6 +12,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
+polars = "^0.19.3"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
@@ -97,5 +98,3 @@ skip_empty = true
 [tool.coverage.run]
 branch = true
 source = ["covid19_drdfm"]
-
-
