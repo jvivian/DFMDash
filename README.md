@@ -14,35 +14,38 @@ Repository for Covid-19 Dynamic Factor Model
 # Quickstart
 ## Dependencies
 
-- `make`
-- [Anaconda]()
+- Python 3.10
 
 > Tested on Ubuntu, Windows WSL2: Ubuntu, and Mac OSX (M1)
 
 ## Install and Run
 
+Install `poetry` using `pipx` (recommended) or `pip`
 ```bash
-make install
+pipx install poetry
+poetry install
 ```
+
+If not already inside a virtualenv, one will be created at `./venv`
+
+{% note %}
+
+**Note:** If you don't have Python 3.10, download [Anaconda]() and run
+```bash
+conda env update -f environment.yml
+conda activate py3.10
+poetry install
+```
+
+{% endnote %}
 
 # Development
 
-Install the environment and the pre-commit hooks
+Install the environment and the pre-commit hooks using `make`
 
 ```bash
 make install
 ```
 
-Build environment
-
-```bash
-make build
-```
-
 - The virtual environment will be created locally at `.venv/bin/python`
-- CI/CD pipeline will be triggered when you open a pull request, merge to main,
-or when you create a new release.
-
-
-
----
+- CI/CD pipeline will be triggered when you open a pull request, merge to main, or when you create a new release.
