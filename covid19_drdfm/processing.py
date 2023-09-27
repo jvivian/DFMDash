@@ -1,11 +1,20 @@
 """
-Handles I/O and processing of data into consolidated DataFrame object
+I/O and processing module
+
+Converts all input files into single consolidated dataframe that can be used
+downstream as model input
+
+This model input DataFrame can be generated with a single function:
+    - `df = run()`
 """
-# %%
+from fractions import Fraction
 from functools import reduce
 from pathlib import Path
 
 import pandas as pd
+import yaml
+
+DATA_DIR = Path(__file__).parent / "data/processed"
 
 
 def run() -> pd.DataFrame:
@@ -14,30 +23,39 @@ def run() -> pd.DataFrame:
     Returns:
         pd.DataFrame: Processed DF
     """
-    return get_df().pipe(adjust_inflation).pipe(fix_datetime)
+    return get_df().pipe(adjust_inflation).pipe(adjust_pandemic_response).pipe(fix_datetime)
 
 
 def get_df() -> pd.DataFrame:
-    """Read input DataFrames
+    """Read input DataFrames and merge
 
     Returns:
-        pd.DataFrame: Merged DataFrame from input DataFrames
+        pd.DataFrame: Merged DataFrame
     """
-    path = Path(__file__).parent / "data/output/df_paths.txt"
-    with open(path) as f:
+    with open(DATA_DIR / "df_paths.txt") as f:
         paths = [x.strip() for x in f.readlines()]
     dfs = [pd.read_csv(x) for x in paths]
     return reduce(lambda x, y: pd.merge(x, y, on=["State", "Year", "Period"], how="left"), dfs).fillna(0)
 
 
-def adjust_inflation(df: pd.DataFrame) -> pd.DataFrame:
-    """Processing `pipe`: Adjust for Inflation
-
-    Args:
-        df (pd.DataFrame): Input DF (see `get_df`)
+def get_govt_fund_dist() -> list[float]:
+    """Reads in govt fund distribution from data/raw/govt_fund_dist.yml
 
     Returns:
-        pd.DataFrame: Adjusted DF
+        list[float]: Distribution values. Length equates to num_months
+    """
+    with open(DATA_DIR / "govt_fund_dist.yml") as f:
+        return [float(Fraction(x)) for x in yaml.safe_load(f)]
+
+
+def adjust_inflation(df: pd.DataFrame) -> pd.DataFrame:
+    """Adjust for inflation
+
+    Args:
+        df (pd.DataFrame): Input DataFrame (see `get_df`)
+
+    Returns:
+        pd.DataFrame: Adjusted DataFrame
     """
     return (
         df.assign(Demand_1=lambda x: x.Demand_1.div(x.Monetary_3 / 100))
@@ -51,52 +69,34 @@ def adjust_inflation(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def adjust_pandemic_response(df: pd.DataFrame) -> pd.DataFrame:
-    """I do not understand this
+    """Adjust pandemic response given fund distribution
 
     Args:
-        df (pd.DataFrame): _description_
+        df (pd.DataFrame): Input DataFrame
 
     Returns:
-        pd.DataFrame: _description_
+        pd.DataFrame: Adjusted DataFrame
     """
-    government_fund_dist_unif = {0: 1 / 6, 1: 1 / 6, 2: 1 / 6, 3: 1 / 6, 4: 1 / 6, 5: 1 / 6}
-    for i in range(0, len(df)):
-        if df.loc[i, "Pandemic_Response_13"] > 0:
-            for n in range(0, len(government_fund_dist_unif)):
-                df.loc[i + n, "Pandemic_Response_13"] = df.loc[i, "Pandemic_Response_13"] * government_fund_dist_unif[n]
-            df.loc[i, "Pandemic_Response_13"] = df.loc[i, "Pandemic_Response_13"] * government_fund_dist_unif[0]
-            break
-
-    for i in range(0, len(df)):
-        if df.loc[i, "Pandemic_Response_14"] > 0:
-            for n in range(0, len(government_fund_dist_unif)):
-                df.loc[i + n, "Pandemic_Response_14"] = df.loc[i, "Pandemic_Response_14"] * government_fund_dist_unif[n]
-            df.loc[i, "Pandemic_Response_14"] = df.loc[i, "Pandemic_Response_14"] * government_fund_dist_unif[0]
-            break
-
-    for i in range(0, len(df)):
-        if df.loc[i, "Pandemic_Response_15"] > 0:
-            for n in range(0, len(government_fund_dist_unif)):
-                df.loc[i + n, "Pandemic_Response_15"] = df.loc[i, "Pandemic_Response_15"] * government_fund_dist_unif[n]
-            df.loc[i, "Pandemic_Response_15"] = df.loc[i, "Pandemic_Response_15"] * government_fund_dist_unif[0]
-            break
+    govt_fund_dist = get_govt_fund_dist()
+    responses = [f"Pandemic_Response_{x}" for x in [13, 14, 15]]
+    for r in responses:
+        df[r] = df[r].astype(float)
+        i = df.index[df[r] > 0][0]
+        for n in range(0, len(govt_fund_dist)):
+            df.loc[i + n, r] = df.loc[i, r] * govt_fund_dist[n]
+        df.loc[i, r] = df.loc[i, r] * govt_fund_dist[0]
+    return df
 
 
 def fix_datetime(df: pd.DataFrame) -> pd.DataFrame:
     """Sets `Time` column to `datetime` dtype
 
     Args:
-        df (pd.DataFrame): Input DF
+        df (pd.DataFrame): Input DataFrame
 
     Returns:
-        pd.DataFrame: DType adjusted output
+        pd.DataFrame: DType adjusted DataFrame
     """
     df = df.assign(Month=pd.to_numeric(df.Period.apply(lambda x: x[1:]))).assign(Day=1)
-    df["Time"] = pd.to_datetime(year=df["Year"], month=df["Month"], day=df["Day"])
+    df["Time"] = pd.to_datetime({"year": df.Year, "month": df.Month, "day": df.Day})
     return df.drop(columns=["Period", "Month", "Year", "Day"])
-
-
-# %%
-if __name__ == "__main__":  # pragma: no cover
-    run()
-    pass
