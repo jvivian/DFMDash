@@ -28,16 +28,18 @@ poetry install
 
 If not already inside a virtualenv, one will be created at `./venv`
 
+
 {% note %}
 
 **Note:** If you don't have Python 3.10, download [Anaconda]() and run
+
+{% endnote%}
+
 ```bash
 conda env update -f environment.yml
 conda activate py3.10
 poetry install
 ```
-
-{% endnote %}
 
 # Development
 
