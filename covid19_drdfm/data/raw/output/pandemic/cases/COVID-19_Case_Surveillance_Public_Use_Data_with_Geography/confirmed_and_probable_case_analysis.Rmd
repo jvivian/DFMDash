@@ -1,0 +1,16 @@
+---
+title: "confirmed_and_probable_case_analysis"
+author: "Josh Fitzgerald"
+date: '2022-10-17'
+output: html_document
+---
+
+
+```{r}
+df <- read.csv("confirmed_and_probable_cases_hospitalizations_deaths.csv")
+
+pearson_coef <- cor(df$confirmed_cases, df$confirmed_and_probable_cases, method = c("pearson"),
+    use = "complete.obs")
+
+pearson_coef
+```
