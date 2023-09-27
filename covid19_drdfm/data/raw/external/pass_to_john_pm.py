@@ -13,7 +13,6 @@ import json
 from traitlets.traitlets import Int
 import pandas as pd
 
-#! Do not violate standardized import conventions
 # import numpy as nm
 
 drive.mount("/content/drive")
