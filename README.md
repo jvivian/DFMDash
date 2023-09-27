@@ -12,6 +12,14 @@ Repository for Covid-19 Dynamic Factor Model
 - **Documentation** <https://jvivian.github.io/covid19-drDFM/>
 
 # Quickstart
+- Download and install [Anaconda]() to your PATH and run:
+
+```bash
+conda env update -f environment.yml
+conda activate py3.10
+poetry install
+```
+
 ## Dependencies
 
 - Python 3.10
@@ -28,18 +36,8 @@ poetry install
 
 If not already inside a virtualenv, one will be created at `./venv`
 
+**Note:** If you don't have Python 3.10,
 
-{% note %}
-
-**Note:** If you don't have Python 3.10, download [Anaconda]() and run
-
-{% endnote%}
-
-```bash
-conda env update -f environment.yml
-conda activate py3.10
-poetry install
-```
 
 # Development
 
