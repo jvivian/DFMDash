@@ -5,19 +5,20 @@ site_description: Repository for Covid-19 Dynamic Factor Model
 site_author: J. Vivian, A. Cooke, J. Fitz
 edit_uri: edit/main/docs/
 repo_name: jvivian/covid19-drDFM
-copyright: Maintained by <a href="https://jvivian.com">Florian</a>.
+copyright: Maintained by <a href="https://jvivian.github.io/">jvivian</a>.
 
 nav:
   - Home: index.md
-  - Modules: modules.md
+  - Data Processing: processing.md
+  - CLI: cli.md
 plugins:
   - search
-  - mkdocstrings:
-      handlers:
-        python:
-            setup_commands:
-                - import sys
-                - sys.path.append('../')
+  - mkdocstrings
+      # handlers:
+      #   python:
+      #       setup_commands:
+      #           - import sys
+      #           - sys.path.append('../')
 theme:
   name: material
   feature:
