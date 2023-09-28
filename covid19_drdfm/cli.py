@@ -1,15 +1,33 @@
+"""Command-Line Interface for project
+
+Main command
+    - `c19_dfm`
+Help
+    - `c19_dfm --help`
+Process data and generate parquet DataFrame
+    - `c19_dfm process ./outfile.parq`
+
+
+"""
 import fastparquet
 import typer
 
-from covid19_drdfm import run
+from src.processing import run
 
 app = typer.Typer()
 
 
-@app.command()
-def process_data(output_file: str = "./outfile.parq"):
+@app.command("run")
+def run_state_model(parquet_path: str, outdir: str):
+    print(parquet_path)
+    print(outdir)
+    pass
+
+
+@app.command("process")
+def process_data(output_file: str = "./outfile.parquet"):
     """
-    Process the data.
+    Process input data into single `outfile.parquet` DataFrame
     """
     df = run()
     try:
