@@ -14,3 +14,8 @@ def test_process():
     assert res.exit_code == 0
     assert path.exists()
     os.remove(path)
+
+
+def test_process():
+    res = runner.invoke(app, ["run", "foo.parquet", "outdir"])
+    assert res.exit_code == 0
