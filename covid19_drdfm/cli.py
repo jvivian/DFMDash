@@ -12,8 +12,6 @@ Process data and generate parquet DataFrame
 import fastparquet
 import typer
 
-from src.processing import run
-
 app = typer.Typer()
 
 
