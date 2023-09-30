@@ -12,6 +12,8 @@ Process data and generate parquet DataFrame
 import fastparquet
 import typer
 
+from covid19_drdfm.processing import run
+
 app = typer.Typer()
 
 
