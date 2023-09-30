@@ -1,5 +1,4 @@
-"""
-I/O and processing module
+"""I/O and processing module
 
 Converts all input files into single consolidated dataframe that can be used
 downstream as model input
@@ -14,7 +13,8 @@ from pathlib import Path
 import pandas as pd
 import yaml
 
-DATA_DIR = Path(__file__).parent / "data/processed"
+ROOT_DIR = Path(__file__).parent.absolute()
+DATA_DIR = ROOT_DIR / "data/processed"
 
 
 def run() -> pd.DataFrame:
@@ -23,7 +23,7 @@ def run() -> pd.DataFrame:
     Returns:
         pd.DataFrame: Processed DF
     """
-    return get_df().pipe(adjust_inflation).pipe(adjust_pandemic_response).pipe(fix_datetime)
+    return get_df().pipe(adjust_inflation).pipe(adjust_pandemic_response).pipe(add_datetime)
 
 
 def get_df() -> pd.DataFrame:
@@ -33,7 +33,7 @@ def get_df() -> pd.DataFrame:
         pd.DataFrame: Merged DataFrame
     """
     with open(DATA_DIR / "df_paths.txt") as f:
-        paths = [x.strip() for x in f.readlines()]
+        paths = [ROOT_DIR / x.strip() for x in f.readlines()]
     dfs = [pd.read_csv(x) for x in paths]
     return reduce(lambda x, y: pd.merge(x, y, on=["State", "Year", "Period"], how="left"), dfs).fillna(0)
 
@@ -82,14 +82,15 @@ def adjust_pandemic_response(df: pd.DataFrame) -> pd.DataFrame:
     for r in responses:
         df[r] = df[r].astype(float)
         i = df.index[df[r] > 0][0]
+        print(r, i)
         for n in range(0, len(govt_fund_dist)):
             df.loc[i + n, r] = df.loc[i, r] * govt_fund_dist[n]
-        df.loc[i, r] = df.loc[i, r] * govt_fund_dist[0]
+        # df.loc[i, r] = df.loc[i, r] * govt_fund_dist[0]
     return df
 
 
-def fix_datetime(df: pd.DataFrame) -> pd.DataFrame:
-    """Sets `Time` column to `datetime` dtype
+def add_datetime(df: pd.DataFrame) -> pd.DataFrame:
+    """Sets `Time` column to `DateTime` dtype
 
     Args:
         df (pd.DataFrame): Input DataFrame
@@ -100,3 +101,5 @@ def fix_datetime(df: pd.DataFrame) -> pd.DataFrame:
     df = df.assign(Month=pd.to_numeric(df.Period.apply(lambda x: x[1:]))).assign(Day=1)
     df["Time"] = pd.to_datetime({"year": df.Year, "month": df.Month, "day": df.Day})
     return df.drop(columns=["Period", "Month", "Year", "Day"])
+
+# %%
