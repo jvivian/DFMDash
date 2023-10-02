@@ -82,10 +82,9 @@ def adjust_pandemic_response(df: pd.DataFrame) -> pd.DataFrame:
     for r in responses:
         df[r] = df[r].astype(float)
         i = df.index[df[r] > 0][0]
-        print(r, i)
+        fund = df.loc[i, r]
         for n in range(0, len(govt_fund_dist)):
-            df.loc[i + n, r] = df.loc[i, r] * govt_fund_dist[n]
-        # df.loc[i, r] = df.loc[i, r] * govt_fund_dist[0]
+            df.loc[i + n, r] = fund * govt_fund_dist[n]
     return df
 
 
