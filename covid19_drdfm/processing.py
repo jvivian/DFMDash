@@ -9,6 +9,7 @@ This model input DataFrame can be generated with a single function:
 from fractions import Fraction
 from functools import reduce
 from pathlib import Path
+import fastparquet
 
 import pandas as pd
 import yaml
@@ -24,6 +25,17 @@ def run() -> pd.DataFrame:
         pd.DataFrame: Processed DF
     """
     return get_df().pipe(adjust_inflation).pipe(adjust_pandemic_response).pipe(add_datetime)
+
+
+def write(df: pd.DataFrame, outpath: Path) -> Path:
+    """Write dataframe given the extension"""
+    ext = outpath.suffix
+    if ext == ".xlsx":
+        df.to_excel(outpath)
+    elif ext == ".csv":
+        df.to_csv(outpath)
+    elif ext == ".parq" or ext == ".parquet":
+        fastparquet.write(outpath)
 
 
 def get_df() -> pd.DataFrame:

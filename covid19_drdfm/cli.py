@@ -9,12 +9,18 @@ Process data and generate parquet DataFrame
 
 
 """
-import fastparquet
 import typer
 
 from covid19_drdfm.processing import run
+from covid19_drdfm.processing import write
 
 app = typer.Typer()
+
+
+class PreprocessingFailure(Exception):
+    """Raised when preprocessing has failed"""
+
+    pass
 
 
 @app.command("run")
@@ -25,16 +31,20 @@ def run_state_model(parquet_path: str, outdir: str):
 
 
 @app.command("process")
-def process_data(output_file: str = "./outfile.parquet"):
+def process_data(output_file: str = "./outfile.xlsx"):
     """
     Process input data into single `outfile.parquet` DataFrame
     """
-    df = run()
     try:
-        fastparquet.write(output_file, df)
-        typer.echo(f"Data processed successfully and saved to {output_file}.")
-    except Exception as e:
-        typer.echo(f"Error: {e}")
+        df = run()
+        write(df, output_file)
+    except PreprocessingFailure as e:
+        typer.echo(f"Preprocessing Failed: {e}")
+    # try:
+    #     fastparquet.write(output_file, df)
+    #     typer.echo(f"Data processed successfully and saved to {output_file}.")
+    # except Exception as e:
+    #     typer.echo(f"Error: {e}")
 
 
 if __name__ == "__main__":
