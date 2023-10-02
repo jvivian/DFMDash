@@ -11,8 +11,7 @@ Process data and generate parquet DataFrame
 """
 import typer
 
-from covid19_drdfm.processing import run
-from covid19_drdfm.processing import write
+from covid19_drdfm.processing import run, write
 
 app = typer.Typer()
 
