@@ -16,6 +16,6 @@ def test_process():
     os.remove(path)
 
 
-def test_process():
+def test_run():
     res = runner.invoke(app, ["run", "foo.parquet", "outdir"])
     assert res.exit_code == 0
