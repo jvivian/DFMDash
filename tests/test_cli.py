@@ -24,5 +24,5 @@ def test_process():
 
 
 def test_run():
-    res = runner.invoke(app, ["run", "foo.parquet", "outdir"])
+    res = runner.invoke(app, ["run", "."])
     assert res.exit_code == 0
