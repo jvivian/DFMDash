@@ -2,17 +2,18 @@
 
 Main command
     - `c19_dfm`
+
 Help
     - `c19_dfm --help`
+
 Process data and generate parquet DataFrame
-    - `c19_dfm process ./outfile.parq`
-
-
+    - `c19_dfm process ./outfile.xlsx`
 """
 from pathlib import Path
 
 import typer
 
+from covid19_drdfm.dfm import run_model
 from covid19_drdfm.processing import run, write
 
 app = typer.Typer()
@@ -25,10 +26,12 @@ class PreprocessingFailure(Exception):
 
 
 @app.command("run")
-def run_model(input_path: str, outdir: str):
+def run_dfm(outdir: str):
     """Run Model"""
-    print(outdir)
-    pass
+    raw = run()
+    # ? Add multiprocessing step here
+    state = "NY"
+    run_model(raw, state, outdir)
 
 
 @app.command("process")

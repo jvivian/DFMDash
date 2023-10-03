@@ -1,4 +1,8 @@
-# %%
+"""Module for Dynamic Factor Model specification
+
+Main command to run model
+    - `c19_dfm run`
+"""
 import json
 from pathlib import Path
 
@@ -90,13 +94,17 @@ def flatten_multiindex_columns(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(df.values, columns=new_cols)
 
 
-def run_model(df: pd.DataFrame, state: str, outdir: str):
+def run_model(df: pd.DataFrame, state: str, outdir: str) -> sm.tsa.DynamicFactor:
     """Run DFM for a given state
 
     Args:
         df (pd.DataFrame): DataFrame processed via `covid19_drdfm.run`
         state (str): Two-letter state code to process
         outdir (str): Output directory for model CSV files
+
+    Returns:
+        sm.tsa.DynamicFactor: Dynamic Factor Model
+
     """
     factors = get_factors()
     factors = {x + state: y for x, y in factors.items()}
@@ -112,3 +120,4 @@ def run_model(df: pd.DataFrame, state: str, outdir: str):
         f.write(model.summary().as_csv())
     with open(outdir / "results.csv", "w") as f:
         f.write(results.summary().as_csv())
+    return model
