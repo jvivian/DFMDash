@@ -10,8 +10,8 @@ copyright: Maintained by <a href="https://jvivian.github.io/">jvivian</a>.
 nav:
   - Home: index.md
   - Data Processing: processing.md
+  - Dynamic Factor Model: dfm.md
   - CLI: cli.md
-  - DFM: dfm.md
 plugins:
   - search
   - mkdocstrings
