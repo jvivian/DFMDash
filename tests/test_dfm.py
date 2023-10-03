@@ -1,5 +1,5 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
 from covid19_drdfm.dfm import run_model
 from covid19_drdfm.processing import run
