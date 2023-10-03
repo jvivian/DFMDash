@@ -39,8 +39,8 @@ def process_data(output_file: str):
     try:
         df = run()
         write(df, Path(output_file))
-    except PreprocessingFailure as e:
-        typer.echo(f"Preprocessing Failed: {e}")
+    except Exception as e:
+        raise PreprocessingFailure(f"preprocessing failed!: {e}") from e
     # try:
     #     fastparquet.write(output_file, df)
     #     typer.echo(f"Data processed successfully and saved to {output_file}.")
