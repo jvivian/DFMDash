@@ -9,8 +9,8 @@ This model input DataFrame can be generated with a single function:
 from fractions import Fraction
 from functools import reduce
 from pathlib import Path
-import fastparquet
 
+import fastparquet
 import pandas as pd
 import yaml
 
