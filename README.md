@@ -49,3 +49,13 @@ make install
 
 - The virtual environment will be created locally at `.venv/bin/python`
 - CI/CD pipeline will be triggered when you open a pull request, merge to main, or when you create a new release.
+
+# Repository Features
+- Poetry for dependency management
+- CI with GitHub Actions
+- Pre-commit hooks with pre-commit
+- Code quality with black & ruff
+- Testing and coverage with pytest and codecov
+- Documentation with MkDocs
+- Compatibility testing for multiple versions of Python with Tox
+- Containerization with Docker
