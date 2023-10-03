@@ -9,6 +9,8 @@ Process data and generate parquet DataFrame
 
 
 """
+from pathlib import Path
+
 import typer
 
 from covid19_drdfm.processing import run, write
@@ -30,13 +32,13 @@ def run_state_model(parquet_path: str, outdir: str):
 
 
 @app.command("process")
-def process_data(output_file: str = "./outfile.xlsx"):
+def process_data(output_file: str):
     """
-    Process input data into single `outfile.parquet` DataFrame
+    Process input data into single `outfile.{xlsx|csv|parquet}` DataFrame
     """
     try:
         df = run()
-        write(df, output_file)
+        write(df, Path(output_file))
     except PreprocessingFailure as e:
         typer.echo(f"Preprocessing Failed: {e}")
     # try:
