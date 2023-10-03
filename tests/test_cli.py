@@ -9,7 +9,7 @@ runner = CliRunner()
 
 
 def test_process():
-    res = runner.invoke(app, ["process", "--output-file", "text.xlsx"])
+    res = runner.invoke(app, ["process", "test.xlsx"])
     path = Path("./test.xlsx")
     assert res.exit_code == 0
     assert path.exists()
