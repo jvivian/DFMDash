@@ -1,3 +1,4 @@
+# %%
 """I/O and processing module
 
 Converts all input files into single consolidated dataframe that can be used
@@ -24,7 +25,10 @@ def run() -> pd.DataFrame:
     Returns:
         pd.DataFrame: Processed DF
     """
-    return get_df().pipe(adjust_inflation).pipe(adjust_pandemic_response).pipe(add_datetime)
+    df = get_df().pipe(adjust_inflation).pipe(adjust_pandemic_response).pipe(add_datetime)
+    df = df.drop(columns=["Monetary_1_x", "Monetary_11_x"])
+    df = df.rename(columns={"Monetary_1_y": "Monetary_1", "Monetary_11_y": "Monetary_11"})
+    return df
 
 
 def write(df: pd.DataFrame, outpath: Path) -> Path:
@@ -114,3 +118,6 @@ def add_datetime(df: pd.DataFrame) -> pd.DataFrame:
     df = df.assign(Month=pd.to_numeric(df.Period.apply(lambda x: x[1:]))).assign(Day=1)
     df["Time"] = pd.to_datetime({"year": df.Year, "month": df.Month, "day": df.Day})
     return df.drop(columns=["Period", "Month", "Year", "Day"])
+
+
+# %%
