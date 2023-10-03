@@ -9,8 +9,8 @@ runner = CliRunner()
 
 
 def test_process():
-    res = runner.invoke(app, ["process"])
-    path = Path("./outfile.parquet")
+    res = runner.invoke(app, ["process", "--output-file", "text.xlsx"])
+    path = Path("./test.xlsx")
     assert res.exit_code == 0
     assert path.exists()
     os.remove(path)
