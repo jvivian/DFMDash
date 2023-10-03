@@ -1,4 +1,3 @@
-# %%
 """I/O and processing module
 
 Converts all input files into single consolidated dataframe that can be used
@@ -118,6 +117,3 @@ def add_datetime(df: pd.DataFrame) -> pd.DataFrame:
     df = df.assign(Month=pd.to_numeric(df.Period.apply(lambda x: x[1:]))).assign(Day=1)
     df["Time"] = pd.to_datetime({"year": df.Year, "month": df.Month, "day": df.Day})
     return df.drop(columns=["Period", "Month", "Year", "Day"])
-
-
-# %%
