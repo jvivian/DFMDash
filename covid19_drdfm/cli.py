@@ -25,8 +25,8 @@ class PreprocessingFailure(Exception):
 
 
 @app.command("run")
-def run_state_model(parquet_path: str, outdir: str):
-    print(parquet_path)
+def run_model(input_path: str, outdir: str):
+    """Run Model"""
     print(outdir)
     pass
 
