@@ -35,7 +35,9 @@ def write(df: pd.DataFrame, outpath: Path) -> Path:
     elif ext == ".csv":
         df.to_csv(outpath)
     elif ext == ".parq" or ext == ".parquet":
-        fastparquet.write(outpath)
+        fastparquet.write(df, outpath)
+    else:
+        raise OSError
 
 
 def get_df() -> pd.DataFrame:
