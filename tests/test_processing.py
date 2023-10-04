@@ -31,13 +31,12 @@ def test_adjust_inflation(sample_data):
 
 def test_adjust_pandemic_response(sample_data):
     input_df = sample_data.copy()
+    #! Note - this is testing functionality, but is used per-state not on whole df
     out = adjust_pandemic_response(input_df)
     df = get_df()
     responses = [f"Pandemic_Response_{x}" for x in [13, 14, 15]]
     for r in responses:
         assert df[r].sum() == out[r].sum()
-        #! DATAFRAME FAILS BELOW ASSERTION - FIX
-        # assert df[r].max() > out[r].max()
 
 
 def test_fix_datetime(sample_data):

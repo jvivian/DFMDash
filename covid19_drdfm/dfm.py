@@ -12,7 +12,7 @@ from rich import print as pprint
 from sklearn.preprocessing import MinMaxScaler
 from statsmodels.tsa.stattools import adfuller
 
-from covid19_drdfm.processing import DATA_DIR
+from covid19_drdfm.processing import DATA_DIR, adjust_pandemic_response
 
 
 def get_factors() -> dict[str, (str, str)]:
@@ -43,6 +43,7 @@ def state_process(df: pd.DataFrame, state: str) -> pd.DataFrame:
     df = df[df.State == state]
     #! The trunctation will be removed when data is updated in OCT - A.C.
     df = df[:-12]
+    df = adjust_pandemic_response(df)
     df = df.pivot(index="Time", columns="State")
     const_cols = [x for x in df.columns if is_constant(df[x])]
     pprint(f"Constant Columns...dropping\n{const_cols}")

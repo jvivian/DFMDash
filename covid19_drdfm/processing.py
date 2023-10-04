@@ -24,7 +24,7 @@ def run() -> pd.DataFrame:
     Returns:
         pd.DataFrame: Processed DF
     """
-    df = get_df().pipe(adjust_inflation).pipe(adjust_pandemic_response).pipe(add_datetime)
+    df = get_df().pipe(adjust_inflation).pipe(add_datetime)
     df = df.drop(columns=["Monetary_1_x", "Monetary_11_x"])
     df = df.rename(columns={"Monetary_1_y": "Monetary_1", "Monetary_11_y": "Monetary_11"})
     return df
