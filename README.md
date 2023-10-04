@@ -12,43 +12,44 @@ Repository for Covid-19 Dynamic Factor Model
 - **Documentation** <https://jvivian.github.io/covid19-drDFM/>
 
 # Quickstart
+> Tested on Ubuntu, Windows WSL2: Ubuntu, and Mac OSX (M1)
+
+## Python
 - Download and install [Anaconda]() to your PATH and run:
 
 ```bash
-conda env update -f environment.yml
-conda activate py3.10
-poetry install
+git Vclone https://github.com/jvivian/covid19-drDFM/ # Get source code
+cd covid19-drDFM
+conda env update -f environment.yml  # Create python env for project
+conda activate py3.10  # Activate env
+poetry install  # Install dependencies and package
+c19dfm --help  # Run tool's help message
 ```
 
-## Dependencies
+## Docker
 
-- Python 3.10
+`docker run jvivian/covid19-dfm`
 
-> Tested on Ubuntu, Windows WSL2: Ubuntu, and Mac OSX (M1)
+or to build locally
 
-## Install and Run
-
-Install `poetry` using `pipx` (recommended) or `pip`
 ```bash
-pipx install poetry
-poetry install
+git clone https://github.com/jvivian/covid19-drDFM/ # Get source code
+cd covid19-drDFM
+docker build -t covid19-dfm .
+docker run covid19-dfm
 ```
-
-If not already inside a virtualenv, one will be created at `./venv`
-
-**Note:** If you don't have Python 3.10,
-
 
 # Development
 
-Install the environment and the pre-commit hooks using `make`
+Clone repo and install the environment and the pre-commit hooks using `make`
 
 ```bash
 make install
 ```
 
-- The virtual environment will be created locally at `.venv/bin/python`
-- CI/CD pipeline will be triggered when you open a pull request, merge to main, or when you create a new release.
+- The virtual environment will be created locally at `.venv/bin/python` (or you can use the conda env)
+- CI pipeline will be triggered when you open a pull request, merge to main, or when you create a new release.
+- Pre-commit hooks will prevent and fix various linting errors
 
 # Repository Features
 - Poetry for dependency management
