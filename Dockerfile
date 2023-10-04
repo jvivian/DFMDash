@@ -18,4 +18,4 @@ RUN poetry install --no-interaction --no-ansi --no-root --no-dev
 # Copy Python code to the Docker image
 COPY covid19_drdfm /code/covid19_drdfm/
 
-CMD [ "python", "covid19_drdfm/foo.py"]
+CMD ["cm19dfm", "--help"]
