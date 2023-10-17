@@ -18,16 +18,23 @@ ROOT_DIR = Path(__file__).parent.absolute()
 DATA_DIR = ROOT_DIR / "data/processed"
 
 
-def run() -> pd.DataFrame:
-    """Run all processing steps as a series of `pipe`s
+def get_df() -> pd.DataFrame:
+    """Read input DataFrames and merge
 
     Returns:
-        pd.DataFrame: Processed DF
+        pd.DataFrame: Merged DataFrame
     """
-    df = get_df().pipe(adjust_inflation).pipe(add_datetime)
-    df = df.drop(columns=["Monetary_1_x", "Monetary_11_x"])
-    df = df.rename(columns={"Monetary_1_y": "Monetary_1", "Monetary_11_y": "Monetary_11"})
-    return df
+    with open(DATA_DIR / "df_paths.txt") as f:
+        paths = [ROOT_DIR / x.strip() for x in f.readlines()]
+    dfs = [pd.read_csv(x) for x in paths]
+    return (
+        reduce(lambda x, y: pd.merge(x, y, on=["State", "Year", "Period"], how="left"), dfs)
+        .fillna(0)
+        .drop(columns=["Monetary_1_x", "Monetary_11_x"])
+        .rename(columns={"Monetary_1_y": "Monetary_1", "Monetary_11_y": "Monetary_11"})
+        .pipe(adjust_inflation)
+        .pipe(add_datetime)
+    )
 
 
 def write(df: pd.DataFrame, outpath: Path) -> Path:
@@ -41,18 +48,6 @@ def write(df: pd.DataFrame, outpath: Path) -> Path:
         fastparquet.write(df, outpath)
     else:
         raise OSError
-
-
-def get_df() -> pd.DataFrame:
-    """Read input DataFrames and merge
-
-    Returns:
-        pd.DataFrame: Merged DataFrame
-    """
-    with open(DATA_DIR / "df_paths.txt") as f:
-        paths = [ROOT_DIR / x.strip() for x in f.readlines()]
-    dfs = [pd.read_csv(x) for x in paths]
-    return reduce(lambda x, y: pd.merge(x, y, on=["State", "Year", "Period"], how="left"), dfs).fillna(0)
 
 
 def get_govt_fund_dist() -> list[float]:
