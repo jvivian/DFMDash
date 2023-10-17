@@ -1,5 +1,7 @@
 import pandas as pd
 import pytest
+from functools import reduce
+
 
 from covid19_drdfm.processing import (
     add_datetime,
@@ -7,8 +9,17 @@ from covid19_drdfm.processing import (
     adjust_pandemic_response,
     get_df,
     get_govt_fund_dist,
-    run,
+    DATA_DIR,
+    ROOT_DIR,
 )
+
+
+@pytest.fixture
+def raw_data() -> pd.DataFrame:
+    with open(DATA_DIR / "df_paths.txt") as f:
+        paths = [ROOT_DIR / x.strip() for x in f.readlines()]
+    dfs = [pd.read_csv(x) for x in paths]
+    return reduce(lambda x, y: pd.merge(x, y, on=["State", "Year", "Period"], how="left"), dfs).fillna(0)
 
 
 # Fixture to load test data
@@ -39,14 +50,14 @@ def test_adjust_pandemic_response(sample_data):
         assert df[r].sum() == out[r].sum()
 
 
-def test_fix_datetime(sample_data):
-    input_df = sample_data.copy()
+def test_fix_datetime(raw_data):
+    input_df = raw_data.copy()
     output_df = add_datetime(input_df)
     assert isinstance(output_df["Time"][0], pd.Timestamp)
 
 
 def test_run():
-    df = run()
+    df = get_df()
     expected_columns = ["State", "Supply_1", "Demand_1", "Pandemic_Response_13", "Time"]
     assert all(col in df.columns for col in expected_columns)
 
