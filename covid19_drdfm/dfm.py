@@ -43,11 +43,10 @@ def state_process(df: pd.DataFrame, state: str) -> pd.DataFrame:
     df = df[df.State == state]
     #! The trunctation will be removed when data is updated in OCT - A.C.
     df = df[:-12]
-    df = adjust_pandemic_response(df)
-    df = df.pivot(index="Time", columns="State")
     const_cols = [x for x in df.columns if is_constant(df[x])]
     pprint(f"Constant Columns...dropping\n{const_cols}")
     df = df.drop(columns=const_cols)
+    df = adjust_pandemic_response(df)
     return normalize(df)
 
 
@@ -60,6 +59,7 @@ def normalize(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Normalized and stationary DataFrame
     """
+    df = df.drop(columns=["Time"]) if "Time" in df.columns else df
     # Normalize data
     scaler = MinMaxScaler()
     norm_df = pd.DataFrame(scaler.fit_transform(df), columns=df.columns) * 100
@@ -74,28 +74,10 @@ def normalize(df: pd.DataFrame) -> pd.DataFrame:
             non_stationary_columns.append(col)
 
     pprint("Columns that fail the ADF test (non-stationary):", non_stationary_columns)
-    return flatten_multiindex_columns(stationary_df)
+    return stationary_df
 
 
-#! This is convoluted - redundant to track state in multi-index then add to col names
-def flatten_multiindex_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """Flatten Multi-index array
-
-    Args:
-        df (pd.DataFrame): Normalized and stationary DataFrame
-
-    Returns:
-        pd.DataFrame: Flattened DF
-    """
-    cols = df.columns.to_flat_index()
-    new_cols = []
-    for col in cols:
-        new_col = "_".join(map(str, col))
-        new_cols.append(new_col)
-    return pd.DataFrame(df.values, columns=new_cols)
-
-
-def run_model(df: pd.DataFrame, state: str, outdir: str) -> sm.tsa.DynamicFactor:
+def run_model(df: pd.DataFrame, state: str, outdir: Path) -> sm.tsa.DynamicFactor:
     """Run DFM for a given state
 
     Args:
@@ -107,16 +89,25 @@ def run_model(df: pd.DataFrame, state: str, outdir: str) -> sm.tsa.DynamicFactor
         sm.tsa.DynamicFactor: Dynamic Factor Model
 
     """
+    # Factors
     factors = get_factors()
-    factors = {x + state: y for x, y in factors.items()}
+    factors = {
+        x[:-1]: y for x, y in factors.items()
+    }  # TODO: Fix in config to remove this now that multindex is removed
     factor_multiplicities = {"Global": 2}
+    # Run model on a given state and print results
     df = state_process(df, state)
     model = sm.tsa.DynamicFactorMQ(df, factors=factors, factor_multiplicities=factor_multiplicities)
     pprint(model.summary())
     results = model.fit(disp=10)
     pprint(results.summary())
-    outdir = Path(outdir)
-    pprint(f"Saving output to {outdir}/(model|results).csv")
+    outdir.mkdir(exist_ok=True)
+    # Output
+    pprint(f"Saving output to {outdir}")
+    df.to_excel(outdir / "df.xlsx")
+    df.to_csv(outdir / "df.tsv", sep="\t")
+    df.to_excel(outdir / f"{state}.xlsx")
+    df.to_csv(outdir / f"{state}.tsv", sep="\t")
     with open(outdir / "model.csv", "w") as f:
         f.write(model.summary().as_csv())
     with open(outdir / "results.csv", "w") as f:
