@@ -14,7 +14,7 @@ from pathlib import Path
 import typer
 
 from covid19_drdfm.dfm import run_model
-from covid19_drdfm.processing import run, write
+from covid19_drdfm.processing import get_df, write
 
 app = typer.Typer()
 
@@ -28,10 +28,10 @@ class PreprocessingFailure(Exception):
 @app.command("run")
 def run_dfm(outdir: str):
     """Run Model"""
-    raw = run()
+    raw = get_df()
     # ? Add multiprocessing step here
     state = "NY"
-    run_model(raw, state, outdir)
+    run_model(raw, state, Path(outdir))
 
 
 @app.command("process")
@@ -40,7 +40,7 @@ def process_data(output_file: str):
     Process input data into single `outfile.{xlsx|csv|parquet}` DataFrame
     """
     try:
-        df = run()
+        df = get_df()
         write(df, Path(output_file))
     except Exception as e:
         raise PreprocessingFailure(f"preprocessing failed!: {e}") from e
