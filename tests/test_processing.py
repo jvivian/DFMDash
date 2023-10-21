@@ -1,16 +1,16 @@
-import pandas as pd
-import pytest
 from functools import reduce
 
+import pandas as pd
+import pytest
 
 from covid19_drdfm.processing import (
+    DATA_DIR,
+    ROOT_DIR,
     add_datetime,
     adjust_inflation,
     adjust_pandemic_response,
     get_df,
     get_govt_fund_dist,
-    DATA_DIR,
-    ROOT_DIR,
 )
 
 
