@@ -1,3 +1,4 @@
+import shutil
 import os
 from pathlib import Path
 
@@ -24,5 +25,6 @@ def test_process():
 
 
 def test_run():
-    res = runner.invoke(app, ["run", "."])
+    res = runner.invoke(app, ["run", "./testdir-runner"])
     assert res.exit_code == 0
+    shutil.rmtree("./testdir-runner")

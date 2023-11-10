@@ -10,6 +10,6 @@ from covid19_drdfm.processing import get_df
 def test_run_model():
     df = get_df()
     run_model(df, "NY", Path("./testdir"))
-    assert Path("./testdir/model.csv").exists()
-    assert Path("./testdir/results.csv").exists()
+    assert Path("./testdir/NY/model.csv").exists()
+    assert Path("./testdir/NY/results.csv").exists()
     shutil.rmtree("./testdir")
