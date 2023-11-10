@@ -1,9 +1,10 @@
+# %%
 """Module for Dynamic Factor Model specification
 
 Main command to run model
     - `c19_dfm run`
 """
-import json
+from dataclasses import dataclass
 from pathlib import Path
 
 import pandas as pd
@@ -12,17 +13,14 @@ from rich import print as pprint
 from sklearn.preprocessing import MinMaxScaler
 from statsmodels.tsa.stattools import adfuller
 
-from covid19_drdfm.processing import DATA_DIR, adjust_pandemic_response
+from covid19_drdfm.processing import adjust_pandemic_response, get_factors
 
 
-def get_factors() -> dict[str, (str, str)]:
-    """Fetch pre-defined factors for model
-
-    Returns:
-        dict[str, (str, str)]: Factors from `./data/processed/factors.yaml`
-    """
-    with open(DATA_DIR / "factors.json") as f:
-        return json.load(f)
+@dataclass
+class StateData:
+    df: pd.DataFrame
+    model: sm.tsa.DynamicFactorMQ
+    # results:
 
 
 def is_constant(column) -> bool:
@@ -63,8 +61,9 @@ def normalize(df: pd.DataFrame) -> pd.DataFrame:
     # Normalize data
     scaler = MinMaxScaler()
     norm_df = pd.DataFrame(scaler.fit_transform(df), columns=df.columns) * 100
-    stationary_df = norm_df.diff()
-    stationary_df = stationary_df.fillna(0)
+    # stationary_df = norm_df.diff()
+    stationary_df = norm_df.diff().drop(0, axis=0)  #! Dropping first after diff
+    # stationary_df = stationary_df.fillna(0)
 
     non_stationary_columns = []
     for col in stationary_df.columns:
@@ -91,25 +90,93 @@ def run_model(df: pd.DataFrame, state: str, outdir: Path) -> sm.tsa.DynamicFacto
     """
     # Factors
     factors = get_factors()
-    factors = {
-        x[:-1]: y for x, y in factors.items()
-    }  # TODO: Fix in config to remove this now that multindex is removed
     factor_multiplicities = {"Global": 2}
     # Run model on a given state and print results
     df = state_process(df, state)
-    model = sm.tsa.DynamicFactorMQ(df, factors=factors, factor_multiplicities=factor_multiplicities)
-    pprint(model.summary())
-    results = model.fit(disp=10)
-    pprint(results.summary())
+    # Remove factors without an associated column
+    factor_keys = list(factors.keys())
+    [factors.pop(var) for var in factor_keys if var not in df.columns]
     outdir.mkdir(exist_ok=True)
+    out = outdir / state
+    pprint(f"Saving state input information to {out}")
+    out.mkdir(exist_ok=True)
+    df.to_excel(out / "df.xlsx")
+    df.to_csv(out / "df.tsv", sep="\t")
+    if (out / "model.csv").exists():
+        return
+    try:
+        model = sm.tsa.DynamicFactorMQ(df, factors=factors, factor_multiplicities=factor_multiplicities)
+        pprint(model.summary())
+        results = model.fit(disp=10)
+    except Exception as e:
+        with open(outdir / "failed_convergence.txt", "a") as f:
+            f.write(f"{state}\t{e}\n")
+        return
+    pprint(results.summary())
     # Output
     pprint(f"Saving output to {outdir}")
-    df.to_excel(outdir / "df.xlsx")
-    df.to_csv(outdir / "df.tsv", sep="\t")
-    df.to_excel(outdir / f"{state}.xlsx")
-    df.to_csv(outdir / f"{state}.tsv", sep="\t")
-    with open(outdir / "model.csv", "w") as f:
+    with open(out / "model.csv", "w") as f:
         f.write(model.summary().as_csv())
-    with open(outdir / "results.csv", "w") as f:
+    with open(out / "results.csv", "w") as f:
         f.write(results.summary().as_csv())
-    return model
+    return model, results
+
+
+def test_model(df: pd.DataFrame, state: str, outdir: Path) -> sm.tsa.DynamicFactor:
+    """Run DFM for a given state
+
+    Args:
+        df (pd.DataFrame): DataFrame processed via `covid19_drdfm.run`
+        state (str): Two-letter state code to process
+        outdir (str): Output directory for model CSV files
+
+    Returns:
+        sm.tsa.DynamicFactor: Dynamic Factor Model
+
+    """
+    # Factors
+    factors = get_factors()
+    # factors =
+    #     x[:-1]: y for x, y in factors.items()
+    # }  # TODO: Fix in config to remove this now that multindex is removed
+    factor_multiplicities = {"Global": 2}
+    # Run model on a given state and print results
+    df = state_process(df, state)
+    drop_vars = ["proportion_vax2", "Proportion"]
+    new = df.drop(columns=drop_vars)
+    # [factors.pop(var) for var in drop_vars]
+    #! COLUMN REMOVAL
+    outdir.mkdir(exist_ok=True)
+    out = outdir / state
+    pprint(f"Saving state input information to {out}")
+    out.mkdir(exist_ok=True)
+    new.to_excel(out / "df.xlsx")
+    new.to_csv(out / "df.tsv", sep="\t")
+    if (out / "model.csv").exists():
+        return
+    try:
+        model = sm.tsa.DynamicFactorMQ(new, factors=factors, factor_multiplicities=factor_multiplicities)
+        pprint(model.summary())
+        results = model.fit(disp=10)
+    except Exception as e:
+        with open(outdir / "failed.txt", "a") as f:
+            f.write(f"{state}\t{e}\n")
+        return
+    pprint(results.summary())
+    # Output
+    pprint(f"Saving output to {outdir}")
+    with open(out / "model.csv", "w") as f:
+        f.write(model.summary().as_csv())
+    with open(out / "results.csv", "w") as f:
+        f.write(results.summary().as_csv())
+    return model, results
+
+
+# #%%
+# from covid19_drdfm.processing import get_df
+
+
+# df = get_df()
+# model, results = run_model(df, 'AL', outdir=Path('./test-delete-NY-foo'))
+
+# # %%
