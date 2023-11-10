@@ -18,7 +18,7 @@ Repository for Covid-19 Dynamic Factor Model
 - Download and install [Anaconda]() to your PATH and run:
 
 ```bash
-git Vclone https://github.com/jvivian/covid19-drDFM/ # Get source code
+git clone https://github.com/jvivian/covid19-drDFM/ # Get source code
 cd covid19-drDFM
 conda env update -f environment.yml  # Create python env for project
 conda activate py3.10  # Activate env
