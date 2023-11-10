@@ -1,0 +1,43 @@
+             Model Specification: Dynamic Factor Model
+Model: ,Dynamic Factor Model   ,  # of observed variables:   ,26
+       ,+ 8 factors in 7 blocks,  # of factor blocks:        ,7
+       ,+ AR(1) idiosyncratic  ,  Idiosyncratic disturbances:,AR(1)
+Sample:,0                      ,  Standardize variables:     ,True
+       , - 119                 ,                             ,
+                              Observed variables / factor loadings
+   Dep. variable    ,Global.1,Global.2,Pandemic,Response,Uncat,Employment,Consumption,Inflation
+Monetary_5          ,X       ,X       ,        ,        ,X    ,          ,           ,
+Monetary_9          ,X       ,X       ,        ,        ,X    ,          ,           ,
+Monetary_10         ,X       ,X       ,        ,        ,X    ,          ,           ,
+Supply_1            ,X       ,X       ,        ,        ,X    ,          ,           ,
+Supply_7            ,X       ,X       ,        ,        ,X    ,          ,           ,
+Supply_2            ,X       ,X       ,        ,        ,     ,X         ,           ,
+Supply_3            ,X       ,X       ,        ,        ,     ,X         ,           ,
+Supply_4            ,X       ,X       ,        ,        ,     ,X         ,           ,
+Demand_7            ,X       ,X       ,        ,        ,     ,X         ,           ,
+Demand_3            ,X       ,X       ,        ,        ,     ,          ,X          ,
+Demand_4            ,X       ,X       ,        ,        ,     ,          ,X          ,
+Demand_5            ,X       ,X       ,        ,        ,     ,          ,X          ,
+Monetary_2          ,X       ,X       ,        ,        ,     ,          ,           ,X
+Monetary_3          ,X       ,X       ,        ,        ,     ,          ,           ,X
+Monetary_1          ,X       ,X       ,        ,        ,     ,          ,           ,X
+Pandemic_Response_1 ,X       ,X       ,        ,X       ,     ,          ,           ,
+Pandemic_Response_2 ,X       ,X       ,        ,X       ,     ,          ,           ,
+Pandemic_Response_10,X       ,X       ,        ,X       ,     ,          ,           ,
+Pandemic_Response_13,X       ,X       ,        ,X       ,     ,          ,           ,
+Pandemic_Response_14,X       ,X       ,        ,X       ,     ,          ,           ,
+Pandemic_1          ,X       ,X       ,X       ,        ,     ,          ,           ,
+Pandemic_2          ,X       ,X       ,X       ,        ,     ,          ,           ,
+Pandemic_6          ,X       ,X       ,X       ,        ,     ,          ,           ,
+Pandemic_9          ,X       ,X       ,X       ,        ,     ,          ,           ,
+Pandemic_7          ,X       ,X       ,X       ,        ,     ,          ,           ,
+Pandemic_10         ,X       ,X       ,X       ,        ,     ,          ,           ,
+     Factor blocks:
+      block       ,order
+Global.1, Global.2,1
+Pandemic          ,1
+Response          ,1
+Uncat             ,1
+Employment        ,1
+Consumption       ,1
+Inflation         ,1

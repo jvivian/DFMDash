@@ -10,12 +10,12 @@ RUN pip install "poetry==$POETRY_VERSION"
 
 # Copy only requirements to cache them in docker layer
 WORKDIR /code
-COPY poetry.lock pyproject.toml /code/
-
-# Project initialization:
-RUN poetry install --no-interaction --no-ansi --no-root --no-dev
+# COPY poetry.lock pyproject.toml /code/
 
 # Copy Python code to the Docker image
-COPY covid19_drdfm /code/covid19_drdfm/
+COPY . /code/
 
-CMD ["cm19dfm", "--help"]
+# Project initialization:
+RUN poetry install --no-interaction
+
+CMD ["c19dfm", "--help"]
