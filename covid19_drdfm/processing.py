@@ -6,6 +6,7 @@ downstream as model input
 This model input DataFrame can be generated with a single function:
     - `df = run()`
 """
+import json
 from fractions import Fraction
 from functools import reduce
 from pathlib import Path
@@ -32,9 +33,25 @@ def get_df() -> pd.DataFrame:
         .fillna(0)
         .drop(columns=["Monetary_1_x", "Monetary_11_x"])
         .rename(columns={"Monetary_1_y": "Monetary_1", "Monetary_11_y": "Monetary_11"})
+        .drop(
+            columns=["Proportion", "proportion_vax2", "Pandemic_Response_8"]
+        )  #! Columns removed per discussion with AC
+        # .assign(Pandemic_Response_4=lambda x: x[['Pandemic_Response_4', 'Pandemic_Response_5', 'Pandemic_Response_6', 'Pandemic_Response_7']].max(axis=1))
+        # .assign(Pandemic_Response_10=lambda x: x[['Pandemic_Response_10', 'Pandemic_Response_11']].max(axis=1))
+        # .drop(columns=['Pandemic_Response_5','Pandemic_Response_6', 'Pandemic_Response_7', 'Pandemic_Response_11'])
         .pipe(adjust_inflation)
         .pipe(add_datetime)
     )
+
+
+def get_factors() -> dict[str, (str, str)]:
+    """Fetch pre-defined factors for model
+
+    Returns:
+        dict[str, (str, str)]: Factors from `./data/processed/factors.yaml`
+    """
+    with open(DATA_DIR / "factors.json") as f:
+        return json.load(f)
 
 
 def write(df: pd.DataFrame, outpath: Path) -> Path:
