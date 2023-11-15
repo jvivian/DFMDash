@@ -1,0 +1,283 @@
+---
+title: "Covid-19 Data-Rich Dynamic Factor Model"
+author: ""
+format:
+    revealjs:
+        theme: blood
+        include-in-header:
+            text: |
+                <style>
+                .center-xy {
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translateY(-50%), translateX(-50%);
+                transform: translateY(-50%), translateX(-50%);
+                }
+                </style>
+---
+
+# Dynamic Factor Models
+
+## Overview
+> Dynamic Factor Models are statistical models that capture the evolving relationships among observed variables through latent factors and time dynamics.
+
+<br>
+
+::: {.incremental}
+- Provides a framework to understand complex interactions in time-series data.<br><br>
+- Relevant for tracking the economic impacts of COVID-19, where relationships between variables may change dynamically over time<br><br>
+- Enables extraction of underlying trends and patterns from noisy and interrelated economic data
+:::
+
+## Model
+> Basic Dynamic Factor Model
+
+$$y_t = \Lambda f_t + \epsilon_t$$
+
+<br>
+
+::: {.incremental}
+- $y_t$: Observed variables at time $t$<br><br>
+- $\Lambda$: Loading matrix<br><br>
+- $f_t$: Latent factors<br><br>
+- $\epsilon_t$: Error term
+:::
+
+## Latent Factors and Loading Matrix
+> Relationship between latent factors and loading matrix
+
+<br>
+
+:::{.incremental}
+- The loading matrix, often denoted as $\Lambda$>, establishes the linear relationship between the latent factors and the observed variables<br><br>
+- The loading matrix is a bridge that connects the latent factors, which are unobservable, to the observed variables, providing a mathematical representation of how the latent factors influence the observed data
+:::
+
+## Latent Factors and Loading Matrix
+> Relationship between latent factors and loading matrix
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set seed for reproducibility
+np.random.seed(42)
+
+# Generate dummy data
+num_observed_variables = 4
+num_time_points = 100
+loading_matrix = np.array([[0.5, 0.3, 0.8, 0.2],
+                           [0.7, 0.2, 0.5, 0.1]])
+
+latent_factors = np.random.randn(num_time_points, 2)
+observed_variables = np.dot(latent_factors, loading_matrix) + np.random.randn(num_time_points, num_observed_variables)
+
+# Plotting
+plt.figure(figsize=(10, 6))
+
+# Plot latent factors
+plt.subplot(2, 1, 1)
+plt.plot(latent_factors[:, 0], label='Latent Factor 1', linestyle='--')
+plt.plot(latent_factors[:, 1], label='Latent Factor 2', linestyle='--')
+plt.title('Latent Factors Over Time')
+plt.legend()
+
+# Plot observed variables
+plt.subplot(2, 1, 2)
+for i in range(num_observed_variables):
+    plt.plot(observed_variables[:, i], label=f'Observed Variable {i+1}')
+plt.title('Observed Variables Over Time')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+
+## Extending the model {.smaller}
+> Incorporating time dynamics
+
+The DFM is typically generalized to include autoregressive components<br><br>
+
+. . .
+
+$$
+\begin{split}\begin{align}
+y_t & = \Lambda f_t + B x_t + u_t \\
+f_t & = A_1 f_{t-1} + \dots + A_p f_{t-p} + \eta_t \qquad \eta_t \sim N(0, I)\\
+u_t & = C_1 u_{t-1} + \dots + C_q u_{t-q} + \varepsilon_t \qquad \varepsilon_t \sim N(0, \Sigma)
+\end{align}\end{split}
+$$
+
+. . .
+
+<br><br>
+
+Where $y_t$ is observed, $f_t$ are unobserved latent factors, $x_t$ are optional (unused for our case) exogenous variables, and the dynamic evolution of latent factors is expressed using the transition matrix $A$ with $\eta_t$ representing new information or random shocks. $u_t$ is the error or "idiosyncratic" process
+
+. . .
+
+<br><br>
+
+This model is then cast into state space form and the unobserved factors estimated via the Kalman filter. The likelihood can be evaluated as a byproduct of the filtering recursions with maximum likelihood estimation used to estimate the parameters.
+
+# Time Dynamics
+
+## Autoregressive component
+$$f_t = A f_{t-1} + \eta_t$$
+
+$A$: Transition matrix<br>
+$\eta_t$: Innovation term
+
+<br>
+
+:::{.incremental}
+- The transition matrix, often denoted as $A$, is a square matrix that governs the temporal evolution of the latent factors
+- Each element of the matrix represents the influence of one latent factor at the current time on the corresponding latent factor at the next time point
+- The elements of the transition matrix $A$ determine how each latent factor at the previous time point contributes to the latent factors at the current time point
+- Values in the diagonal of $A$ represent the persistence of each latent factor over time
+- Off-diagonal elements indicate the influence of one latent factor on another
+:::
+
+## Interpreting Transition Matrices {.smaller}
+> Transition Matrix 1
+
+```{python}
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Set seed for reproducibility
+np.random.seed(42)
+
+# Generate two different transition matrices
+transition_matrix_1 = np.array([[0.8, 0.2],
+                                [0.3, 0.7]])
+
+transition_matrix_2 = np.array([[0.5, 0.5],
+                                [0.6, 0.4]])
+
+# Create a figure with subplots
+fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+
+# Plot heatmap for Transition Matrix 1
+sns.heatmap(transition_matrix_1, annot=True, cmap="Reds", linewidths=.5, ax=axs[0])
+axs[0].set_title('Transition Matrix 1')
+
+# Plot heatmap for Transition Matrix 2
+sns.heatmap(transition_matrix_2, annot=True, cmap="Reds", linewidths=.5, ax=axs[1])
+axs[1].set_title('Transition Matrix 2')
+
+# Adjust layout
+plt.tight_layout()
+plt.show()
+```
+
+- The diagonal elements (0.8 and 0.7) are relatively high, indicating a strong persistence of each latent factor over time.
+- The off-diagonal elements (0.2 and 0.3) suggest moderate influence of one latent factor on the other, allowing for some interaction between the two factors.
+- Summary: latent factors have a tendency to persist, with some interdependence.
+
+## Interpreting Transition Matrices {.smaller}
+> Transition Matrix 2
+
+```{python}
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Set seed for reproducibility
+np.random.seed(42)
+
+# Generate two different transition matrices
+transition_matrix_1 = np.array([[0.8, 0.2],
+                                [0.3, 0.7]])
+
+transition_matrix_2 = np.array([[0.5, 0.5],
+                                [0.6, 0.4]])
+
+# Create a figure with subplots
+fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+
+# Plot heatmap for Transition Matrix 1
+sns.heatmap(transition_matrix_1, annot=True, cmap="Reds", linewidths=.5, ax=axs[0])
+axs[0].set_title('Transition Matrix 1')
+
+# Plot heatmap for Transition Matrix 2
+sns.heatmap(transition_matrix_2, annot=True, cmap="Reds", linewidths=.5, ax=axs[1])
+axs[1].set_title('Transition Matrix 2')
+
+# Adjust layout
+plt.tight_layout()
+plt.show()
+```
+
+- The diagonal elements (0.5 and 0.4) are lower compared to Transition Matrix 1, suggesting less persistence of each latent factor over time.
+- The off-diagonal elements (0.5 and 0.6) indicate a relatively stronger influence of one latent factor on the other compared to Transition Matrix 1.
+- Summary: latent factors are less likely to persist and may be influenced more by each other, allowing for a more dynamic and responsive behavior.
+
+## Factor Constraints
+> Factor constraints are restrictions imposed on the parameters of the model, particularly on the loading matrix or transition matrix.
+
+<br>
+
+Factor constraints can enhance the interpretability of the model by imposing structure on the relationships between latent factors and observed variables. <br><br>
+
+For example, setting certain elements of the loading matrix to zero might suggest that specific observed variables are not influenced by particular latent factors.
+
+## Factor Constraints {.smaller}
+> Factor loading constraint example
+
+| Dep. variable  | Global.1 | Pandemic | Employment | Consumption | Inflation |
+|-----------------|----------|----------|------------|-------------|-----------|
+| Supply_1        | X        |          |            |             |           |
+| Supply_7        | X        |          |            |             |           |
+| Monetary_5      | X        |          |            |             |           |
+| Monetary_9      | X        |          |            |             |           |
+| Supply_2        | X        |          | X          |             |           |
+| Supply_3        | X        |          | X          |             |           |
+| Demand_7        | X        |          | X          |             |           |
+| Demand_3        | X        |          |            | X           |           |
+| Demand_5        | X        |          |            | X           |           |
+| Monetary_2      | X        |          |            |             | X         |
+| Monetary_1      | X        |          |            |             | X         |
+| Pandemic_2      | X        | X        |            |             |           |
+| Pandemic_9      | X        | X        |            |             |           |
+
+. . .
+
+<br>
+
+- Can reduce model complexity by reducing the number of free parameters<br><br>
+- Incorporates domain knowledge about variable relationships
+
+# Python Package
+
+## Implementation
+> A Data-Rich Dynamic Factor Model for Covid-19 Response
+
+We have created a self-contained Python package that is also available as a Docker container, a platform-agnostic container environment, which can run in any host environment that has Docker installed deterministically
+
+:::{.incremental}
+- Poetry for dependency management
+- CI with GitHub Actions
+- Pre-commit hooks with pre-commit
+- Code quality with black & ruff
+- Testing and coverage with pytest and codecov
+- Documentation with MkDocs
+- Compatibility testing for multiple versions of Python with Tox
+- Containerization with Docker
+:::
+
+## Dashboard
+> Included in the package is a GUI-dashboard for running the model
+
+:::{.column-page}
+![](runner.png)
+:::
+
+
+# Conclusion
+
+TBD
