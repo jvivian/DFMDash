@@ -1,6 +1,3 @@
-# %%
-
-
 """I/O and processing module
 
 Converts all input files into single consolidated dataframe that can be used
@@ -39,22 +36,20 @@ def get_df() -> pd.DataFrame:
         .drop(
             columns=["Proportion", "proportion_vax2", "Pandemic_Response_8"]
         )  #! Columns removed per discussion with AC
-        # .assign(Pandemic_Response_4=lambda x: x[['Pandemic_Response_4', 'Pandemic_Response_5', 'Pandemic_Response_6', 'Pandemic_Response_7']].max(axis=1))
-        # .assign(Pandemic_Response_10=lambda x: x[['Pandemic_Response_10', 'Pandemic_Response_11']].max(axis=1))
-        # .drop(columns=['Pandemic_Response_5','Pandemic_Response_6', 'Pandemic_Response_7', 'Pandemic_Response_11'])
         .pipe(adjust_inflation)
         .pipe(add_datetime)
+        .pipe(fix_names)
     )
 
 
-def get_factors() -> dict[str, (str, str)]:
-    """Fetch pre-defined factors for model
+# def get_factors() -> dict[str, (str, str)]:
+#     """Fetch pre-defined factors for model
 
-    Returns:
-        dict[str, (str, str)]: Factors from `./data/processed/factors.yaml`
-    """
-    with open(DATA_DIR / "factors.json") as f:
-        return json.load(f)
+#     Returns:
+#         dict[str, (str, str)]: Factors from `./data/processed/factors.yaml`
+#     """
+#     with open(DATA_DIR / "factors.json") as f:
+#         return json.load(f)
 
 
 def write(df: pd.DataFrame, outpath: Path) -> Path:
@@ -133,90 +128,121 @@ def add_datetime(df: pd.DataFrame) -> pd.DataFrame:
     df["Time"] = pd.to_datetime({"year": df.Year, "month": df.Month, "day": df.Day})
     return df.drop(columns=["Period", "Month", "Year", "Day"])
 
-# %%
+
 def fix_names(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.rename(columns={'Cases1': 'Pandemic_1', 'Cases2': 'Pandemic_2',\
-                            'Cases3': 'Pandemic_3', 'Cases4': 'Pandemic_4', \
-                            'Cases5': 'Pandemic_5', 'Hosp1': 'Pandemic_6',\
-                            'Hosp2': 'Pandemic_7', 'Deaths1': 'Pandemic_8', \
-                            'Deaths2': 'Pandemic_9', 'Deaths3': 'Pandemic_10'\
-                            'Deaths4': 'Pandemic_11', 'Deaths5': 'Pandemic_12'\
-                            'Vax1': 'Pandemic_Response_1', 'Vax2': 'Pandemic_Response_2',\
-                            'Vax3': 'Pandemic_Response_3', 'Gather1': 'Pandemic_Response_4', \
-                            'Gather2': 'Pandemic_Response_5', 'Gather3': 'Pandemic_Response_6',\
-                            'Gather4': 'Pandemic_Response_7', 'SaH': 'Pandemic_Response_8', \
-                            'Curfew': 'Pandemic_Response_9', 'Mask1': 'Pandemic_Response_10'\
-                            'Mask2': 'Pandemic_Response_11', 'School': 'Pandemic_Response_12'\
-                            'Cons1': 'Demand_1', 'Cons2': 'Demand_2',\
-                            'Cons3': 'Demand_3', 'Cons4': 'Demand_4',\
-                            'Cons5': 'Demand_5', 'Employment1': 'Demand_6',\
-                            'Employment2': 'Demand_7', 'GDP': 'Supply_1',\
-                            'UI': 'Supply_2', 'PartR': 'Supply_3',\
-                            'UR': 'Supply_4', 'RPFI': 'Supply_5',\
-                            'FixAss': 'Supply_6', 'Prod': 'Supply_7',\
-                            'CPI': 'Monetary_1', 'CPIU': 'Monetary_2',\
-                            'PCE': 'Monetary_3', 'PCEC': 'Monetary_4',\
-                            'TBill1mo': 'Monetary_5', 'TBill6mo': 'Monetary_6',\
-                            'TBill1yr': 'Monetary_7', 'TBill5yr': 'Monetary_8',\
-                            'TBill10yr': 'Monetary_9', 'TBill30yr': 'Monetary_10',\
-                            'FFR': 'Monetary_11'})
+    """Map sensible names to the merged input dataframe
+
+    Args:
+        df (pd.DataFrame): Input DataFrame after merging all input data
+
+    Returns:
+        pd.DataFrame: DataFrame with mapped names
     """
-    #write the code that will change the dataframes names
-    # Look at other pandemic functions
-    # return modified version of the dataframe
-    # Have test code to validate"""
-
-def factordic()
-    factors = {}
-    factors[Cases1] = 'Global', 'Pandemic'
-    factors[Cases2] = 'Global', 'Pandemic'
-    factors[Cases3] = 'Global', 'Pandemic'
-    factors[Cases4] = 'Global', 'Pandemic'
-    factors[Cases5] = 'Global', 'Pandemic'
-    factors[Hosp1] = 'Global', 'Pandemic'
-    factors[Hosp2] = 'Global', 'Pandemic'
-    factors[Deaths1] = 'Global', 'Pandemic'
-    factors[Deaths2] = 'Global', 'Pandemic'
-    factors[Deaths3] = 'Global', 'Pandemic'
-    factors[Deaths4] = 'Global', 'Pandemic'
-    factors[Deaths5] = 'Global', 'Pandemic'
-    factors[Vax1] = 'Global', 'Response'
-    factors[Vax2] = 'Global', 'Response'
-    factors[Vax3] = 'Global', 'Response'
-    factors[Gather1] = 'Global', 'Response'
-    factors[Gather2] = 'Global', 'Response'
-    factors[Gather3] = 'Global', 'Response'
-    factors[Gather4] = 'Global', 'Response'
-    factors[SaH] = 'Global', 'Response'
-    factors[Curfew] = 'Global', 'Response'
-    factors[Mask1] = 'Global', 'Response'
-    factors[Mask2] = 'Global', 'Response'
-    factors[School] = 'Global', 'Response'
-    factors[Cons1] = 'Global', 'Consumption'
-    factors[Cons2] = 'Global', 'Consumption'
-    factors[Cons3] = 'Global', 'Consumption'
-    factors[Cons4] = 'Global', 'Consumption'
-    factors[Cons5] = 'Global', 'Consumption'
-    factors[Employment1] = 'Global', 'Employment'
-    factors[Employment2] = 'Global', 'Employment'
-    factors[UI] = 'Global', 'Employment'
-    factors[PartR] = 'Global', 'Employment'
-    factors[UR] = 'Global', 'Employment'
-    factors[CPI] = 'Global', 'Inflation'
-    factors[CPIU] = 'Global', 'Inflation'
-    factors[PCE] = 'Global', 'Inflation'
-    factors[PCEC] = 'Global', 'Inflation'
-    factors[RPFI] = 'Global', 'Uncat'
-    factors[FixAss] = 'Global', 'Uncat'
-    factors[Prod] = 'Global', 'Uncat'
-    factors[GDP] = 'Global', 'Uncat'
-    factors[TBill1mo] = 'Global', 'Uncat'
-    factors[TBill6mo] = 'Global', 'Uncat'
-    factors[TBill1yr] = 'Global', 'Uncat'
-    factors[TBill5yr] = 'Global', 'Uncat'
-    factors[TBill10tr] = 'Global', 'Uncat'
-    factors[TBill30yr] = 'Global', 'Uncat'
-    factors[TBillFFR] = 'Global', 'Uncat'
+    return df.rename(
+        columns={
+            "Pandemic_1": "Cases1",
+            "Pandemic_2": "Cases2",
+            "Pandemic_3": "Cases3",
+            "Pandemic_4": "Cases4",
+            "Pandemic_5": "Cases5",
+            "Pandemic_6": "Hosp1",
+            "Pandemic_7": "Hosp2",
+            "Pandemic_8": "Deaths1",
+            "Pandemic_9": "Deaths2",
+            "Pandemic_10": "Deaths3",
+            "Pandemic_11": "Deaths4",
+            "Pandemic_12": "Deaths5",
+            "Pandemic_Response_1": "Vax1",
+            "Pandemic_Response_2": "Vax2",
+            "Pandemic_Response_3": "Vax3",
+            "Pandemic_Response_4": "Gather1",
+            "Pandemic_Response_5": "Gather2",
+            "Pandemic_Response_6": "Gather3",
+            "Pandemic_Response_7": "Gather4",
+            "Pandemic_Response_8": "SaH",
+            "Pandemic_Response_9": "Curfew",
+            "Pandemic_Response_10": "Mask1",
+            "Pandemic_Response_11": "Mask2",
+            "Pandemic_Response_12": "School",
+            "Demand_1": "Cons1",
+            "Demand_2": "Cons2",
+            "Demand_3": "Cons3",
+            "Demand_4": "Cons4",
+            "Demand_5": "Cons5",
+            "Demand_6": "Employment1",
+            "Demand_7": "Employment2",
+            "Supply_1": "GDP",
+            "Supply_2": "UI",
+            "Supply_3": "PartR",
+            "Supply_4": "UR",
+            "Supply_5": "RPFI",
+            "Supply_6": "FixAss",
+            "Supply_7": "Prod",
+            "Monetary_1": "CPI",
+            "Monetary_2": "CPIU",
+            "Monetary_3": "PCE",
+            "Monetary_4": "PCEC",
+            "Monetary_5": "TBill1mo",
+            "Monetary_6": "TBill6mo",
+            "Monetary_7": "TBill1yr",
+            "Monetary_8": "TBill5yr",
+            "Monetary_9": "TBill10yr",
+            "Monetary_10": "TBill30yr",
+            "Monetary_11": "FFR",
+        }
+    )
 
 
-
+def get_factors():
+    """Returns the pre-assigned factors for the model"""
+    return {
+        "Cases1": ("Global", "Pandemic"),
+        "Cases2": ("Global", "Pandemic"),
+        "Cases3": ("Global", "Pandemic"),
+        "Cases4": ("Global", "Pandemic"),
+        "Cases5": ("Global", "Pandemic"),
+        "Hosp1": ("Global", "Pandemic"),
+        "Hosp2": ("Global", "Pandemic"),
+        "Deaths1": ("Global", "Pandemic"),
+        "Deaths2": ("Global", "Pandemic"),
+        "Deaths3": ("Global", "Pandemic"),
+        "Deaths4": ("Global", "Pandemic"),
+        "Deaths5": ("Global", "Pandemic"),
+        "Vax1": ("Global", "Response"),
+        "Vax2": ("Global", "Response"),
+        "Vax3": ("Global", "Response"),
+        "Gather1": ("Global", "Response"),
+        "Gather2": ("Global", "Response"),
+        "Gather3": ("Global", "Response"),
+        "Gather4": ("Global", "Response"),
+        "SaH": ("Global", "Response"),
+        "Curfew": ("Global", "Response"),
+        "Mask1": ("Global", "Response"),
+        "Mask2": ("Global", "Response"),
+        "School": ("Global", "Response"),
+        "Cons1": ("Global", "Consumption"),
+        "Cons2": ("Global", "Consumption"),
+        "Cons3": ("Global", "Consumption"),
+        "Cons4": ("Global", "Consumption"),
+        "Cons5": ("Global", "Consumption"),
+        "Employment1": ("Global", "Employment"),
+        "Employment2": ("Global", "Employment"),
+        "UI": ("Global", "Employment"),
+        "PartR": ("Global", "Employment"),
+        "UR": ("Global", "Employment"),
+        "CPI": ("Global", "Inflation"),
+        "CPIU": ("Global", "Inflation"),
+        "PCE": ("Global", "Inflation"),
+        "PCEC": ("Global", "Inflation"),
+        "RPFI": ("Global", "Uncat"),
+        "FixAss": ("Global", "Uncat"),
+        "Prod": ("Global", "Uncat"),
+        "GDP": ("Global", "Uncat"),
+        "TBill1mo": ("Global", "Uncat"),
+        "TBill6mo": ("Global", "Uncat"),
+        "TBill1yr": ("Global", "Uncat"),
+        "TBill5yr": ("Global", "Uncat"),
+        "TBill10tr": ("Global", "Uncat"),
+        "TBill30yr": ("Global", "Uncat"),
+        "TBillFFR": ("Global", "Uncat"),
+    }
