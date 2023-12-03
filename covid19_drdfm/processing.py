@@ -254,3 +254,40 @@ def get_factors():
         "TBill30yr": ("Global", "Uncat"),
         "FFR": ("Global", "Uncat"),
     }
+"""
+Diff
+        "Cases1"
+        "Cases2"
+        "Cases3"
+        "Cases4"
+        "Cases5"
+        "Hosp1"
+        "Hosp2"
+        "Deaths1"
+        "Deaths2"
+        "Deaths3"
+        "Deaths4"
+        "Deaths5"
+
+Log-Diff
+        "Cons1"
+        "Cons2"
+        "Cons3"
+        "Cons4"
+        "Cons5"
+        "Employment1"
+        "Employment2"
+        "CPI"
+        "CPIU"
+        "PCE"
+        "PCEC"
+        "RPFI"
+        "FixAss"
+        "Prod"
+        "GDP"
+
+Nothing
+
+ Everything Else
+ 
+ """
