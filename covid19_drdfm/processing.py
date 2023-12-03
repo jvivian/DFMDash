@@ -6,7 +6,7 @@ downstream as model input
 This model input DataFrame can be generated with a single function:
     - `df = run()`
 """
-import json
+
 from fractions import Fraction
 from functools import reduce
 from pathlib import Path
@@ -105,7 +105,8 @@ def adjust_pandemic_response(df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: Adjusted DataFrame
     """
     govt_fund_dist = get_govt_fund_dist()
-    responses = [f"Pandemic_Response_{x}" for x in [13, 14, 15]]
+    # responses = [f"Pandemic_Response_{x}" for x in [13, 14, 15]]
+    responses = ["ARP", "PPP", "CARES"]
     for r in responses:
         df[r] = df[r].astype(float)
         i = df.index[df[r] > 0][0]
