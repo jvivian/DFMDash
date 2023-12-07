@@ -1,13 +1,13 @@
-import pandas as pd
-import numpy as np
+from os import rename
 
-from SyntheticControlMethods import Synth, DiffSynth
+import numpy as np
+import pandas as pd
+from SyntheticControlMethods import DiffSynth, Synth
 
 # Import data
 data_dir = "https://raw.githubusercontent.com/OscarEngelbrektson/SyntheticControlMethods/master/examples/datasets/"
 df = pd.read_csv(data_dir + "smoking_data" + ".csv")
 
-from os import rename
 
 # Fit Differenced Synthetic Control
 df = df.rename(columns={"cigsale": "Pandemic"})
