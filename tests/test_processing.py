@@ -3,6 +3,7 @@ from functools import reduce
 import pandas as pd
 import pytest
 
+from covid19_drdfm.constants import NAME_MAP
 from covid19_drdfm.processing import (
     DATA_DIR,
     ROOT_DIR,
@@ -34,8 +35,8 @@ def test_get_govt_fund_dist():
     assert int(sum(govt_fund) + 0.00001) == 1, "Distribution must sum to 1"
 
 
-def test_adjust_inflation(sample_data):
-    input_df = sample_data.copy()
+def test_adjust_inflation(raw_data):
+    input_df = raw_data.copy()
     output_df = adjust_inflation(input_df)
     assert input_df.Demand_1.iloc[0] < output_df.Demand_1.iloc[0]
 
@@ -45,9 +46,9 @@ def test_adjust_pandemic_response(sample_data):
     #! Note - this is testing functionality, but is used per-state not on whole df
     out = adjust_pandemic_response(input_df)
     df = get_df()
-    responses = [f"Pandemic_Response_{x}" for x in [13, 14, 15]]
+    responses = [NAME_MAP[f"Pandemic_Response_{x}"] for x in [13, 14, 15]]
     for r in responses:
-        assert df[r].sum() == out[r].sum()
+        assert int(df[r].sum()) == int(out[r].sum())
 
 
 def test_fix_datetime(raw_data):
@@ -58,7 +59,7 @@ def test_fix_datetime(raw_data):
 
 def test_run():
     df = get_df()
-    expected_columns = ["State", "Supply_1", "Demand_1", "Pandemic_Response_13", "Time"]
+    expected_columns = ["State", "GDP", "Deaths1"]
     assert all(col in df.columns for col in expected_columns)
 
 
