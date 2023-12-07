@@ -3,16 +3,16 @@
 Main command to run model
     - `c19_dfm run`
 """
+
 from dataclasses import dataclass
 from pathlib import Path
 
 import pandas as pd
 import statsmodels.api as sm
 from rich import print as pprint
-from sklearn.preprocessing import MinMaxScaler
 from statsmodels.tsa.stattools import adfuller
 
-from covid19_drdfm.processing import adjust_pandemic_response, get_factors
+from covid19_drdfm.constants import FACTORS
 
 
 @dataclass
@@ -43,40 +43,30 @@ def state_process(df: pd.DataFrame, state: str) -> pd.DataFrame:
     const_cols = [x for x in df.columns if is_constant(df[x])]
     pprint(f"Constant Columns...dropping\n{const_cols}")
     df = df.drop(columns=const_cols)
-    df = adjust_pandemic_response(df)
-    return normalize(df)
+    return df
 
 
-def normalize(df: pd.DataFrame) -> pd.DataFrame:
-    """Normalize data and make stationary - scaling for post-DFM Synthetic Control Model
+def get_nonstationary_columns(df: pd.DataFrame) -> list[str]:
+    """Run AD-Fuller on tests and report failures
 
     Args:
-        df (pd.DataFrame): State data, pre-normalization
+        df (pd.DataFrame): Input DataFrame
 
     Returns:
-        pd.DataFrame: Normalized and stationary DataFrame
+        list[str]: List of columns that failed AD-Fuller test
     """
-    df = df.drop(columns=["Time"]) if "Time" in df.columns else df
-    # Normalize data
-    scaler = MinMaxScaler()
-    norm_df = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)  # * 100
-    # stationary_df = norm_df.diff()
-    # TODO: Remove Diff logic from here to separate out processing per column
-    stationary_df = norm_df.diff().drop(0, axis=0)  #! Dropping first row after diff
-    # stationary_df = stationary_df.fillna(0)
-
     non_stationary_columns = []
-    for col in stationary_df.columns:
-        result = adfuller(stationary_df[col])
+    for col in df.columns:
+        result = adfuller(df[col])
         p_value = result[1]
         if p_value > 0.25:
             non_stationary_columns.append(col)
 
-    pprint("Columns that fail the ADF test (non-stationary):", non_stationary_columns)
-    return stationary_df
+    pprint(f"Columns that fail the ADF test (non-stationary)\n{non_stationary_columns}")
+    return non_stationary_columns
 
 
-def run_model(df: pd.DataFrame, state: str, outdir: Path) -> sm.tsa.DynamicFactor:
+def run_model(df: pd.DataFrame, state: str, outdir: Path):  # -> sm.tsa.DynamicFactor:
     """Run DFM for a given state
 
     Args:
@@ -88,85 +78,66 @@ def run_model(df: pd.DataFrame, state: str, outdir: Path) -> sm.tsa.DynamicFacto
         sm.tsa.DynamicFactor: Dynamic Factor Model
 
     """
-    # Factors
-    factors = get_factors()
-    factor_multiplicities = {"Global": 2}
-    # Run model on a given state and print results
     df = state_process(df, state)
+    save_df(df, outdir, state)
     # Remove factors without an associated column
+    factors = FACTORS.copy()
     factor_keys = list(factors.keys())
     [factors.pop(var) for var in factor_keys if var not in df.columns]
-    outdir.mkdir(exist_ok=True)
-    out = outdir / state
-    pprint(f"Saving state input information to {out}")
-    out.mkdir(exist_ok=True)
-    df.to_excel(out / "df.xlsx")
-    df.to_csv(out / "df.tsv", sep="\t")
-    if (out / "model.csv").exists():
-        return
+    # Load cached model if exists
+    if (outdir / state / "model.csv").exists():
+        model = sm.load(outdir / state / "model.csv")
+        return model, model.fit(disp=10)
+    # Try to run model, if it fails, note failure and return. Rust handles this so much better
     try:
-        model = sm.tsa.DynamicFactorMQ(df, factors=factors, factor_multiplicities=factor_multiplicities)
-        pprint(model.summary())
+        factor_multiplicities = {"Global": 2}
+        model = sm.tsa.DynamicFactorMQ(df, factors=FACTORS, factor_multiplicities=factor_multiplicities)
         results = model.fit(disp=10)
     except Exception as e:
         with open(outdir / "failed_convergence.txt", "a") as f:
             f.write(f"{state}\t{e}\n")
-        return
-    pprint(results.summary())
-    # Output
-    pprint(f"Saving output to {outdir}")
-    with open(out / "model.csv", "w") as f:
-        f.write(model.summary().as_csv())
-    with open(out / "results.csv", "w") as f:
-        f.write(results.summary().as_csv())
+        return None, None
+    # Save output
+    save_results(df, model, results, outdir=outdir / state, verbose=True)
     return model, results
 
 
-def test_model(df: pd.DataFrame, state: str, outdir: Path) -> sm.tsa.DynamicFactor:
-    """Run DFM for a given state
+def save_df(df: pd.DataFrame, outdir: Path, state: str):
+    """Save DataFrame as CSV / Excel
 
     Args:
-        df (pd.DataFrame): DataFrame processed via `covid19_drdfm.run`
-        state (str): Two-letter state code to process
-        outdir (str): Output directory for model CSV files
-
-    Returns:
-        sm.tsa.DynamicFactor: Dynamic Factor Model
-
+        df (pd.DataFrame): Input DataFrame to model
+        outdir (Path): output directory
+        state (str): State to subset by
     """
-    # Factors
-    factors = get_factors()
-    # factors =
-    #     x[:-1]: y for x, y in factors.items()
-    # }  # TODO: Fix in config to remove this now that multindex is removed
-    factor_multiplicities = {"Global": 2}
-    # Run model on a given state and print results
-    df = state_process(df, state)
-    drop_vars = ["proportion_vax2", "Proportion"]
-    new = df.drop(columns=drop_vars)
-    # [factors.pop(var) for var in drop_vars]
-    #! COLUMN REMOVAL
     outdir.mkdir(exist_ok=True)
-    out = outdir / state
-    pprint(f"Saving state input information to {out}")
-    out.mkdir(exist_ok=True)
-    new.to_excel(out / "df.xlsx")
-    new.to_csv(out / "df.tsv", sep="\t")
-    if (out / "model.csv").exists():
-        return
-    try:
-        model = sm.tsa.DynamicFactorMQ(new, factors=factors, factor_multiplicities=factor_multiplicities)
+    state_dir = outdir / state
+    pprint(f"Saving state input information to {state_dir}")
+    state_dir.mkdir(exist_ok=True)
+    df.to_excel(state_dir / "df.xlsx")
+    df.to_csv(state_dir / "df.tsv", sep="\t")
+
+
+def save_results(df: pd.DataFrame, model, results, outdir: Path, verbose: bool = False):
+    """Save model and results to given directory
+
+    Args:
+        df pd.DataFrame: _description_
+        model (_type_): _description_
+        results (_type_): _description_
+        outdir (Path): _description_
+        verbose (bool, optional): _description_. Defaults to False.
+    """
+    if verbose is True:
         pprint(model.summary())
-        results = model.fit(disp=10)
-    except Exception as e:
-        with open(outdir / "failed.txt", "a") as f:
-            f.write(f"{state}\t{e}\n")
-        return
-    pprint(results.summary())
-    # Output
-    pprint(f"Saving output to {outdir}")
-    with open(out / "model.csv", "w") as f:
+        pprint(results.summary())
+        # Output
+        pprint(f"Saving output to {outdir}")
+    with open(outdir / "model.csv", "w") as f:
         f.write(model.summary().as_csv())
-    with open(out / "results.csv", "w") as f:
+    with open(outdir / "results.csv", "w") as f:
         f.write(results.summary().as_csv())
-    return model, results
+    non_stationary_cols = get_nonstationary_columns(df)
+    if non_stationary_cols:
+        with open(outdir / "non-stationary-columns.txt", "w") as f:
+            f.write("\n".join(non_stationary_cols))

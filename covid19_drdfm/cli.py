@@ -9,6 +9,7 @@ Help
 Process data and generate parquet DataFrame
     - `c19_dfm process ./outfile.xlsx`
 """
+
 from pathlib import Path
 
 import typer
