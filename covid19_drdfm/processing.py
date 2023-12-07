@@ -14,6 +14,7 @@ from pathlib import Path
 import fastparquet
 import pandas as pd
 import yaml
+from covid19_drdfm.constants import NAME_MAP
 
 ROOT_DIR = Path(__file__).parent.absolute()
 DATA_DIR = ROOT_DIR / "data/processed"
@@ -139,62 +140,7 @@ def fix_names(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: DataFrame with mapped names
     """
-    return df.rename(
-        columns={
-            "Pandemic_1": "Cases1",
-            "Pandemic_2": "Cases2",
-            "Pandemic_3": "Cases3",
-            "Pandemic_4": "Cases4",
-            "Pandemic_5": "Cases5",
-            "Pandemic_6": "Hosp1",
-            "Pandemic_7": "Hosp2",
-            "Pandemic_8": "Deaths1",
-            "Pandemic_9": "Deaths2",
-            "Pandemic_10": "Deaths3",
-            "Pandemic_11": "Deaths4",
-            "Pandemic_12": "Deaths5",
-            "Pandemic_Response_1": "Vax1",
-            "Pandemic_Response_2": "Vax2",
-            "Pandemic_Response_3": "Vax3",
-            "Pandemic_Response_4": "Gather1",
-            "Pandemic_Response_5": "Gather2",
-            "Pandemic_Response_6": "Gather3",
-            "Pandemic_Response_7": "Gather4",
-            "Pandemic_Response_8": "SaH",
-            "Pandemic_Response_9": "Curfew",
-            "Pandemic_Response_10": "Mask1",
-            "Pandemic_Response_11": "Mask2",
-            "Pandemic_Response_12": "School",
-            "Pandemic_Response_13": "ARP",
-            "Pandemic_Response_14": "PPP",
-            "Pandemic_Response_15": "CARES",
-            "Demand_1": "Cons1",
-            "Demand_2": "Cons2",
-            "Demand_3": "Cons3",
-            "Demand_4": "Cons4",
-            "Demand_5": "Cons5",
-            "Demand_6": "Employment1",
-            "Demand_7": "Employment2",
-            "Supply_1": "GDP",
-            "Supply_2": "UI",
-            "Supply_3": "PartR",
-            "Supply_4": "UR",
-            "Supply_5": "RPFI",
-            "Supply_6": "FixAss",
-            "Supply_7": "Prod",
-            "Monetary_1": "CPI",
-            "Monetary_2": "CPIU",
-            "Monetary_3": "PCE",
-            "Monetary_4": "PCEC",
-            "Monetary_5": "TBill1mo",
-            "Monetary_6": "TBill6mo",
-            "Monetary_7": "TBill1yr",
-            "Monetary_8": "TBill5yr",
-            "Monetary_9": "TBill10yr",
-            "Monetary_10": "TBill30yr",
-            "Monetary_11": "FFR",
-        }
-    )
+    return df.rename(columns=NAME_MAP)
 
 
 def get_factors():
@@ -255,6 +201,8 @@ def get_factors():
         "TBill30yr": ("Global", "Uncat"),
         "FFR": ("Global", "Uncat"),
     }
+
+
 """
 Diff
         "Cases1"
@@ -314,5 +262,5 @@ Nothing
         "FFR"
         "PartR"
         "UR"
- 
+
  """
