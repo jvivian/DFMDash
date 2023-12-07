@@ -1,4 +1,3 @@
-# %%
 """Module for Dynamic Factor Model specification
 
 Main command to run model
@@ -60,9 +59,10 @@ def normalize(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop(columns=["Time"]) if "Time" in df.columns else df
     # Normalize data
     scaler = MinMaxScaler()
-    norm_df = pd.DataFrame(scaler.fit_transform(df), columns=df.columns) * 100
+    norm_df = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)  # * 100
     # stationary_df = norm_df.diff()
-    stationary_df = norm_df.diff().drop(0, axis=0)  #! Dropping first after diff
+    # TODO: Remove Diff logic from here to separate out processing per column
+    stationary_df = norm_df.diff().drop(0, axis=0)  #! Dropping first row after diff
     # stationary_df = stationary_df.fillna(0)
 
     non_stationary_columns = []
@@ -170,13 +170,3 @@ def test_model(df: pd.DataFrame, state: str, outdir: Path) -> sm.tsa.DynamicFact
     with open(out / "results.csv", "w") as f:
         f.write(results.summary().as_csv())
     return model, results
-
-
-# #%%
-# from covid19_drdfm.processing import get_df
-
-
-# df = get_df()
-# model, results = run_model(df, 'AL', outdir=Path('./test-delete-NY-foo'))
-
-# # %%
