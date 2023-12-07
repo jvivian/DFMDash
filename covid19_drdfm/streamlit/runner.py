@@ -12,6 +12,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 from covid19_drdfm.dfm import state_process
 from covid19_drdfm.processing import get_df, get_factors
+from covid19_drdfm.processing import NAME_MAP
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
@@ -31,6 +32,8 @@ DEFAULTS = {
     "Inflation": ["Monetary_2", "Monetary_3", "Monetary_1"],
     "Pandemic": ["Pandemic_1", "Pandemic_2", "Pandemic_6", "Pandemic_9", "Pandemic_7", "Pandemic_10"],
 }
+DEFAULTS = {NAME_MAP[x]: [NAME_MAP[z] for z in y] for x, y in DEFAULTS.items() if x in NAME_MAP in NAME_MAP}
+print(DEFAULTS)
 
 
 def center_title(text):
