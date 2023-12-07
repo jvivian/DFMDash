@@ -74,8 +74,8 @@ def run_model(df: pd.DataFrame, state: str, outdir: Path):  # -> sm.tsa.DynamicF
         state (str): Two-letter state code to process
         outdir (str): Output directory for model CSV files
 
-    Returns:
-        sm.tsa.DynamicFactor: Dynamic Factor Model
+    # Returns:
+        # sm.tsa.DynamicFactor: Dynamic Factor Model
 
     """
     df = state_process(df, state)

@@ -148,7 +148,7 @@ def diff_vars(df: pd.DataFrame, cols: list[str], log: bool = False) -> pd.DataFr
 
     Args:
         df (pd.DataFrame): Input DataFrame
-        vars (List[str]): List of columns to difference
+        cols (List[str]): List of columns to difference
         log bool: Whether to take the log(difference) or not
 
     Returns:
