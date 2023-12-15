@@ -6,14 +6,18 @@ downstream as model input
 This model input DataFrame can be generated with a single function:
     - `df = run()`
 """
-import json
+
 from fractions import Fraction
 from functools import reduce
 from pathlib import Path
 
 import fastparquet
+import numpy as np
 import pandas as pd
 import yaml
+from sklearn.preprocessing import MinMaxScaler
+
+from covid19_drdfm.constants import DIFF_COLS, LOG_DIFF_COLS, NAME_MAP
 
 ROOT_DIR = Path(__file__).parent.absolute()
 DATA_DIR = ROOT_DIR / "data/processed"
@@ -36,25 +40,19 @@ def get_df() -> pd.DataFrame:
         .drop(
             columns=["Proportion", "proportion_vax2", "Pandemic_Response_8"]
         )  #! Columns removed per discussion with AC
-        # .assign(Pandemic_Response_4=lambda x: x[['Pandemic_Response_4', 'Pandemic_Response_5', 'Pandemic_Response_6', 'Pandemic_Response_7']].max(axis=1))
-        # .assign(Pandemic_Response_10=lambda x: x[['Pandemic_Response_10', 'Pandemic_Response_11']].max(axis=1))
-        # .drop(columns=['Pandemic_Response_5','Pandemic_Response_6', 'Pandemic_Response_7', 'Pandemic_Response_11'])
         .pipe(adjust_inflation)
         .pipe(add_datetime)
+        .pipe(fix_names)
+        .pipe(adjust_pandemic_response)
+        .pipe(diff_vars, cols=DIFF_COLS)
+        .pipe(diff_vars, cols=LOG_DIFF_COLS, log=True)
+        .fillna(0)
+        .pipe(normalize)
+        .drop(index=0)  # Drop first row with NaNs from diff
     )
 
 
-def get_factors() -> dict[str, (str, str)]:
-    """Fetch pre-defined factors for model
-
-    Returns:
-        dict[str, (str, str)]: Factors from `./data/processed/factors.yaml`
-    """
-    with open(DATA_DIR / "factors.json") as f:
-        return json.load(f)
-
-
-def write(df: pd.DataFrame, outpath: Path) -> Path:
+def write(df: pd.DataFrame, outpath: Path):
     """Write dataframe given the extension"""
     ext = outpath.suffix
     if ext == ".xlsx":
@@ -107,7 +105,7 @@ def adjust_pandemic_response(df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: Adjusted DataFrame
     """
     govt_fund_dist = get_govt_fund_dist()
-    responses = [f"Pandemic_Response_{x}" for x in [13, 14, 15]]
+    responses = ["ARP", "PPP", "CARES"]
     for r in responses:
         df[r] = df[r].astype(float)
         i = df.index[df[r] > 0][0]
@@ -118,7 +116,7 @@ def adjust_pandemic_response(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def add_datetime(df: pd.DataFrame) -> pd.DataFrame:
-    """Sets `Time` column to `DateTime` dtype
+    """Set `Time` column to `DateTime` dtype
 
     Args:
         df (pd.DataFrame): Input DataFrame
@@ -129,3 +127,55 @@ def add_datetime(df: pd.DataFrame) -> pd.DataFrame:
     df = df.assign(Month=pd.to_numeric(df.Period.apply(lambda x: x[1:]))).assign(Day=1)
     df["Time"] = pd.to_datetime({"year": df.Year, "month": df.Month, "day": df.Day})
     return df.drop(columns=["Period", "Month", "Year", "Day"])
+
+
+def fix_names(df: pd.DataFrame) -> pd.DataFrame:
+    """Map sensible names to the merged input dataframe
+
+    Args:
+        df (pd.DataFrame): Input DataFrame after merging all input data
+
+    Returns:
+        pd.DataFrame: DataFrame with mapped names
+    """
+    return df.rename(columns=NAME_MAP)
+
+
+def diff_vars(df: pd.DataFrame, cols: list[str], log: bool = False) -> pd.DataFrame:
+    """Differences the set of variables within the dataframe
+        NOTE: Leaves a row with Nas
+
+
+    Args:
+        df (pd.DataFrame): Input DataFrame
+        cols (List[str]): List of columns to difference
+        log bool: Whether to take the log(difference) or not
+
+    Returns:
+        pd.DataFrame: DataFrame with given vars differenced
+    """
+    if log:
+        # df[cols] = np.log(df[cols]).diff().fillna(0).apply(lambda x: np.log(x + 0))
+        df[cols] = df[cols].apply(lambda x: np.log(x + 1)).diff()
+    else:
+        df[cols] = df[cols].diff()
+    return df
+
+
+def normalize(df: pd.DataFrame) -> pd.DataFrame:
+    """Normalize data and make stationary - scaling for post-DFM Synthetic Control Model
+
+    Args:
+        df (pd.DataFrame): State data, pre-normalization
+
+    Returns:
+        pd.DataFrame: Normalized and stationary DataFrame
+    """
+    meta_cols = df[["State", "Time"]]
+    # df = df.drop(columns=["Time"]) if "Time" in df.columns else df
+    df = df.drop(columns=["State", "Time"])
+    # Normalize data
+    scaler = MinMaxScaler()
+    new = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)
+    new["State"] = meta_cols["State"]
+    return new
