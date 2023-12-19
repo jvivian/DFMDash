@@ -13,6 +13,7 @@ from rich import print as pprint
 from statsmodels.tsa.stattools import adfuller
 
 from covid19_drdfm.constants import FACTORS
+from covid19_drdfm.processing import normalize
 
 
 @dataclass
@@ -40,9 +41,12 @@ def state_process(df: pd.DataFrame, state: str) -> pd.DataFrame:
     df = df[df.State == state]
     #! The trunctation will be removed when data is updated in OCT - A.C.
     df = df[:-12]
+    #! Test double-norm
+    df = normalize(df).fillna(0)
+    #! TEST REMOVE
     const_cols = [x for x in df.columns if is_constant(df[x])]
     pprint(f"Constant Columns...dropping\n{const_cols}")
-    df = df.drop(columns=const_cols)
+    df = df.drop(columns=const_cols).set_index("Time", drop=True)
     return df
 
 

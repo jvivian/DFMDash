@@ -33,7 +33,7 @@ NAME_MAP = {
     "Demand_5": "Cons5",
     "Demand_6": "Employment1",
     "Demand_7": "Employment2",
-    "Supply_1": "GDP",
+    "GDP": "GDP",
     "Supply_2": "UI",
     "Supply_3": "PartR",
     "Supply_4": "UR",
