@@ -45,8 +45,8 @@ def get_df() -> pd.DataFrame:
         .pipe(adjust_pandemic_response)
         .pipe(diff_vars, cols=DIFF_COLS)
         .pipe(diff_vars, cols=LOG_DIFF_COLS, log=True)
-        .drop(index=0)  # Drop first row with NaNs from diff
         .pipe(normalize)
+        .drop(index=0)  # Drop first row with NaNs from diff
     )
 
 
@@ -169,11 +169,12 @@ def normalize(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Normalized and stationary DataFrame
     """
-    meta_cols = df[["State", "Time"]]
+    meta_cols = df[["State", "Time"]].copy().reset_index(drop=True)
     # df = df.drop(columns=["Time"]) if "Time" in df.columns else df
     df = df.drop(columns=["State", "Time"])
     # Normalize data
     scaler = MinMaxScaler()
     new = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)
     new["State"] = meta_cols["State"]
+    new["Time"] = meta_cols["Time"]
     return new
