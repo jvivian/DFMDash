@@ -37,7 +37,7 @@ def state_process(df: pd.DataFrame, state: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Processed DataFrame, ready for model
     """
-    df = df[df.State == state]
+    df = df[df.State == state].fillna(0)
     #! The trunctation will be removed when data is updated in OCT - A.C.
     df = df[:-12]
     const_cols = [x for x in df.columns if is_constant(df[x])]

@@ -34,7 +34,6 @@ def get_df() -> pd.DataFrame:
     dfs = [pd.read_csv(x) for x in paths]
     return (
         reduce(lambda x, y: pd.merge(x, y, on=["State", "Year", "Period"], how="left"), dfs)
-        .fillna(0)
         .drop(columns=["Monetary_1_x", "Monetary_11_x"])
         .rename(columns={"Monetary_1_y": "Monetary_1", "Monetary_11_y": "Monetary_11"})
         .drop(
@@ -46,9 +45,8 @@ def get_df() -> pd.DataFrame:
         .pipe(adjust_pandemic_response)
         .pipe(diff_vars, cols=DIFF_COLS)
         .pipe(diff_vars, cols=LOG_DIFF_COLS, log=True)
-        .fillna(0)
-        .pipe(normalize)
         .drop(index=0)  # Drop first row with NaNs from diff
+        .pipe(normalize)
     )
 
 
@@ -90,7 +88,7 @@ def adjust_inflation(df: pd.DataFrame) -> pd.DataFrame:
         .assign(Demand_3=lambda x: x.Demand_3.div(x.Monetary_3 / 100))
         .assign(Demand_4=lambda x: x.Demand_4.div(x.Monetary_3 / 100))
         .assign(Demand_5=lambda x: x.Demand_5.div(x.Monetary_3 / 100))
-        .assign(Supply_1=lambda x: x.Supply_1.div(x.Monetary_3 / 100))
+        .assign(GDP=lambda x: x.GDP.div(x.Monetary_3 / 100))
         .assign(Supply_6=lambda x: x.Supply_6.div(x.Monetary_3 / 100))
     )
 
