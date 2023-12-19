@@ -10,15 +10,15 @@ import streamlit as st
 from rich import print as pprint
 from sklearn.preprocessing import MinMaxScaler
 
+from covid19_drdfm.constants import FACTORS
 from covid19_drdfm.dfm import state_process
-from covid19_drdfm.processing import get_df, get_factors
-from covid19_drdfm.processing import NAME_MAP
+from covid19_drdfm.processing import NAME_MAP, get_df, normalize
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
 
 DEFAULTS = {
-    "Uncat": ["Monetary_5", "Monetary_9", "Monetary_10", "Supply_1", "Supply_7"],
+    "Uncat": ["Monetary_5", "Monetary_9", "Monetary_10", "GDP", "Supply_7"],
     "Consumption": ["Demand_3", "Demand_4", "Demand_5"],
     "Response": [
         "Pandemic_Response_1",
@@ -32,8 +32,8 @@ DEFAULTS = {
     "Inflation": ["Monetary_2", "Monetary_3", "Monetary_1"],
     "Pandemic": ["Pandemic_1", "Pandemic_2", "Pandemic_6", "Pandemic_9", "Pandemic_7", "Pandemic_10"],
 }
-DEFAULTS = {NAME_MAP[x]: [NAME_MAP[z] for z in y] for x, y in DEFAULTS.items() if x in NAME_MAP in NAME_MAP}
-print(DEFAULTS)
+DEFAULTS = {x: [NAME_MAP[z] for z in y] for x, y in DEFAULTS.items()}
+# st.write(DEFAULTS)
 
 
 def center_title(text):
@@ -55,10 +55,9 @@ def run_parameterized_model(
 
     """
     # Factors and input data
-    factors = get_factors()
     factor_multiplicities = {"Global": global_multiplier}
     df = state_process(df, state)
-    columns = list(columns) + ["State", "Time"]
+    columns = list(columns)  # + ["State", "Time"]
     columns = [x for x in columns if x in df.columns]
     new = df[columns]
     variables = list(factors.keys())
@@ -73,9 +72,9 @@ def run_parameterized_model(
     # Run Model
     if (out / "model.csv").exists():
         return
-    model = sm.tsa.DynamicFactorMQ(new, factors=factors, factor_multiplicities=factor_multiplicities)
+    model = sm.tsa.DynamicFactorMQ(new, factors=FACTORS, factor_multiplicities=factor_multiplicities)
     try:
-        results = model.fit(disp=10, maxiter=5_000)
+        results = model.fit(disp=10, maxiter=10_000)
     except Exception as e:
         with open(outdir / "failed.txt", "a") as f:
             f.write(f"{state}\t{e}\n")
@@ -86,7 +85,7 @@ def run_parameterized_model(
         f.write(results.summary().as_csv())
     filtered = results.factors["filtered"]
     filtered["State"] = state
-    filtered.to_csv(out / "filtered-factors.csv")
+    filtered.to_csv(out / "filtered-factors.csv", index=None)
     return model
 
 
@@ -97,7 +96,7 @@ def get_data():
 
 df = get_df()
 sub = pd.Series([x for x in df.columns if x not in ["State", "Time"]], name="Variables").to_frame()
-factors = get_factors()
+factors = FACTORS.copy()
 factor_vars = list(factors.keys())
 _ = [factors.pop(x) for x in factor_vars if x not in df.columns]
 sub["Group"] = [factors[x][1] for x in sub.Variables if x in df.columns]
