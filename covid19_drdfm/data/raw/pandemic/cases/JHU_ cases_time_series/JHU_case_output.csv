@@ -1,0 +1,1973 @@
+"Province_State","Month","Cases"
+"Alabama","2020-01",0
+"Alabama","2020-02",0
+"Alabama","2020-03",1063
+"Alabama","2020-04",6124
+"Alabama","2020-05",11013
+"Alabama","2020-06",20277
+"Alabama","2020-07",49789
+"Alabama","2020-08",38234
+"Alabama","2020-09",28272
+"Alabama","2020-10",38841
+"Alabama","2020-11",55911
+"Alabama","2020-12",111702
+"Alabama","2021-01",98413
+"Alabama","2021-02",33613
+"Alabama","2021-03",22136
+"Alabama","2021-04",12534
+"Alabama","2021-05",15483
+"Alabama","2021-06",7578
+"Alabama","2021-07",34624
+"Alabama","2021-08",114122
+"Alabama","2021-09",96746
+"Alabama","2021-10",35572
+"Alabama","2021-11",13714
+"Alabama","2021-12",50853
+"Alabama","2022-01",321643
+"Alabama","2022-02",61308
+"Alabama","2022-03",15762
+"Alabama","2022-04",5406
+"Alabama","2022-05",14230
+"Alabama","2022-06",42303
+"Alabama","2022-07",67145
+"Alabama","2022-08",55194
+"Alabama","2022-09",42530
+"Alabama","2022-10",0
+"Alaska","2020-01",0
+"Alaska","2020-02",0
+"Alaska","2020-03",129
+"Alaska","2020-04",231
+"Alaska","2020-05",124
+"Alaska","2020-06",658
+"Alaska","2020-07",2574
+"Alaska","2020-08",2456
+"Alaska","2020-09",2674
+"Alaska","2020-10",7519
+"Alaska","2020-11",16233
+"Alaska","2020-12",14416
+"Alaska","2021-01",7336
+"Alaska","2021-02",3946
+"Alaska","2021-03",4605
+"Alaska","2021-04",5247
+"Alaska","2021-05",2060
+"Alaska","2021-06",1067
+"Alaska","2021-07",4211
+"Alaska","2021-08",13061
+"Alaska","2021-09",26118
+"Alaska","2021-10",23222
+"Alaska","2021-11",13109
+"Alaska","2021-12",6173
+"Alaska","2022-01",59770
+"Alaska","2022-02",22555
+"Alaska","2022-03",7717
+"Alaska","2022-04",5791
+"Alaska","2022-05",7057
+"Alaska","2022-06",12356
+"Alaska","2022-07",11228
+"Alaska","2022-08",10855
+"Alaska","2022-09",3680
+"Alaska","2022-10",0
+"American Samoa","2020-01",0
+"American Samoa","2020-02",0
+"American Samoa","2020-03",0
+"American Samoa","2020-04",0
+"American Samoa","2020-05",0
+"American Samoa","2020-06",0
+"American Samoa","2020-07",0
+"American Samoa","2020-08",0
+"American Samoa","2020-09",0
+"American Samoa","2020-10",0
+"American Samoa","2020-11",0
+"American Samoa","2020-12",0
+"American Samoa","2021-01",0
+"American Samoa","2021-02",0
+"American Samoa","2021-03",0
+"American Samoa","2021-04",0
+"American Samoa","2021-05",0
+"American Samoa","2021-06",0
+"American Samoa","2021-07",0
+"American Samoa","2021-08",0
+"American Samoa","2021-09",1
+"American Samoa","2021-10",3
+"American Samoa","2021-11",6
+"American Samoa","2021-12",1
+"American Samoa","2022-01",7
+"American Samoa","2022-02",66
+"American Samoa","2022-03",3399
+"American Samoa","2022-04",2339
+"American Samoa","2022-05",323
+"American Samoa","2022-06",269
+"American Samoa","2022-07",1057
+"American Samoa","2022-08",697
+"American Samoa","2022-09",79
+"American Samoa","2022-10",0
+"Arizona","2020-01",1
+"Arizona","2020-02",0
+"Arizona","2020-03",1288
+"Arizona","2020-04",6366
+"Arizona","2020-05",12281
+"Arizona","2020-06",59292
+"Arizona","2020-07",94782
+"Arizona","2020-08",27825
+"Arizona","2020-09",16672
+"Arizona","2020-10",27439
+"Arizona","2020-11",80871
+"Arizona","2020-12",193390
+"Arizona","2021-01",238197
+"Arizona","2021-02",58378
+"Arizona","2021-03",25029
+"Arizona","2021-04",20686
+"Arizona","2021-05",18953
+"Arizona","2021-06",13425
+"Arizona","2021-07",32360
+"Arizona","2021-08",84688
+"Arizona","2021-09",81660
+"Arizona","2021-10",75317
+"Arizona","2021-11",100880
+"Arizona","2021-12",111708
+"Arizona","2022-01",489156
+"Arizona","2022-02",106246
+"Arizona","2022-03",30290
+"Arizona","2022-04",14344
+"Arizona","2022-05",28103
+"Arizona","2022-06",75940
+"Arizona","2022-07",70862
+"Arizona","2022-08",57945
+"Arizona","2022-09",17186
+"Arizona","2022-10",0
+"Arkansas","2020-01",0
+"Arkansas","2020-02",0
+"Arkansas","2020-03",523
+"Arkansas","2020-04",2758
+"Arkansas","2020-05",3972
+"Arkansas","2020-06",13524
+"Arkansas","2020-07",21734
+"Arkansas","2020-08",18713
+"Arkansas","2020-09",22473
+"Arkansas","2020-10",28493
+"Arkansas","2020-11",45169
+"Arkansas","2020-12",67779
+"Arkansas","2021-01",70130
+"Arkansas","2021-02",27147
+"Arkansas","2021-03",7983
+"Arkansas","2021-04",5327
+"Arkansas","2021-05",5656
+"Arkansas","2021-06",8004
+"Arkansas","2021-07",37067
+"Arkansas","2021-08",66439
+"Arkansas","2021-09",43186
+"Arkansas","2021-10",17138
+"Arkansas","2021-11",15623
+"Arkansas","2021-12",37648
+"Arkansas","2022-01",210273
+"Arkansas","2022-02",43225
+"Arkansas","2022-03",12938
+"Arkansas","2022-04",2935
+"Arkansas","2022-05",7505
+"Arkansas","2022-06",22230
+"Arkansas","2022-07",38339
+"Arkansas","2022-08",28708
+"Arkansas","2022-09",19005
+"Arkansas","2022-10",0
+"California","2020-01",3
+"California","2020-02",10
+"California","2020-03",7998
+"California","2020-04",42702
+"California","2020-05",63153
+"California","2020-06",126939
+"California","2020-07",266114
+"California","2020-08",206707
+"California","2020-09",107827
+"California","2020-10",118786
+"California","2020-11",318871
+"California","2020-12",1125581
+"California","2021-01",999022
+"California","2021-02",242874
+"California","2021-03",100622
+"California","2021-04",76783
+"California","2021-05",49461
+"California","2021-06",29490
+"California","2021-07",147779
+"California","2021-08",436875
+"California","2021-09",274109
+"California","2021-10",181061
+"California","2021-11",158324
+"California","2021-12",436779
+"California","2022-01",2921811
+"California","2022-02",541361
+"California","2022-03",123901
+"California","2022-04",127637
+"California","2022-05",387227
+"California","2022-06",516860
+"California","2022-07",571691
+"California","2022-08",391681
+"California","2022-09",166283
+"California","2022-10",0
+"Colorado","2020-01",0
+"Colorado","2020-02",0
+"Colorado","2020-03",2966
+"Colorado","2020-04",16801
+"Colorado","2020-05",9248
+"Colorado","2020-06",7266
+"Colorado","2020-07",15259
+"Colorado","2020-08",9398
+"Colorado","2020-09",15782
+"Colorado","2020-10",48289
+"Colorado","2020-11",145650
+"Colorado","2020-12",90362
+"Colorado","2021-01",52950
+"Colorado","2021-02",30287
+"Colorado","2021-03",33916
+"Colorado","2021-04",48534
+"Colorado","2021-05",26370
+"Colorado","2021-06",10215
+"Colorado","2021-07",18298
+"Colorado","2021-08",45689
+"Colorado","2021-09",57367
+"Colorado","2021-10",73818
+"Colorado","2021-11",93510
+"Colorado","2021-12",149368
+"Colorado","2022-01",369890
+"Colorado","2022-02",38446
+"Colorado","2022-03",11321
+"Colorado","2022-04",17932
+"Colorado","2022-05",50200
+"Colorado","2022-06",63766
+"Colorado","2022-07",50314
+"Colorado","2022-08",27804
+"Colorado","2022-09",23782
+"Colorado","2022-10",0
+"Connecticut","2020-01",0
+"Connecticut","2020-02",0
+"Connecticut","2020-03",3128
+"Connecticut","2020-04",24572
+"Connecticut","2020-05",14501
+"Connecticut","2020-06",4313
+"Connecticut","2020-07",3296
+"Connecticut","2020-08",3069
+"Connecticut","2020-09",4671
+"Connecticut","2020-10",13657
+"Connecticut","2020-11",46088
+"Connecticut","2020-12",68413
+"Connecticut","2021-01",64315
+"Connecticut","2021-02",29923
+"Connecticut","2021-03",30678
+"Connecticut","2021-04",28609
+"Connecticut","2021-05",8108
+"Connecticut","2021-06",2011
+"Connecticut","2021-07",4983
+"Connecticut","2021-08",18737
+"Connecticut","2021-09",17273
+"Connecticut","2021-10",12238
+"Connecticut","2021-11",19109
+"Connecticut","2021-12",88496
+"Connecticut","2022-01",189212
+"Connecticut","2022-02",23989
+"Connecticut","2022-03",12644
+"Connecticut","2022-04",22248
+"Connecticut","2022-05",50913
+"Connecticut","2022-06",19774
+"Connecticut","2022-07",25614
+"Connecticut","2022-08",20494
+"Connecticut","2022-09",21817
+"Connecticut","2022-10",0
+"Delaware","2020-01",0
+"Delaware","2020-02",0
+"Delaware","2020-03",319
+"Delaware","2020-04",4415
+"Delaware","2020-05",4764
+"Delaware","2020-06",1976
+"Delaware","2020-07",3314
+"Delaware","2020-08",2641
+"Delaware","2020-09",3184
+"Delaware","2020-10",4338
+"Delaware","2020-11",10703
+"Delaware","2020-12",21802
+"Delaware","2021-01",20615
+"Delaware","2021-02",8728
+"Delaware","2021-03",8003
+"Delaware","2021-04",9603
+"Delaware","2021-05",4461
+"Delaware","2021-06",878
+"Delaware","2021-07",1663
+"Delaware","2021-08",8445
+"Delaware","2021-09",13111
+"Delaware","2021-10",11235
+"Delaware","2021-11",8992
+"Delaware","2021-12",27176
+"Delaware","2022-01",67745
+"Delaware","2022-02",8510
+"Delaware","2022-03",3026
+"Delaware","2022-04",2814
+"Delaware","2022-05",14178
+"Delaware","2022-06",8407
+"Delaware","2022-07",8995
+"Delaware","2022-08",8697
+"Delaware","2022-09",5975
+"Delaware","2022-10",0
+"Diamond Princess","2020-01",0
+"Diamond Princess","2020-02",0
+"Diamond Princess","2020-03",49
+"Diamond Princess","2020-04",0
+"Diamond Princess","2020-05",0
+"Diamond Princess","2020-06",0
+"Diamond Princess","2020-07",0
+"Diamond Princess","2020-08",0
+"Diamond Princess","2020-09",0
+"Diamond Princess","2020-10",0
+"Diamond Princess","2020-11",0
+"Diamond Princess","2020-12",0
+"Diamond Princess","2021-01",0
+"Diamond Princess","2021-02",0
+"Diamond Princess","2021-03",0
+"Diamond Princess","2021-04",0
+"Diamond Princess","2021-05",0
+"Diamond Princess","2021-06",0
+"Diamond Princess","2021-07",0
+"Diamond Princess","2021-08",0
+"Diamond Princess","2021-09",0
+"Diamond Princess","2021-10",0
+"Diamond Princess","2021-11",0
+"Diamond Princess","2021-12",0
+"Diamond Princess","2022-01",0
+"Diamond Princess","2022-02",0
+"Diamond Princess","2022-03",0
+"Diamond Princess","2022-04",0
+"Diamond Princess","2022-05",0
+"Diamond Princess","2022-06",0
+"Diamond Princess","2022-07",0
+"Diamond Princess","2022-08",0
+"Diamond Princess","2022-09",0
+"Diamond Princess","2022-10",0
+"District of Columbia","2020-01",0
+"District of Columbia","2020-02",0
+"District of Columbia","2020-03",495
+"District of Columbia","2020-04",3828
+"District of Columbia","2020-05",4478
+"District of Columbia","2020-06",1526
+"District of Columbia","2020-07",1799
+"District of Columbia","2020-08",1866
+"District of Columbia","2020-09",1334
+"District of Columbia","2020-10",1940
+"District of Columbia","2020-11",4286
+"District of Columbia","2020-12",7431
+"District of Columbia","2021-01",7889
+"District of Columbia","2021-02",3726
+"District of Columbia","2021-03",3915
+"District of Columbia","2021-04",3184
+"District of Columbia","2021-05",1201
+"District of Columbia","2021-06",457
+"District of Columbia","2021-07",1043
+"District of Columbia","2021-08",5033
+"District of Columbia","2021-09",5722
+"District of Columbia","2021-10",3087
+"District of Columbia","2021-11",2672
+"District of Columbia","2021-12",27374
+"District of Columbia","2022-01",35531
+"District of Columbia","2022-02",4747
+"District of Columbia","2022-03",2322
+"District of Columbia","2022-04",5057
+"District of Columbia","2022-05",7695
+"District of Columbia","2022-06",7164
+"District of Columbia","2022-07",5717
+"District of Columbia","2022-08",3647
+"District of Columbia","2022-09",2348
+"District of Columbia","2022-10",0
+"Florida","2020-01",0
+"Florida","2020-02",0
+"Florida","2020-03",6741
+"Florida","2020-04",26949
+"Florida","2020-05",22473
+"Florida","2020-06",96271
+"Florida","2020-07",317952
+"Florida","2020-08",153085
+"Florida","2020-09",83045
+"Florida","2020-10",96031
+"Florida","2020-11",196772
+"Florida","2020-12",323996
+"Florida","2021-01",398062
+"Florida","2021-02",187844
+"Florida","2021-03",148514
+"Florida","2021-04",175783
+"Florida","2021-05",87300
+"Florida","2021-06",44646
+"Florida","2021-07",268770
+"Florida","2021-08",616220
+"Florida","2021-09",332353
+"Florida","2021-10",108005
+"Florida","2021-11",39583
+"Florida","2021-12",479532
+"Florida","2022-01",1325876
+"Florida","2022-02",308293
+"Florida","2022-03",40908
+"Florida","2022-04",57719
+"Florida","2022-05",216979
+"Florida","2022-06",322593
+"Florida","2022-07",350738
+"Florida","2022-08",209063
+"Florida","2022-09",108092
+"Florida","2022-10",0
+"Georgia","2020-01",0
+"Georgia","2020-02",0
+"Georgia","2020-03",3929
+"Georgia","2020-04",22335
+"Georgia","2020-05",20799
+"Georgia","2020-06",34228
+"Georgia","2020-07",105061
+"Georgia","2020-08",84119
+"Georgia","2020-09",47555
+"Georgia","2020-10",42764
+"Georgia","2020-11",110773
+"Georgia","2020-12",194889
+"Georgia","2021-01",242993
+"Georgia","2021-02",97076
+"Georgia","2021-03",53027
+"Georgia","2021-04",40639
+"Georgia","2021-05",23654
+"Georgia","2021-06",10732
+"Georgia","2021-07",44876
+"Georgia","2021-08",224133
+"Georgia","2021-09",175134
+"Georgia","2021-10",55377
+"Georgia","2021-11",30363
+"Georgia","2021-12",175423
+"Georgia","2022-01",528173
+"Georgia","2022-02",97004
+"Georgia","2022-03",34375
+"Georgia","2022-04",15708
+"Georgia","2022-05",40905
+"Georgia","2022-06",91524
+"Georgia","2022-07",103347
+"Georgia","2022-08",119714
+"Georgia","2022-09",34771
+"Georgia","2022-10",0
+"Grand Princess","2020-01",0
+"Grand Princess","2020-02",0
+"Grand Princess","2020-03",103
+"Grand Princess","2020-04",0
+"Grand Princess","2020-05",0
+"Grand Princess","2020-06",0
+"Grand Princess","2020-07",0
+"Grand Princess","2020-08",0
+"Grand Princess","2020-09",0
+"Grand Princess","2020-10",0
+"Grand Princess","2020-11",0
+"Grand Princess","2020-12",0
+"Grand Princess","2021-01",0
+"Grand Princess","2021-02",0
+"Grand Princess","2021-03",0
+"Grand Princess","2021-04",0
+"Grand Princess","2021-05",0
+"Grand Princess","2021-06",0
+"Grand Princess","2021-07",0
+"Grand Princess","2021-08",0
+"Grand Princess","2021-09",0
+"Grand Princess","2021-10",0
+"Grand Princess","2021-11",0
+"Grand Princess","2021-12",0
+"Grand Princess","2022-01",0
+"Grand Princess","2022-02",0
+"Grand Princess","2022-03",0
+"Grand Princess","2022-04",0
+"Grand Princess","2022-05",0
+"Grand Princess","2022-06",0
+"Grand Princess","2022-07",0
+"Grand Princess","2022-08",0
+"Grand Princess","2022-09",0
+"Grand Princess","2022-10",0
+"Guam","2020-01",0
+"Guam","2020-02",0
+"Guam","2020-03",69
+"Guam","2020-04",76
+"Guam","2020-05",27
+"Guam","2020-06",85
+"Guam","2020-07",99
+"Guam","2020-08",1039
+"Guam","2020-09",1093
+"Guam","2020-10",2193
+"Guam","2020-11",2171
+"Guam","2020-12",456
+"Guam","2021-01",271
+"Guam","2021-02",157
+"Guam","2021-03",71
+"Guam","2021-04",157
+"Guam","2021-05",192
+"Guam","2021-06",201
+"Guam","2021-07",184
+"Guam","2021-08",2018
+"Guam","2021-09",4482
+"Guam","2021-10",3167
+"Guam","2021-11",991
+"Guam","2021-12",408
+"Guam","2022-01",12724
+"Guam","2022-02",12013
+"Guam","2022-03",2921
+"Guam","2022-04",877
+"Guam","2022-05",914
+"Guam","2022-06",2842
+"Guam","2022-07",3310
+"Guam","2022-08",2739
+"Guam","2022-09",630
+"Guam","2022-10",0
+"Hawaii","2020-01",0
+"Hawaii","2020-02",0
+"Hawaii","2020-03",204
+"Hawaii","2020-04",414
+"Hawaii","2020-05",34
+"Hawaii","2020-06",265
+"Hawaii","2020-07",1194
+"Hawaii","2020-08",6361
+"Hawaii","2020-09",4125
+"Hawaii","2020-10",2687
+"Hawaii","2020-11",2939
+"Hawaii","2020-12",3784
+"Hawaii","2021-01",4589
+"Hawaii","2021-02",1784
+"Hawaii","2021-03",2374
+"Hawaii","2021-04",3097
+"Hawaii","2021-05",2425
+"Hawaii","2021-06",1482
+"Hawaii","2021-07",4652
+"Hawaii","2021-08",21092
+"Hawaii","2021-09",15704
+"Hawaii","2021-10",5089
+"Hawaii","2021-11",3369
+"Hawaii","2021-12",25268
+"Hawaii","2022-01",106356
+"Hawaii","2022-02",16863
+"Hawaii","2022-03",4627
+"Hawaii","2022-04",7627
+"Hawaii","2022-05",26090
+"Hawaii","2022-06",34200
+"Hawaii","2022-07",17249
+"Hawaii","2022-08",13570
+"Hawaii","2022-09",16445
+"Hawaii","2022-10",0
+"Idaho","2020-01",0
+"Idaho","2020-02",0
+"Idaho","2020-03",515
+"Idaho","2020-04",1469
+"Idaho","2020-05",855
+"Idaho","2020-06",3278
+"Idaho","2020-07",14599
+"Idaho","2020-08",11365
+"Idaho","2020-09",9967
+"Idaho","2020-10",22560
+"Idaho","2020-11",37090
+"Idaho","2020-12",39379
+"Idaho","2021-01",21606
+"Idaho","2021-02",8457
+"Idaho","2021-03",9396
+"Idaho","2021-04",7120
+"Idaho","2021-05",4356
+"Idaho","2021-06",2986
+"Idaho","2021-07",5486
+"Idaho","2021-08",20905
+"Idaho","2021-09",35933
+"Idaho","2021-10",33994
+"Idaho","2021-11",15529
+"Idaho","2021-12",12537
+"Idaho","2022-01",60920
+"Idaho","2022-02",45862
+"Idaho","2022-03",17766
+"Idaho","2022-04",2110
+"Idaho","2022-05",4917
+"Idaho","2022-06",12021
+"Idaho","2022-07",15684
+"Idaho","2022-08",10738
+"Idaho","2022-09",6473
+"Idaho","2022-10",0
+"Illinois","2020-01",2
+"Illinois","2020-02",0
+"Illinois","2020-03",5992
+"Illinois","2020-04",46924
+"Illinois","2020-05",67342
+"Illinois","2020-06",22925
+"Illinois","2020-07",36930
+"Illinois","2020-08",56609
+"Illinois","2020-09",58996
+"Illinois","2020-10",120827
+"Illinois","2020-11",309757
+"Illinois","2020-12",237085
+"Illinois","2021-01",162912
+"Illinois","2021-02",60395
+"Illinois","2021-03",57889
+"Illinois","2021-04",90470
+"Illinois","2021-05",47131
+"Illinois","2021-06",9554
+"Illinois","2021-07",27871
+"Illinois","2021-08",103339
+"Illinois","2021-09",104566
+"Illinois","2021-10",68021
+"Illinois","2021-11",114340
+"Illinois","2021-12",339697
+"Illinois","2022-01",771407
+"Illinois","2022-02",110242
+"Illinois","2022-03",37021
+"Illinois","2022-04",70448
+"Illinois","2022-05",163731
+"Illinois","2022-06",128420
+"Illinois","2022-07",132810
+"Illinois","2022-08",123896
+"Illinois","2022-09",74671
+"Illinois","2022-10",0
+"Indiana","2020-01",0
+"Indiana","2020-02",0
+"Indiana","2020-03",2158
+"Indiana","2020-04",15677
+"Indiana","2020-05",16739
+"Indiana","2020-06",11020
+"Indiana","2020-07",20560
+"Indiana","2020-08",28042
+"Indiana","2020-09",25823
+"Indiana","2020-10",59339
+"Indiana","2020-11",159619
+"Indiana","2020-12",172508
+"Indiana","2021-01",115197
+"Indiana","2021-02",34991
+"Indiana","2021-03",24824
+"Indiana","2021-04",33928
+"Indiana","2021-05",23271
+"Indiana","2021-06",10231
+"Indiana","2021-07",17372
+"Indiana","2021-08",87267
+"Indiana","2021-09",105881
+"Indiana","2021-10",60335
+"Indiana","2021-11",76403
+"Indiana","2021-12",145669
+"Indiana","2022-01",376585
+"Indiana","2022-02",58246
+"Indiana","2022-03",9138
+"Indiana","2022-04",11469
+"Indiana","2022-05",28469
+"Indiana","2022-06",41422
+"Indiana","2022-07",56551
+"Indiana","2022-08",67065
+"Indiana","2022-09",26194
+"Indiana","2022-10",0
+"Iowa","2020-01",0
+"Iowa","2020-02",0
+"Iowa","2020-03",497
+"Iowa","2020-04",6648
+"Iowa","2020-05",12407
+"Iowa","2020-06",9522
+"Iowa","2020-07",15679
+"Iowa","2020-08",20386
+"Iowa","2020-09",24108
+"Iowa","2020-10",39263
+"Iowa","2020-11",102121
+"Iowa","2020-12",51081
+"Iowa","2021-01",37696
+"Iowa","2021-02",17057
+"Iowa","2021-03",14937
+"Iowa","2021-04",13442
+"Iowa","2021-05",6580
+"Iowa","2021-06",2437
+"Iowa","2021-07",4970
+"Iowa","2021-08",25916
+"Iowa","2021-09",47310
+"Iowa","2021-10",34075
+"Iowa","2021-11",39326
+"Iowa","2021-12",50043
+"Iowa","2022-01",136787
+"Iowa","2022-02",36561
+"Iowa","2022-03",9614
+"Iowa","2022-04",5319
+"Iowa","2022-05",12383
+"Iowa","2022-06",20446
+"Iowa","2022-07",20548
+"Iowa","2022-08",25488
+"Iowa","2022-09",13449
+"Iowa","2022-10",0
+"Kansas","2020-01",0
+"Kansas","2020-02",0
+"Kansas","2020-03",434
+"Kansas","2020-04",3979
+"Kansas","2020-05",5287
+"Kansas","2020-06",4670
+"Kansas","2020-07",12992
+"Kansas","2020-08",15217
+"Kansas","2020-09",18543
+"Kansas","2020-10",25723
+"Kansas","2020-11",72852
+"Kansas","2020-12",65515
+"Kansas","2021-01",51744
+"Kansas","2021-02",19041
+"Kansas","2021-03",7943
+"Kansas","2021-04",6660
+"Kansas","2021-05",4731
+"Kansas","2021-06",3794
+"Kansas","2021-07",14725
+"Kansas","2021-08",36066
+"Kansas","2021-09",39913
+"Kansas","2021-10",25683
+"Kansas","2021-11",30613
+"Kansas","2021-12",54263
+"Kansas","2022-01",210465
+"Kansas","2022-02",35811
+"Kansas","2022-03",4112
+"Kansas","2022-04",5705
+"Kansas","2022-05",10182
+"Kansas","2022-06",20965
+"Kansas","2022-07",27872
+"Kansas","2022-08",29353
+"Kansas","2022-09",14148
+"Kansas","2022-10",0
+"Kentucky","2020-01",0
+"Kentucky","2020-02",0
+"Kentucky","2020-03",628
+"Kentucky","2020-04",4080
+"Kentucky","2020-05",4996
+"Kentucky","2020-06",5920
+"Kentucky","2020-07",14527
+"Kentucky","2020-08",18245
+"Kentucky","2020-09",20444
+"Kentucky","2020-10",38379
+"Kentucky","2020-11",71822
+"Kentucky","2020-12",86220
+"Kentucky","2021-01",97620
+"Kentucky","2021-02",41741
+"Kentucky","2021-03",22254
+"Kentucky","2021-04",17251
+"Kentucky","2021-05",14448
+"Kentucky","2021-06",6592
+"Kentucky","2021-07",18993
+"Kentucky","2021-08",92891
+"Kentucky","2021-09",114293
+"Kentucky","2021-10",53457
+"Kentucky","2021-11",41125
+"Kentucky","2021-12",70219
+"Kentucky","2022-01",304413
+"Kentucky","2022-02",116794
+"Kentucky","2022-03",35055
+"Kentucky","2022-04",15704
+"Kentucky","2022-05",26676
+"Kentucky","2022-06",48747
+"Kentucky","2022-07",61583
+"Kentucky","2022-08",74206
+"Kentucky","2022-09",42698
+"Kentucky","2022-10",0
+"Louisiana","2020-01",0
+"Louisiana","2020-02",0
+"Louisiana","2020-03",5237
+"Louisiana","2020-04",22764
+"Louisiana","2020-05",11915
+"Louisiana","2020-06",18179
+"Louisiana","2020-07",58185
+"Louisiana","2020-08",32614
+"Louisiana","2020-09",18564
+"Louisiana","2020-10",19191
+"Louisiana","2020-11",45765
+"Louisiana","2020-12",82861
+"Louisiana","2021-01",85351
+"Louisiana","2021-02",29474
+"Louisiana","2021-03",14833
+"Louisiana","2021-04",13648
+"Louisiana","2021-05",12104
+"Louisiana","2021-06",10782
+"Louisiana","2021-07",60212
+"Louisiana","2021-08",138117
+"Louisiana","2021-09",60737
+"Louisiana","2021-10",17938
+"Louisiana","2021-11",12423
+"Louisiana","2021-12",57801
+"Louisiana","2022-01",341517
+"Louisiana","2022-02",55425
+"Louisiana","2022-03",6785
+"Louisiana","2022-04",5589
+"Louisiana","2022-05",21719
+"Louisiana","2022-06",48862
+"Louisiana","2022-07",69074
+"Louisiana","2022-08",53345
+"Louisiana","2022-09",24279
+"Louisiana","2022-10",0
+"Maine","2020-01",0
+"Maine","2020-02",0
+"Maine","2020-03",303
+"Maine","2020-04",792
+"Maine","2020-05",1230
+"Maine","2020-06",928
+"Maine","2020-07",659
+"Maine","2020-08",617
+"Maine","2020-09",860
+"Maine","2020-10",1273
+"Maine","2020-11",5095
+"Maine","2020-12",12444
+"Maine","2021-01",15123
+"Maine","2021-02",5311
+"Maine","2021-03",5869
+"Maine","2021-04",10709
+"Maine","2021-05",6574
+"Maine","2021-06",1247
+"Maine","2021-07",1429
+"Maine","2021-08",5393
+"Maine","2021-09",14133
+"Maine","2021-10",14270
+"Maine","2021-11",15403
+"Maine","2021-12",27074
+"Maine","2022-01",27489
+"Maine","2022-02",51925
+"Maine","2022-03",9640
+"Maine","2022-04",9290
+"Maine","2022-05",17822
+"Maine","2022-06",7024
+"Maine","2022-07",6071
+"Maine","2022-08",6811
+"Maine","2022-09",6918
+"Maine","2022-10",0
+"Maryland","2020-01",0
+"Maryland","2020-02",0
+"Maryland","2020-03",1660
+"Maryland","2020-04",20082
+"Maryland","2020-05",31036
+"Maryland","2020-06",14781
+"Maryland","2020-07",20787
+"Maryland","2020-08",19903
+"Maryland","2020-09",16476
+"Maryland","2020-10",20556
+"Maryland","2020-11",53089
+"Maryland","2020-12",78292
+"Maryland","2021-01",77811
+"Maryland","2021-02",27626
+"Maryland","2021-03",29245
+"Maryland","2021-04",36057
+"Maryland","2021-05",12493
+"Maryland","2021-06",2385
+"Maryland","2021-07",6269
+"Maryland","2021-08",28454
+"Maryland","2021-09",35338
+"Maryland","2021-10",28930
+"Maryland","2021-11",24873
+"Maryland","2021-12",134671
+"Maryland","2022-01",256556
+"Maryland","2022-02",24909
+"Maryland","2022-03",9640
+"Maryland","2022-04",19614
+"Maryland","2022-05",54095
+"Maryland","2022-06",48893
+"Maryland","2022-07",44884
+"Maryland","2022-08",43706
+"Maryland","2022-09",26921
+"Maryland","2022-10",0
+"Massachusetts","2020-01",1
+"Massachusetts","2020-02",1
+"Massachusetts","2020-03",9922
+"Massachusetts","2020-04",56943
+"Massachusetts","2020-05",30393
+"Massachusetts","2020-06",7180
+"Massachusetts","2020-07",7396
+"Massachusetts","2020-08",9182
+"Massachusetts","2020-09",11098
+"Massachusetts","2020-10",26460
+"Massachusetts","2020-11",67556
+"Massachusetts","2020-12",149046
+"Massachusetts","2021-01",148847
+"Massachusetts","2021-02",57123
+"Massachusetts","2021-03",54432
+"Massachusetts","2021-04",53393
+"Massachusetts","2021-05",17972
+"Massachusetts","2021-06",3021
+"Massachusetts","2021-07",9814
+"Massachusetts","2021-08",40089
+"Massachusetts","2021-09",52082
+"Massachusetts","2021-10",39971
+"Massachusetts","2021-11",67175
+"Massachusetts","2021-12",221517
+"Massachusetts","2022-01",470980
+"Massachusetts","2022-02",59698
+"Massachusetts","2022-03",27469
+"Massachusetts","2022-04",58342
+"Massachusetts","2022-05",113733
+"Massachusetts","2022-06",53866
+"Massachusetts","2022-07",42217
+"Massachusetts","2022-08",38331
+"Massachusetts","2022-09",45692
+"Massachusetts","2022-10",0
+"Michigan","2020-01",0
+"Michigan","2020-02",0
+"Michigan","2020-03",7951
+"Michigan","2020-04",35527
+"Michigan","2020-05",19233
+"Michigan","2020-06",8017
+"Michigan","2020-07",19846
+"Michigan","2020-08",22451
+"Michigan","2020-09",24989
+"Michigan","2020-10",59392
+"Michigan","2020-11",191536
+"Michigan","2020-12",139679
+"Michigan","2021-01",81517
+"Michigan","2021-02",35412
+"Michigan","2021-03",100801
+"Michigan","2021-04",190116
+"Michigan","2021-05",55474
+"Michigan","2021-06",8078
+"Michigan","2021-07",11087
+"Michigan","2021-08",49237
+"Michigan","2021-09",89721
+"Michigan","2021-10",125039
+"Michigan","2021-11",199950
+"Michigan","2021-12",235272
+"Michigan","2022-01",548140
+"Michigan","2022-02",101934
+"Michigan","2022-03",27122
+"Michigan","2022-04",38425
+"Michigan","2022-05",101885
+"Michigan","2022-06",78600
+"Michigan","2022-07",65881
+"Michigan","2022-08",98047
+"Michigan","2022-09",65808
+"Michigan","2022-10",0
+"Minnesota","2020-01",0
+"Minnesota","2020-02",0
+"Minnesota","2020-03",629
+"Minnesota","2020-04",4507
+"Minnesota","2020-05",19714
+"Minnesota","2020-06",11453
+"Minnesota","2020-07",18160
+"Minnesota","2020-08",21401
+"Minnesota","2020-09",23270
+"Minnesota","2020-10",49338
+"Minnesota","2020-11",170291
+"Minnesota","2020-12",96539
+"Minnesota","2021-01",46505
+"Minnesota","2021-02",22787
+"Minnesota","2021-03",34935
+"Minnesota","2021-04",56283
+"Minnesota","2021-05",25572
+"Minnesota","2021-06",3981
+"Minnesota","2021-07",7336
+"Minnesota","2021-08",37263
+"Minnesota","2021-09",61130
+"Minnesota","2021-10",76456
+"Minnesota","2021-11",124820
+"Minnesota","2021-12",109842
+"Minnesota","2022-01",299541
+"Minnesota","2022-02",91823
+"Minnesota","2022-03",15974
+"Minnesota","2022-04",22997
+"Minnesota","2022-05",54621
+"Minnesota","2022-06",45672
+"Minnesota","2022-07",37724
+"Minnesota","2022-08",40255
+"Minnesota","2022-09",33978
+"Minnesota","2022-10",0
+"Mississippi","2020-01",0
+"Mississippi","2020-02",0
+"Mississippi","2020-03",937
+"Mississippi","2020-04",5878
+"Mississippi","2020-05",8708
+"Mississippi","2020-06",11724
+"Mississippi","2020-07",31500
+"Mississippi","2020-08",24203
+"Mississippi","2020-09",15240
+"Mississippi","2020-10",21970
+"Mississippi","2020-11",33110
+"Mississippi","2020-12",62541
+"Mississippi","2021-01",59190
+"Mississippi","2021-02",19794
+"Mississippi","2021-03",10351
+"Mississippi","2021-04",6754
+"Mississippi","2021-05",5813
+"Mississippi","2021-06",4051
+"Mississippi","2021-07",21741
+"Mississippi","2021-08",93217
+"Mississippi","2021-09",51672
+"Mississippi","2021-10",15924
+"Mississippi","2021-11",9853
+"Mississippi","2021-12",29566
+"Mississippi","2022-01",183681
+"Mississippi","2022-02",62522
+"Mississippi","2022-03",4618
+"Mississippi","2022-04",3017
+"Mississippi","2022-05",10763
+"Mississippi","2022-06",26782
+"Mississippi","2022-07",40012
+"Mississippi","2022-08",37917
+"Mississippi","2022-09",14416
+"Mississippi","2022-10",0
+"Missouri","2020-01",0
+"Missouri","2020-02",0
+"Missouri","2020-03",1674
+"Missouri","2020-04",6417
+"Missouri","2020-05",5469
+"Missouri","2020-06",8654
+"Missouri","2020-07",29366
+"Missouri","2020-08",35596
+"Missouri","2020-09",43309
+"Missouri","2020-10",62667
+"Missouri","2020-11",128806
+"Missouri","2020-12",118798
+"Missouri","2021-01",91991
+"Missouri","2021-02",30173
+"Missouri","2021-03",18760
+"Missouri","2021-04",9957
+"Missouri","2021-05",14852
+"Missouri","2021-06",19307
+"Missouri","2021-07",60751
+"Missouri","2021-08",77252
+"Missouri","2021-09",61809
+"Missouri","2021-10",34685
+"Missouri","2021-11",51110
+"Missouri","2021-12",102055
+"Missouri","2022-01",321091
+"Missouri","2022-02",67389
+"Missouri","2022-03",14661
+"Missouri","2022-04",14698
+"Missouri","2022-05",30315
+"Missouri","2022-06",44902
+"Missouri","2022-07",67296
+"Missouri","2022-08",44353
+"Missouri","2022-09",40200
+"Missouri","2022-10",0
+"Montana","2020-01",0
+"Montana","2020-02",0
+"Montana","2020-03",198
+"Montana","2020-04",255
+"Montana","2020-05",62
+"Montana","2020-06",452
+"Montana","2020-07",2998
+"Montana","2020-08",3456
+"Montana","2020-09",5650
+"Montana","2020-10",19730
+"Montana","2020-11",29397
+"Montana","2020-12",19357
+"Montana","2021-01",12394
+"Montana","2021-02",6005
+"Montana","2021-03",4598
+"Montana","2021-04",4265
+"Montana","2021-05",3012
+"Montana","2021-06",1926
+"Montana","2021-07",2611
+"Montana","2021-08",10861
+"Montana","2021-09",23806
+"Montana","2021-10",24814
+"Montana","2021-11",15165
+"Montana","2021-12",6712
+"Montana","2022-01",44456
+"Montana","2022-02",24399
+"Montana","2022-03",5976
+"Montana","2022-04",1427
+"Montana","2022-05",3515
+"Montana","2022-06",7520
+"Montana","2022-07",11582
+"Montana","2022-08",7570
+"Montana","2022-09",6562
+"Montana","2022-10",0
+"Nebraska","2020-01",0
+"Nebraska","2020-02",0
+"Nebraska","2020-03",172
+"Nebraska","2020-04",4109
+"Nebraska","2020-05",9820
+"Nebraska","2020-06",5076
+"Nebraska","2020-07",7034
+"Nebraska","2020-08",8076
+"Nebraska","2020-09",11277
+"Nebraska","2020-10",25168
+"Nebraska","2020-11",57675
+"Nebraska","2020-12",38391
+"Nebraska","2021-01",23915
+"Nebraska","2021-02",10169
+"Nebraska","2021-03",8464
+"Nebraska","2021-04",10480
+"Nebraska","2021-05",3542
+"Nebraska","2021-06",1120
+"Nebraska","2021-07",3962
+"Nebraska","2021-08",15804
+"Nebraska","2021-09",22195
+"Nebraska","2021-10",18317
+"Nebraska","2021-11",25062
+"Nebraska","2021-12",28429
+"Nebraska","2022-01",101069
+"Nebraska","2022-02",36202
+"Nebraska","2022-03",2302
+"Nebraska","2022-04",2159
+"Nebraska","2022-05",7115
+"Nebraska","2022-06",12952
+"Nebraska","2022-07",15802
+"Nebraska","2022-08",13950
+"Nebraska","2022-09",7658
+"Nebraska","2022-10",0
+"Nevada","2020-01",0
+"Nevada","2020-02",0
+"Nevada","2020-03",1114
+"Nevada","2020-04",3939
+"Nevada","2020-05",3575
+"Nevada","2020-06",9828
+"Nevada","2020-07",29632
+"Nevada","2020-08",21140
+"Nevada","2020-09",10752
+"Nevada","2020-10",20781
+"Nevada","2020-11",51410
+"Nevada","2020-12",72560
+"Nevada","2021-01",53577
+"Nevada","2021-02",15446
+"Nevada","2021-03",10008
+"Nevada","2021-04",11676
+"Nevada","2021-05",8310
+"Nevada","2021-06",9964
+"Nevada","2021-07",22689
+"Nevada","2021-08",34199
+"Nevada","2021-09",30719
+"Nevada","2021-10",16897
+"Nevada","2021-11",19427
+"Nevada","2021-12",26998
+"Nevada","2022-01",172257
+"Nevada","2022-02",26868
+"Nevada","2022-03",29363
+"Nevada","2022-04",5546
+"Nevada","2022-05",16346
+"Nevada","2022-06",38820
+"Nevada","2022-07",52659
+"Nevada","2022-08",15339
+"Nevada","2022-09",5493
+"Nevada","2022-10",0
+"New Hampshire","2020-01",0
+"New Hampshire","2020-02",0
+"New Hampshire","2020-03",357
+"New Hampshire","2020-04",1789
+"New Hampshire","2020-05",2505
+"New Hampshire","2020-06",1131
+"New Hampshire","2020-07",801
+"New Hampshire","2020-08",692
+"New Hampshire","2020-09",991
+"New Hampshire","2020-10",2818
+"New Hampshire","2020-11",9949
+"New Hampshire","2020-12",23849
+"New Hampshire","2021-01",21067
+"New Hampshire","2021-02",9475
+"New Hampshire","2021-03",8752
+"New Hampshire","2021-04",10710
+"New Hampshire","2021-05",3840
+"New Hampshire","2021-06",778
+"New Hampshire","2021-07",1153
+"New Hampshire","2021-08",7032
+"New Hampshire","2021-09",12579
+"New Hampshire","2021-10",12173
+"New Hampshire","2021-11",28803
+"New Hampshire","2021-12",37423
+"New Hampshire","2022-01",78189
+"New Hampshire","2022-02",21506
+"New Hampshire","2022-03",4179
+"New Hampshire","2022-04",7441
+"New Hampshire","2022-05",15587
+"New Hampshire","2022-06",6551
+"New Hampshire","2022-07",6183
+"New Hampshire","2022-08",6083
+"New Hampshire","2022-09",5972
+"New Hampshire","2022-10",0
+"New Jersey","2020-01",0
+"New Jersey","2020-02",0
+"New Jersey","2020-03",18696
+"New Jersey","2020-04",99956
+"New Jersey","2020-05",42108
+"New Jersey","2020-06",11873
+"New Jersey","2020-07",11320
+"New Jersey","2020-08",11547
+"New Jersey","2020-09",15161
+"New Jersey","2020-10",39429
+"New Jersey","2020-11",117996
+"New Jersey","2020-12",160941
+"New Jersey","2021-01",167802
+"New Jersey","2021-02",92527
+"New Jersey","2021-03",119460
+"New Jersey","2021-04",88407
+"New Jersey","2021-05",19109
+"New Jersey","2021-06",7063
+"New Jersey","2021-07",15958
+"New Jersey","2021-08",52613
+"New Jersey","2021-09",62604
+"New Jersey","2021-10",44347
+"New Jersey","2021-11",53788
+"New Jersey","2021-12",311548
+"New Jersey","2022-01",547603
+"New Jersey","2022-02",55659
+"New Jersey","2022-03",32292
+"New Jersey","2022-04",61887
+"New Jersey","2022-05",132901
+"New Jersey","2022-06",94156
+"New Jersey","2022-07",108924
+"New Jersey","2022-08",79257
+"New Jersey","2022-09",63972
+"New Jersey","2022-10",0
+"New Mexico","2020-01",0
+"New Mexico","2020-02",0
+"New Mexico","2020-03",315
+"New Mexico","2020-04",3096
+"New Mexico","2020-05",4278
+"New Mexico","2020-06",4458
+"New Mexico","2020-07",8453
+"New Mexico","2020-08",4752
+"New Mexico","2020-09",4083
+"New Mexico","2020-10",17055
+"New Mexico","2020-11",50605
+"New Mexico","2020-12",45769
+"New Mexico","2021-01",31200
+"New Mexico","2021-02",11068
+"New Mexico","2021-03",6520
+"New Mexico","2021-04",6081
+"New Mexico","2021-05",5088
+"New Mexico","2021-06",2721
+"New Mexico","2021-07",4874
+"New Mexico","2021-08",22198
+"New Mexico","2021-09",20410
+"New Mexico","2021-10",22185
+"New Mexico","2021-11",39055
+"New Mexico","2021-12",35779
+"New Mexico","2022-01",130044
+"New Mexico","2022-02",31347
+"New Mexico","2022-03",6424
+"New Mexico","2022-04",4471
+"New Mexico","2022-05",13688
+"New Mexico","2022-06",27831
+"New Mexico","2022-07",27193
+"New Mexico","2022-08",20269
+"New Mexico","2022-09",7373
+"New Mexico","2022-10",0
+"New York","2020-01",0
+"New York","2020-02",0
+"New York","2020-03",75853
+"New York","2020-04",232456
+"New York","2020-05",65373
+"New York","2020-06",22227
+"New York","2020-07",22235
+"New York","2020-08",19010
+"New York","2020-09",24383
+"New York","2020-10",50224
+"New York","2020-11",144652
+"New York","2020-12",322370
+"New York","2021-01",441124
+"New York","2021-02",223960
+"New York","2021-03",229271
+"New York","2021-04",175012
+"New York","2021-05",54254
+"New York","2021-06",12582
+"New York","2021-07",35404
+"New York","2021-08",128200
+"New York","2021-09",148093
+"New York","2021-10",132900
+"New York","2021-11",170012
+"New York","2021-12",750685
+"New York","2022-01",1325136
+"New York","2022-02",119805
+"New York","2022-03",70513
+"New York","2022-04",172388
+"New York","2022-05",269689
+"New York","2022-06",173282
+"New York","2022-07",206851
+"New York","2022-08",170440
+"New York","2022-09",132929
+"New York","2022-10",0
+"North Carolina","2020-01",0
+"North Carolina","2020-02",0
+"North Carolina","2020-03",1578
+"North Carolina","2020-04",9542
+"North Carolina","2020-05",18394
+"North Carolina","2020-06",37712
+"North Carolina","2020-07",58452
+"North Carolina","2020-08",47201
+"North Carolina","2020-09",37753
+"North Carolina","2020-10",64003
+"North Carolina","2020-11",89877
+"North Carolina","2020-12",175033
+"North Carolina","2021-01",217981
+"North Carolina","2021-02",101022
+"North Carolina","2021-03",55584
+"North Carolina","2021-04",55620
+"North Carolina","2021-05",31402
+"North Carolina","2021-06",12535
+"North Carolina","2021-07",34387
+"North Carolina","2021-08",165578
+"North Carolina","2021-09",181600
+"North Carolina","2021-10",82260
+"North Carolina","2021-11",56491
+"North Carolina","2021-12",152662
+"North Carolina","2022-01",735132
+"North Carolina","2022-02",167718
+"North Carolina","2022-03",39845
+"North Carolina","2022-04",29893
+"North Carolina","2022-05",85680
+"North Carolina","2022-06",122283
+"North Carolina","2022-07",115912
+"North Carolina","2022-08",137692
+"North Carolina","2022-09",78044
+"North Carolina","2022-10",0
+"North Dakota","2020-01",0
+"North Dakota","2020-02",0
+"North Dakota","2020-03",122
+"North Dakota","2020-04",985
+"North Dakota","2020-05",1520
+"North Dakota","2020-06",990
+"North Dakota","2020-07",2972
+"North Dakota","2020-08",5387
+"North Dakota","2020-09",10166
+"North Dakota","2020-10",23107
+"North Dakota","2020-11",35503
+"North Dakota","2020-12",11338
+"North Dakota","2021-01",4988
+"North Dakota","2021-02",2551
+"North Dakota","2021-03",3462
+"North Dakota","2021-04",4333
+"North Dakota","2021-05",2312
+"North Dakota","2021-06",765
+"North Dakota","2021-07",962
+"North Dakota","2021-08",6251
+"North Dakota","2021-09",14818
+"North Dakota","2021-10",15738
+"North Dakota","2021-11",14433
+"North Dakota","2021-12",11620
+"North Dakota","2022-01",51171
+"North Dakota","2022-02",12266
+"North Dakota","2022-03",1682
+"North Dakota","2022-04",1367
+"North Dakota","2022-05",3763
+"North Dakota","2022-06",5520
+"North Dakota","2022-07",7557
+"North Dakota","2022-08",7280
+"North Dakota","2022-09",4528
+"North Dakota","2022-10",0
+"Northern Mariana Islands","2020-01",0
+"Northern Mariana Islands","2020-02",0
+"Northern Mariana Islands","2020-03",2
+"Northern Mariana Islands","2020-04",12
+"Northern Mariana Islands","2020-05",8
+"Northern Mariana Islands","2020-06",8
+"Northern Mariana Islands","2020-07",12
+"Northern Mariana Islands","2020-08",14
+"Northern Mariana Islands","2020-09",14
+"Northern Mariana Islands","2020-10",22
+"Northern Mariana Islands","2020-11",13
+"Northern Mariana Islands","2020-12",17
+"Northern Mariana Islands","2021-01",10
+"Northern Mariana Islands","2021-02",11
+"Northern Mariana Islands","2021-03",16
+"Northern Mariana Islands","2021-04",5
+"Northern Mariana Islands","2021-05",19
+"Northern Mariana Islands","2021-06",0
+"Northern Mariana Islands","2021-07",7
+"Northern Mariana Islands","2021-08",52
+"Northern Mariana Islands","2021-09",27
+"Northern Mariana Islands","2021-10",43
+"Northern Mariana Islands","2021-11",543
+"Northern Mariana Islands","2021-12",2400
+"Northern Mariana Islands","2022-01",1653
+"Northern Mariana Islands","2022-02",4642
+"Northern Mariana Islands","2022-03",1515
+"Northern Mariana Islands","2022-04",198
+"Northern Mariana Islands","2022-05",70
+"Northern Mariana Islands","2022-06",496
+"Northern Mariana Islands","2022-07",744
+"Northern Mariana Islands","2022-08",547
+"Northern Mariana Islands","2022-09",51
+"Northern Mariana Islands","2022-10",0
+"Ohio","2020-01",0
+"Ohio","2020-02",0
+"Ohio","2020-03",2199
+"Ohio","2020-04",15828
+"Ohio","2020-05",17486
+"Ohio","2020-06",16276
+"Ohio","2020-07",39370
+"Ohio","2020-08",31996
+"Ohio","2020-09",30832
+"Ohio","2020-10",61710
+"Ohio","2020-11",205366
+"Ohio","2020-12",279317
+"Ohio","2021-01",195412
+"Ohio","2021-02",71630
+"Ohio","2021-03",50144
+"Ohio","2021-04",54746
+"Ohio","2021-05",29622
+"Ohio","2021-06",9390
+"Ohio","2021-07",17953
+"Ohio","2021-08",91623
+"Ohio","2021-09",193072
+"Ohio","2021-10",131355
+"Ohio","2021-11",144890
+"Ohio","2021-12",325865
+"Ohio","2022-01",564323
+"Ohio","2022-02",73535
+"Ohio","2022-03",18861
+"Ohio","2022-04",24257
+"Ohio","2022-05",66065
+"Ohio","2022-06",85330
+"Ohio","2022-07",99789
+"Ohio","2022-08",101304
+"Ohio","2022-09",94200
+"Ohio","2022-10",0
+"Oklahoma","2020-01",0
+"Oklahoma","2020-02",0
+"Oklahoma","2020-03",568
+"Oklahoma","2020-04",3050
+"Oklahoma","2020-05",2800
+"Oklahoma","2020-06",7339
+"Oklahoma","2020-07",22730
+"Oklahoma","2020-08",22246
+"Oklahoma","2020-09",28466
+"Oklahoma","2020-10",35563
+"Oklahoma","2020-11",74983
+"Oklahoma","2020-12",93464
+"Oklahoma","2021-01",98988
+"Oklahoma","2021-02",35360
+"Oklahoma","2021-03",14183
+"Oklahoma","2021-04",8565
+"Oklahoma","2021-05",4472
+"Oklahoma","2021-06",5074
+"Oklahoma","2021-07",22784
+"Oklahoma","2021-08",71323
+"Oklahoma","2021-09",61807
+"Oklahoma","2021-10",30213
+"Oklahoma","2021-11",22949
+"Oklahoma","2021-12",42011
+"Oklahoma","2022-01",267976
+"Oklahoma","2022-02",44681
+"Oklahoma","2022-03",11663
+"Oklahoma","2022-04",7724
+"Oklahoma","2022-05",8867
+"Oklahoma","2022-06",26501
+"Oklahoma","2022-07",44584
+"Oklahoma","2022-08",49291
+"Oklahoma","2022-09",27537
+"Oklahoma","2022-10",0
+"Oregon","2020-01",0
+"Oregon","2020-02",1
+"Oregon","2020-03",689
+"Oregon","2020-04",1820
+"Oregon","2020-05",1733
+"Oregon","2020-06",4413
+"Oregon","2020-07",9836
+"Oregon","2020-08",8221
+"Oregon","2020-09",6796
+"Oregon","2020-10",11412
+"Oregon","2020-11",30510
+"Oregon","2020-12",38478
+"Oregon","2021-01",28507
+"Oregon","2021-02",13181
+"Oregon","2021-03",9415
+"Oregon","2021-04",19800
+"Oregon","2021-05",16663
+"Oregon","2021-06",7165
+"Oregon","2021-07",11115
+"Oregon","2021-08",56532
+"Oregon","2021-09",53767
+"Oregon","2021-10",34999
+"Oregon","2021-11",26046
+"Oregon","2021-12",30164
+"Oregon","2022-01",212613
+"Oregon","2022-02",60053
+"Oregon","2022-03",10223
+"Oregon","2022-04",17159
+"Oregon","2022-05",44137
+"Oregon","2022-06",46244
+"Oregon","2022-07",38660
+"Oregon","2022-08",27796
+"Oregon","2022-09",16628
+"Oregon","2022-10",0
+"Pennsylvania","2020-01",0
+"Pennsylvania","2020-02",0
+"Pennsylvania","2020-03",4963
+"Pennsylvania","2020-04",42990
+"Pennsylvania","2020-05",27710
+"Pennsylvania","2020-06",14810
+"Pennsylvania","2020-07",25679
+"Pennsylvania","2020-08",22274
+"Pennsylvania","2020-09",25512
+"Pennsylvania","2020-10",49513
+"Pennsylvania","2020-11",155565
+"Pennsylvania","2020-12",279558
+"Pennsylvania","2021-01",203060
+"Pennsylvania","2021-02",87993
+"Pennsylvania","2021-03",95393
+"Pennsylvania","2021-04",127806
+"Pennsylvania","2021-05",52431
+"Pennsylvania","2021-06",10643
+"Pennsylvania","2021-07",14205
+"Pennsylvania","2021-08",71310
+"Pennsylvania","2021-09",132222
+"Pennsylvania","2021-10",137297
+"Pennsylvania","2021-11",155986
+"Pennsylvania","2021-12",299504
+"Pennsylvania","2022-01",625057
+"Pennsylvania","2022-02",95944
+"Pennsylvania","2022-03",23928
+"Pennsylvania","2022-04",38866
+"Pennsylvania","2022-05",87105
+"Pennsylvania","2022-06",98933
+"Pennsylvania","2022-07",74336
+"Pennsylvania","2022-08",105309
+"Pennsylvania","2022-09",68601
+"Pennsylvania","2022-10",0
+"Puerto Rico","2020-01",0
+"Puerto Rico","2020-02",0
+"Puerto Rico","2020-03",239
+"Puerto Rico","2020-04",710
+"Puerto Rico","2020-05",339
+"Puerto Rico","2020-06",405
+"Puerto Rico","2020-07",4304
+"Puerto Rico","2020-08",9479
+"Puerto Rico","2020-09",8524
+"Puerto Rico","2020-10",10138
+"Puerto Rico","2020-11",18407
+"Puerto Rico","2020-12",23746
+"Puerto Rico","2021-01",17333
+"Puerto Rico","2021-02",6673
+"Puerto Rico","2021-03",7173
+"Puerto Rico","2021-04",24486
+"Puerto Rico","2021-05",6801
+"Puerto Rico","2021-06",1301
+"Puerto Rico","2021-07",6743
+"Puerto Rico","2021-08",24025
+"Puerto Rico","2021-09",10422
+"Puerto Rico","2021-10",4034
+"Puerto Rico","2021-11",3166
+"Puerto Rico","2021-12",84276
+"Puerto Rico","2022-01",185211
+"Puerto Rico","2022-02",15996
+"Puerto Rico","2022-03",7079
+"Puerto Rico","2022-04",56704
+"Puerto Rico","2022-05",132954
+"Puerto Rico","2022-06",102981
+"Puerto Rico","2022-07",80855
+"Puerto Rico","2022-08",69543
+"Puerto Rico","2022-09",33277
+"Puerto Rico","2022-10",0
+"Rhode Island","2020-01",0
+"Rhode Island","2020-02",0
+"Rhode Island","2020-03",488
+"Rhode Island","2020-04",8133
+"Rhode Island","2020-05",6307
+"Rhode Island","2020-06",1885
+"Rhode Island","2020-07",2209
+"Rhode Island","2020-08",2927
+"Rhode Island","2020-09",2799
+"Rhode Island","2020-10",8126
+"Rhode Island","2020-11",23849
+"Rhode Island","2020-12",31226
+"Rhode Island","2021-01",26489
+"Rhode Island","2021-02",11184
+"Rhode Island","2021-03",11707
+"Rhode Island","2021-04",10857
+"Rhode Island","2021-05",3557
+"Rhode Island","2021-06",870
+"Rhode Island","2021-07",1726
+"Rhode Island","2021-08",8278
+"Rhode Island","2021-09",9744
+"Rhode Island","2021-10",7044
+"Rhode Island","2021-11",12358
+"Rhode Island","2021-12",39333
+"Rhode Island","2022-01",112683
+"Rhode Island","2022-02",12146
+"Rhode Island","2022-03",5337
+"Rhode Island","2022-04",10367
+"Rhode Island","2022-05",21161
+"Rhode Island","2022-06",9979
+"Rhode Island","2022-07",7630
+"Rhode Island","2022-08",6239
+"Rhode Island","2022-09",8823
+"Rhode Island","2022-10",0
+"South Carolina","2020-01",0
+"South Carolina","2020-02",0
+"South Carolina","2020-03",1083
+"South Carolina","2020-04",5012
+"South Carolina","2020-05",5766
+"South Carolina","2020-06",24538
+"South Carolina","2020-07",52617
+"South Carolina","2020-08",29976
+"South Carolina","2020-09",28950
+"South Carolina","2020-10",28670
+"South Carolina","2020-11",40875
+"South Carolina","2020-12",90020
+"South Carolina","2021-01",135879
+"South Carolina","2021-02",73437
+"South Carolina","2021-03",34807
+"South Carolina","2021-04",27029
+"South Carolina","2021-05",14603
+"South Carolina","2021-06",3578
+"South Carolina","2021-07",20308
+"South Carolina","2021-08",118139
+"South Carolina","2021-09",122099
+"South Carolina","2021-10",39766
+"South Carolina","2021-11",21169
+"South Carolina","2021-12",56999
+"South Carolina","2022-01",379796
+"South Carolina","2022-02",106039
+"South Carolina","2022-03",6985
+"South Carolina","2022-04",6134
+"South Carolina","2022-05",21488
+"South Carolina","2022-06",50644
+"South Carolina","2022-07",58759
+"South Carolina","2022-08",69116
+"South Carolina","2022-09",33793
+"South Carolina","2022-10",0
+"South Dakota","2020-01",0
+"South Dakota","2020-02",0
+"South Dakota","2020-03",108
+"South Dakota","2020-04",2341
+"South Dakota","2020-05",2544
+"South Dakota","2020-06",1771
+"South Dakota","2020-07",2000
+"South Dakota","2020-08",4745
+"South Dakota","2020-09",8880
+"South Dakota","2020-10",23603
+"South Dakota","2020-11",34472
+"South Dakota","2020-12",18700
+"South Dakota","2021-01",9086
+"South Dakota","2021-02",4177
+"South Dakota","2021-03",5332
+"South Dakota","2021-04",4901
+"South Dakota","2021-05",1531
+"South Dakota","2021-06",355
+"South Dakota","2021-07",679
+"South Dakota","2021-08",7034
+"South Dakota","2021-09",12759
+"South Dakota","2021-10",9464
+"South Dakota","2021-11",11726
+"South Dakota","2021-12",12996
+"South Dakota","2022-01",47209
+"South Dakota","2022-02",9469
+"South Dakota","2022-03",1227
+"South Dakota","2022-04",703
+"South Dakota","2022-05",1892
+"South Dakota","2022-06",4819
+"South Dakota","2022-07",5763
+"South Dakota","2022-08",7261
+"South Dakota","2022-09",3824
+"South Dakota","2022-10",0
+"Tennessee","2020-01",0
+"Tennessee","2020-02",0
+"Tennessee","2020-03",2391
+"Tennessee","2020-04",9416
+"Tennessee","2020-05",11467
+"Tennessee","2020-06",20422
+"Tennessee","2020-07",60844
+"Tennessee","2020-08",48796
+"Tennessee","2020-09",41128
+"Tennessee","2020-10",62933
+"Tennessee","2020-11",113676
+"Tennessee","2020-12",214432
+"Tennessee","2021-01",135960
+"Tennessee","2021-02",47225
+"Tennessee","2021-03",37641
+"Tennessee","2021-04",35490
+"Tennessee","2021-05",17222
+"Tennessee","2021-06",6618
+"Tennessee","2021-07",32131
+"Tennessee","2021-08",161920
+"Tennessee","2021-09",170058
+"Tennessee","2021-10",50613
+"Tennessee","2021-11",36337
+"Tennessee","2021-12",119543
+"Tennessee","2022-01",442530
+"Tennessee","2022-02",126746
+"Tennessee","2022-03",13042
+"Tennessee","2022-04",10953
+"Tennessee","2022-05",34233
+"Tennessee","2022-06",62350
+"Tennessee","2022-07",81414
+"Tennessee","2022-08",94846
+"Tennessee","2022-09",38656
+"Tennessee","2022-10",0
+"Texas","2020-01",0
+"Texas","2020-02",0
+"Texas","2020-03",3809
+"Texas","2020-04",19522
+"Texas","2020-05",29772
+"Texas","2020-06",113156
+"Texas","2020-07",254112
+"Texas","2020-08",235952
+"Texas","2020-09",130171
+"Texas","2020-10",147567
+"Texas","2020-11",303983
+"Texas","2020-12",569516
+"Texas","2021-01",605122
+"Texas","2021-02",283603
+"Texas","2021-03",139323
+"Texas","2021-04",99950
+"Texas","2021-05",60657
+"Texas","2021-06",44639
+"Texas","2021-07",137369
+"Texas","2021-08",465279
+"Texas","2021-09",457156
+"Texas","2021-10",175597
+"Texas","2021-11",94009
+"Texas","2021-12",260616
+"Texas","2022-01",1627456
+"Texas","2022-02",358770
+"Texas","2022-03",122402
+"Texas","2022-04",96592
+"Texas","2022-05",120381
+"Texas","2022-06",243502
+"Texas","2022-07",344936
+"Texas","2022-08",304067
+"Texas","2022-09",147255
+"Texas","2022-10",0
+"Utah","2020-01",0
+"Utah","2020-02",0
+"Utah","2020-03",888
+"Utah","2020-04",3784
+"Utah","2020-05",5125
+"Utah","2020-06",12420
+"Utah","2020-07",17979
+"Utah","2020-08",11911
+"Utah","2020-09",20935
+"Utah","2020-10",41614
+"Utah","2020-11",81050
+"Utah","2020-12",80906
+"Utah","2021-01",70012
+"Utah","2021-02",24611
+"Utah","2021-03",14406
+"Utah","2021-04",11682
+"Utah","2021-05",8847
+"Utah","2021-06",8969
+"Utah","2021-07",17328
+"Utah","2021-08",31955
+"Utah","2021-09",44072
+"Utah","2021-10",41388
+"Utah","2021-11",45919
+"Utah","2021-12",41191
+"Utah","2022-01",248531
+"Utah","2022-02",37329
+"Utah","2022-03",5070
+"Utah","2022-04",4331
+"Utah","2022-05",16726
+"Utah","2022-06",33916
+"Utah","2022-07",27397
+"Utah","2022-08",16520
+"Utah","2022-09",11604
+"Utah","2022-10",0
+"Vermont","2020-01",0
+"Vermont","2020-02",0
+"Vermont","2020-03",293
+"Vermont","2020-04",573
+"Vermont","2020-05",115
+"Vermont","2020-06",227
+"Vermont","2020-07",206
+"Vermont","2020-08",210
+"Vermont","2020-09",128
+"Vermont","2020-10",427
+"Vermont","2020-11",1993
+"Vermont","2020-12",3240
+"Vermont","2021-01",4553
+"Vermont","2021-02",3233
+"Vermont","2021-03",4077
+"Vermont","2021-04",3677
+"Vermont","2021-05",1268
+"Vermont","2021-06",190
+"Vermont","2021-07",479
+"Vermont","2021-08",3311
+"Vermont","2021-09",5462
+"Vermont","2021-10",6529
+"Vermont","2021-11",9823
+"Vermont","2021-12",14433
+"Vermont","2022-01",40025
+"Vermont","2022-02",7892
+"Vermont","2022-03",4275
+"Vermont","2022-04",7203
+"Vermont","2022-05",7618
+"Vermont","2022-06",4208
+"Vermont","2022-07",1981
+"Vermont","2022-08",2659
+"Vermont","2022-09",2135
+"Vermont","2022-10",0
+"Virgin Islands","2020-01",0
+"Virgin Islands","2020-02",0
+"Virgin Islands","2020-03",30
+"Virgin Islands","2020-04",36
+"Virgin Islands","2020-05",3
+"Virgin Islands","2020-06",12
+"Virgin Islands","2020-07",325
+"Virgin Islands","2020-08",728
+"Virgin Islands","2020-09",184
+"Virgin Islands","2020-10",58
+"Virgin Islands","2020-11",168
+"Virgin Islands","2020-12",492
+"Virgin Islands","2021-01",385
+"Virgin Islands","2021-02",225
+"Virgin Islands","2021-03",261
+"Virgin Islands","2021-04",218
+"Virgin Islands","2021-05",317
+"Virgin Islands","2021-06",437
+"Virgin Islands","2021-07",750
+"Virgin Islands","2021-08",1295
+"Virgin Islands","2021-09",834
+"Virgin Islands","2021-10",446
+"Virgin Islands","2021-11",307
+"Virgin Islands","2021-12",2137
+"Virgin Islands","2022-01",5222
+"Virgin Islands","2022-02",528
+"Virgin Islands","2022-03",238
+"Virgin Islands","2022-04",713
+"Virgin Islands","2022-05",3183
+"Virgin Islands","2022-06",1396
+"Virgin Islands","2022-07",847
+"Virgin Islands","2022-08",936
+"Virgin Islands","2022-09",455
+"Virgin Islands","2022-10",0
+"Virginia","2020-01",0
+"Virginia","2020-02",0
+"Virginia","2020-03",1249
+"Virginia","2020-04",14598
+"Virginia","2020-05",28760
+"Virginia","2020-06",18180
+"Virginia","2020-07",27101
+"Virginia","2020-08",30706
+"Virginia","2020-09",27677
+"Virginia","2020-10",32919
+"Virginia","2020-11",56645
+"Virginia","2020-12",111749
+"Virginia","2021-01",155195
+"Virginia","2021-02",71271
+"Virginia","2021-03",42926
+"Virginia","2021-04",40614
+"Virginia","2021-05",15948
+"Virginia","2021-06",4802
+"Virginia","2021-07",14044
+"Virginia","2021-08",72051
+"Virginia","2021-09",100341
+"Virginia","2021-10",57995
+"Virginia","2021-11",44345
+"Virginia","2021-12",149402
+"Virginia","2022-01",427132
+"Virginia","2022-02",94292
+"Virginia","2022-03",28949
+"Virginia","2022-04",32567
+"Virginia","2022-05",86298
+"Virginia","2022-06",81475
+"Virginia","2022-07",85485
+"Virginia","2022-08",85390
+"Virginia","2022-09",47254
+"Virginia","2022-10",0
+"Washington","2020-01",1
+"Washington","2020-02",6
+"Washington","2020-03",5425
+"Washington","2020-04",8895
+"Washington","2020-05",7375
+"Washington","2020-06",11737
+"Washington","2020-07",24147
+"Washington","2020-08",17916
+"Washington","2020-09",13961
+"Washington","2020-10",21345
+"Washington","2020-11",61154
+"Washington","2020-12",74790
+"Washington","2021-01",64845
+"Washington","2021-02",28176
+"Washington","2021-03",24713
+"Washington","2021-04",38554
+"Washington","2021-05",32809
+"Washington","2021-06",15746
+"Washington","2021-07",21481
+"Washington","2021-08",89965
+"Washington","2021-09",94585
+"Washington","2021-10",67809
+"Washington","2021-11",49030
+"Washington","2021-12",74610
+"Washington","2022-01",490662
+"Washington","2022-02",84253
+"Washington","2022-03",30782
+"Washington","2022-04",43344
+"Washington","2022-05",75535
+"Washington","2022-06",85501
+"Washington","2022-07",70797
+"Washington","2022-08",54779
+"Washington","2022-09",31455
+"Washington","2022-10",0
+"West Virginia","2020-01",0
+"West Virginia","2020-02",0
+"West Virginia","2020-03",162
+"West Virginia","2020-04",963
+"West Virginia","2020-05",885
+"West Virginia","2020-06",895
+"West Virginia","2020-07",3674
+"West Virginia","2020-08",3670
+"West Virginia","2020-09",5601
+"West Virginia","2020-10",8610
+"West Virginia","2020-11",23382
+"West Virginia","2020-12",37492
+"West Virginia","2021-01",35667
+"West Virginia","2021-02",10854
+"West Virginia","2021-03",9883
+"West Virginia","2021-04",11390
+"West Virginia","2021-05",8159
+"West Virginia","2021-06",2754
+"West Virginia","2021-07",2975
+"West Virginia","2021-08",22674
+"West Virginia","2021-09",50769
+"West Virginia","2021-10",32073
+"West Virginia","2021-11",22262
+"West Virginia","2021-12",33368
+"West Virginia","2022-01",118609
+"West Virginia","2022-02",43340
+"West Virginia","2022-03",7658
+"West Virginia","2022-04",3435
+"West Virginia","2022-05",14721
+"West Virginia","2022-06",16578
+"West Virginia","2022-07",22604
+"West Virginia","2022-08",27559
+"West Virginia","2022-09",17892
+"West Virginia","2022-10",0
+"Wisconsin","2020-01",0
+"Wisconsin","2020-02",0
+"Wisconsin","2020-03",1412
+"Wisconsin","2020-04",5442
+"Wisconsin","2020-05",11549
+"Wisconsin","2020-06",10256
+"Wisconsin","2020-07",24281
+"Wisconsin","2020-08",22663
+"Wisconsin","2020-09",46671
+"Wisconsin","2020-10",115595
+"Wisconsin","2020-11",173861
+"Wisconsin","2020-12",108708
+"Wisconsin","2021-01",71702
+"Wisconsin","2021-02",25227
+"Wisconsin","2021-03",18674
+"Wisconsin","2021-04",24409
+"Wisconsin","2021-05",13970
+"Wisconsin","2021-06",3202
+"Wisconsin","2021-07",9576
+"Wisconsin","2021-08",46742
+"Wisconsin","2021-09",76224
+"Wisconsin","2021-10",72293
+"Wisconsin","2021-11",98326
+"Wisconsin","2021-12",139880
+"Wisconsin","2022-01",395965
+"Wisconsin","2022-02",55369
+"Wisconsin","2022-03",13263
+"Wisconsin","2022-04",25341
+"Wisconsin","2022-05",64980
+"Wisconsin","2022-06",51059
+"Wisconsin","2022-07",51067
+"Wisconsin","2022-08",54684
+"Wisconsin","2022-09",34243
+"Wisconsin","2022-10",0
+"Wyoming","2020-01",0
+"Wyoming","2020-02",0
+"Wyoming","2020-03",109
+"Wyoming","2020-04",450
+"Wyoming","2020-05",344
+"Wyoming","2020-06",584
+"Wyoming","2020-07",1239
+"Wyoming","2020-08",1124
+"Wyoming","2020-09",2098
+"Wyoming","2020-10",7350
+"Wyoming","2020-11",20007
+"Wyoming","2020-12",11104
+"Wyoming","2021-01",7503
+"Wyoming","2021-02",2482
+"Wyoming","2021-03",1916
+"Wyoming","2021-04",1832
+"Wyoming","2021-05",2002
+"Wyoming","2021-06",2146
+"Wyoming","2021-07",2837
+"Wyoming","2021-08",10009
+"Wyoming","2021-09",15466
+"Wyoming","2021-10",12324
+"Wyoming","2021-11",8163
+"Wyoming","2021-12",4549
+"Wyoming","2022-01",30867
+"Wyoming","2022-02",8596
+"Wyoming","2022-03",1011
+"Wyoming","2022-04",438
+"Wyoming","2022-05",1922
+"Wyoming","2022-06",5984
+"Wyoming","2022-07",5575
+"Wyoming","2022-08",4797
+"Wyoming","2022-09",1900
+"Wyoming","2022-10",0
