@@ -12,6 +12,7 @@ from covid19_drdfm.processing import (
     adjust_pandemic_response,
     get_df,
     get_govt_fund_dist,
+    fix_names,
 )
 
 
@@ -36,13 +37,13 @@ def test_get_govt_fund_dist():
 
 
 def test_adjust_inflation(raw_data):
-    input_df = raw_data.copy()
+    input_df = raw_data.copy().pipe(fix_names)
     output_df = adjust_inflation(input_df)
-    assert input_df.Demand_1.iloc[0] < output_df.Demand_1.iloc[0]
+    assert input_df.Cons1.iloc[0] < output_df.Cons1.iloc[0]
 
 
-def test_adjust_pandemic_response(sample_data):
-    input_df = sample_data.copy()
+def test_adjust_pandemic_response(raw_data):
+    input_df = raw_data.copy().pipe(fix_names)
     #! Note - this is testing functionality, but is used per-state not on whole df
     out = adjust_pandemic_response(input_df)
     df = get_df()
