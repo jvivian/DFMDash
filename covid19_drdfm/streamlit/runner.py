@@ -13,26 +13,19 @@ from sklearn.preprocessing import MinMaxScaler
 from covid19_drdfm.constants import FACTORS
 from covid19_drdfm.dfm import state_process
 from covid19_drdfm.processing import NAME_MAP, get_df, normalize
+from collections import defaultdict
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
 
-DEFAULTS = {
-    "Uncat": ["Monetary_5", "Monetary_9", "Monetary_10", "GDP", "Supply_7"],
-    "Consumption": ["Demand_3", "Demand_4", "Demand_5"],
-    "Response": [
-        "Pandemic_Response_1",
-        "Pandemic_Response_3",
-        "Pandemic_Response_4",
-        "Pandemic_Response_9",
-        "Pandemic_Response_10",
-        "Pandemic_Response_12",
-    ],
-    "Employment": ["Supply_2", "Supply_3", "Supply_4", "Demand_7"],
-    "Inflation": ["Monetary_2", "Monetary_3", "Monetary_1"],
-    "Pandemic": ["Pandemic_1", "Pandemic_2", "Pandemic_6", "Pandemic_9", "Pandemic_7", "Pandemic_10"],
-}
-DEFAULTS = {x: [NAME_MAP[z] for z in y] for x, y in DEFAULTS.items()}
+FACTORS_GROUPED = defaultdict(list)
+for key, (_, second) in FACTORS.items():
+    FACTORS_GROUPED[second].append(key)
+
+FACTORS_GROUPED = dict(FACTORS_GROUPED)
+DEFAULTS = FACTORS_GROUPED
+
+# DEFAULTS = {x: [NAME_MAP[z] for z in y] for x, y in FACTORS_GROUPED.items()}
 # st.write(DEFAULTS)
 
 

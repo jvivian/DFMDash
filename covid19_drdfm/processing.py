@@ -36,16 +36,14 @@ def get_df() -> pd.DataFrame:
         reduce(lambda x, y: pd.merge(x, y, on=["State", "Year", "Period"], how="left"), dfs)
         .drop(columns=["Monetary_1_x", "Monetary_11_x"])
         .rename(columns={"Monetary_1_y": "Monetary_1", "Monetary_11_y": "Monetary_11"})
-        .drop(
-            columns=["Proportion", "proportion_vax2", "Pandemic_Response_8"]
-        )  #! Columns removed per discussion with AC
+        .drop(columns=["Proportion", "proportion_vax2", "Pandemic_Response_8", "Distributed"])
+        .pipe(fix_names)
         .pipe(adjust_inflation)
         .pipe(add_datetime)
-        .pipe(fix_names)
         .pipe(adjust_pandemic_response)
         .pipe(diff_vars, cols=DIFF_COLS)
         .pipe(diff_vars, cols=LOG_DIFF_COLS, log=True)
-        .pipe(normalize)
+        # .pipe(normalize)
         .drop(index=0)  # Drop first row with NaNs from diff
     )
 
@@ -83,13 +81,13 @@ def adjust_inflation(df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: Adjusted DataFrame
     """
     return (
-        df.assign(Demand_1=lambda x: x.Demand_1.div(x.Monetary_3 / 100))
-        .assign(Demand_2=lambda x: x.Demand_2.div(x.Monetary_3 / 100))
-        .assign(Demand_3=lambda x: x.Demand_3.div(x.Monetary_3 / 100))
-        .assign(Demand_4=lambda x: x.Demand_4.div(x.Monetary_3 / 100))
-        .assign(Demand_5=lambda x: x.Demand_5.div(x.Monetary_3 / 100))
-        .assign(GDP=lambda x: x.GDP.div(x.Monetary_3 / 100))
-        .assign(Supply_6=lambda x: x.Supply_6.div(x.Monetary_3 / 100))
+        df.assign(Cons1=lambda x: x.Cons1.div(x.PCE / 100))
+        .assign(Cons2=lambda x: x.Cons2.div(x.PCE / 100))
+        .assign(Cons3=lambda x: x.Cons3.div(x.PCE / 100))
+        .assign(Cons4=lambda x: x.Cons4.div(x.PCE / 100))
+        .assign(Cons5=lambda x: x.Cons5.div(x.PCE / 100))
+        .assign(GDP=lambda x: x.GDP.div(x.PCE / 100))
+        .assign(FixAss=lambda x: x.FixAss.div(x.PCE / 100))
     )
 
 
