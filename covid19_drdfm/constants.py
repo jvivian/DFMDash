@@ -82,7 +82,6 @@ FACTORS = {
     "PPP": ("Global", "Response"),
     "CARES": ("Global", "Response"),
     "School": ("Global", "Response"),
-    "School": ("Global", "Response"),
     "Cons1": ("Global", "Consumption"),
     "Cons2": ("Global", "Consumption"),
     "Cons3": ("Global", "Consumption"),

@@ -1,5 +1,6 @@
 import json
 import time
+from collections import defaultdict
 from pathlib import Path
 
 import pandas as pd
@@ -12,8 +13,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 from covid19_drdfm.constants import FACTORS
 from covid19_drdfm.dfm import state_process
-from covid19_drdfm.processing import NAME_MAP, get_df, normalize
-from collections import defaultdict
+from covid19_drdfm.processing import get_df
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
@@ -24,9 +24,6 @@ for key, (_, second) in FACTORS.items():
 
 FACTORS_GROUPED = dict(FACTORS_GROUPED)
 DEFAULTS = FACTORS_GROUPED
-
-# DEFAULTS = {x: [NAME_MAP[z] for z in y] for x, y in FACTORS_GROUPED.items()}
-# st.write(DEFAULTS)
 
 
 def center_title(text):
@@ -133,7 +130,7 @@ with st.form("DFM Model Runner"):
     selectors = {}
     for group, stcol in zip(sub.Group.unique(), [c1, c2, c3, c4, c5, c6]):
         variables = sub[sub.Group == group].Variables
-        selectors[group] = stcol.multiselect(group, variables, DEFAULTS[group])
+        selectors[group] = stcol.multiselect(group, variables, variables)
 
     # State selections
     state_sel = st.multiselect("States", df.State.unique(), default=df.State.unique())
