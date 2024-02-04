@@ -39,9 +39,7 @@ def state_process(df: pd.DataFrame, state: str) -> pd.DataFrame:
         pd.DataFrame: Processed DataFrame, ready for model
     """
     df = df[df.State == state]
-    #! Test double-norm
     df = normalize(df).fillna(0)
-    #! TEST REMOVE
     const_cols = [x for x in df.columns if is_constant(df[x])]
     pprint(f"Constant Columns...dropping\n{const_cols}")
     df = df.drop(columns=const_cols).set_index("Time", drop=True)
@@ -68,7 +66,7 @@ def get_nonstationary_columns(df: pd.DataFrame) -> list[str]:
     return non_stationary_columns
 
 
-def run_model(df: pd.DataFrame, state: str, outdir: Path):  # -> sm.tsa.DynamicFactor:
+def run_model(df: pd.DataFrame, state: str, outdir: Path, maxiter: int = 10_000):  # -> sm.tsa.DynamicFactor:
     """Run DFM for a given state
 
     Args:
@@ -94,7 +92,7 @@ def run_model(df: pd.DataFrame, state: str, outdir: Path):  # -> sm.tsa.DynamicF
     try:
         factor_multiplicities = {"Global": 2}
         model = sm.tsa.DynamicFactorMQ(df, factors=FACTORS, factor_multiplicities=factor_multiplicities)
-        results = model.fit(disp=10, maxiter=5_000)
+        results = model.fit(disp=10, maxiter=maxiter)
     except Exception as e:
         with open(outdir / "failed_convergence.txt", "a") as f:
             f.write(f"{state}\t{e}\n")

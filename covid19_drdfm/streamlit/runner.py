@@ -31,7 +31,12 @@ def center_title(text):
 
 
 def run_parameterized_model(
-    df: pd.DataFrame, state: str, outdir: Path, columns: list[str], global_multiplier: int = 2
+    df: pd.DataFrame,
+    state: str,
+    outdir: Path,
+    columns: list[str],
+    global_multiplier: int = 2,
+    maxiter: int = 10_000,
 ) -> sm.tsa.DynamicFactor:
     """Run DFM for a given state
 
@@ -134,9 +139,10 @@ with st.form("DFM Model Runner"):
 
     # State selections
     state_sel = st.multiselect("States", df.State.unique(), default=df.State.unique())
-    c1, c2 = st.columns([0.7, 0.3])
+    c1, c2, c3 = st.columns([0.5, 0.25, 0.25])
     outdir = c1.text_input("Output Directory", value="./")
     mult_sel = c2.slider("Global Multiplier", 0, 4, 2)
+    maxiter = c3.slider("Max EM Iterations", 1000, 20_000, 10_000, 100)
 
     # Metrics
     lengths = [len(selectors[x]) for x in selectors]
@@ -169,7 +175,7 @@ my_bar = c.progress(0, text=progress_text)
 n = len(state_sel)
 
 for i, state in enumerate(state_sel):
-    run_parameterized_model(df, state, outdir, columns=columns, global_multiplier=mult_sel)
+    run_parameterized_model(df, state, outdir, columns=columns, global_multiplier=mult_sel, maxiter=maxiter)
     my_bar.progress((i + 1) / n, text=progress_text)
 
 my_bar.empty()
