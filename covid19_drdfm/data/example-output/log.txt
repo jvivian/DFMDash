@@ -1,0 +1,1 @@
+{"Uncat": [], "Employment": ["Employment1", "Employment2"], "Consumption": [], "Inflation": ["CPIU", "PCEC"], "Response": [], "Pandemic": [], "global_multiplier": 0, "outdir": "./test-output"}

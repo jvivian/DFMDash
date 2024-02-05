@@ -1,0 +1,17 @@
+             Model Specification: Dynamic Factor Model
+Model: ,Dynamic Factor Model   ,  # of observed variables:   ,4
+       ,+ 3 factors in 3 blocks,  # of factor blocks:        ,3
+       ,+ AR(1) idiosyncratic  ,  Idiosyncratic disturbances:,AR(1)
+Sample:,2012-01-01 00:00:00    ,  Standardize variables:     ,True
+       ,- 2022-12-01 00:00:00  ,                             ,
+   Observed variables / factor loadings
+Dep. variable,Global,Employment,Inflation
+Employment1  ,X     ,X         ,
+Employment2  ,X     ,X         ,
+CPIU         ,X     ,          ,X
+PCEC         ,X     ,          ,X
+ Factor blocks:
+  block   ,order
+Global    ,1
+Employment,1
+Inflation ,1
