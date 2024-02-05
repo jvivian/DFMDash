@@ -66,6 +66,7 @@ def run_parameterized_model(
     new.to_csv(out / "df.tsv", sep="\t")
     # Run Model
     if (out / "model.csv").exists():
+        st.warning(f"Existing model detected in {outdir}, loading instead...")
         return
     model = sm.tsa.DynamicFactorMQ(new, factors=factors, factor_multiplicities=factor_multiplicities)
     try:
