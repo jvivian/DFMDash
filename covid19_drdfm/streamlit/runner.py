@@ -58,7 +58,6 @@ def run_parameterized_model(
     variables = list(factors.keys())
     _ = [factors.pop(var) for var in variables if var not in columns]
     # Save input data
-    st.write(factors)
     outdir.mkdir(exist_ok=True)
     out = outdir / state
     # pprint(f"Saving state input information to {out}")
