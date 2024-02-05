@@ -67,9 +67,9 @@ def run_parameterized_model(
     # Run Model
     if (out / "model.csv").exists():
         return
-    model = sm.tsa.DynamicFactorMQ(new, factors=FACTORS, factor_multiplicities=factor_multiplicities)
+    model = sm.tsa.DynamicFactorMQ(new, factors=factors, factor_multiplicities=factor_multiplicities)
     try:
-        results = model.fit(disp=10, maxiter=10_000)
+        results = model.fit(disp=10, maxiter=maxiter)
     except Exception as e:
         with open(outdir / "failed.txt", "a") as f:
             f.write(f"{state}\t{e}\n")
@@ -161,7 +161,7 @@ start = time.time()
 _, c, _ = st.columns([0.3, 0.4, 0.3])
 c.write("Creating output directory and starting model run(s)")
 columns = []
-for x in selectors:
+for x in [x for x in selectors if selectors[x]]:
     columns.extend(selectors[x])
 selectors.update({"global_multiplier": mult_sel, "outdir": outdir})
 outdir = Path(outdir)
@@ -183,7 +183,7 @@ filt_paths = [
     subdir / "filtered-factors.csv" for subdir in outdir.iterdir() if (subdir / "filtered-factors.csv").exists()
 ]
 dfs = [pd.read_csv(x) for x in filt_paths]
-filt_df = pd.concat(dfs)
+filt_df = pd.concat([x for x in dfs if ~x.empty])
 filt_df.to_csv(outdir / "filtered-factors.csv")
 st.dataframe(filt_df)
 
