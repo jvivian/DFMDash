@@ -56,4 +56,4 @@ melted_df["Label"] = [5 if x == factor else 1 for x in melted_df.variable]
 
 # Plot
 f = px.line(melted_df, x="Time", y="value", color="variable", hover_data="variable", line_dash="Label")
-st.plotly_chart(f)
+st.plotly_chart(f, use_container_width=True)
