@@ -18,13 +18,6 @@ from covid19_drdfm.processing import get_df
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
 
-FACTORS_GROUPED = defaultdict(list)
-for key, (_, second) in FACTORS.items():
-    FACTORS_GROUPED[second].append(key)
-
-FACTORS_GROUPED = dict(FACTORS_GROUPED)
-DEFAULTS = FACTORS_GROUPED
-
 
 def center_title(text):
     return st.markdown(f"<h1 style='text-align: center; color: grey;'>{text}</h1>", unsafe_allow_html=True)
