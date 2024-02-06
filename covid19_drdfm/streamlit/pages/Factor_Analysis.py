@@ -23,7 +23,7 @@ df = pd.read_csv(factor_path)
 
 # Selection parameters
 factor = st.sidebar.selectbox("Factor", df.columns[2:-1])
-state = st.sidebar.selectbox("State", df.State.unique())
+state = st.sidebar.selectbox("State", sorted(df.State.unique()))
 
 # Grab first state to fetch valid variables
 for state_subdir in path_to_results.iterdir():
