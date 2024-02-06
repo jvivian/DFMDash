@@ -1,0 +1,1 @@
+{"Uncat": ["GDP", "Prod"], "Employment": ["UI", "UR"], "Consumption": [], "Inflation": [], "Response": [], "Pandemic": [], "global_multiplier": 0, "outdir": "./example-output"}

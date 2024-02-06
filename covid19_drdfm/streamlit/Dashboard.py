@@ -1,6 +1,5 @@
 import json
 import time
-from collections import defaultdict
 from pathlib import Path
 
 import pandas as pd
@@ -17,13 +16,6 @@ from covid19_drdfm.processing import get_df
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
-
-FACTORS_GROUPED = defaultdict(list)
-for key, (_, second) in FACTORS.items():
-    FACTORS_GROUPED[second].append(key)
-
-FACTORS_GROUPED = dict(FACTORS_GROUPED)
-DEFAULTS = FACTORS_GROUPED
 
 
 def center_title(text):

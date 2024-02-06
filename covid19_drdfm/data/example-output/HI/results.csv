@@ -1,0 +1,28 @@
+                         Dynamic Factor Results
+Dep. Variable:  ,"GDP", and 3 more      ,  No. Observations:  ,132
+Model:          ,Dynamic Factor Model   ,  Log Likelihood     ,-183.031
+                ,+ 3 factors in 3 blocks,  AIC                ,410.062
+                ,+ AR(1) idiosyncratic  ,  BIC                ,473.484
+Date:           ,Mon, 05 Feb 2024       ,  HQIC               ,435.834
+Time:           ,19:32:53               ,  EM Iterations      ,940
+Sample:         ,01-01-2012             ,                     ,
+                ,- 12-01-2022           ,                     ,
+Covariance Type:,Not computed           ,                     ,
+                        Observation equation:
+Factor loadings:,Global,Employment,Uncat,   idiosyncratic: AR(1),var.
+GDP             ,-0.38 ,.         ,-0.62,-0.02                  ,0.00
+Prod            ,-0.40 ,.         ,0.61 ,0.62                   ,0.61
+UI              ,-0.67 ,-0.40     ,.    ,0.29                   ,0.88
+UR              ,-0.48 ,0.57      ,.    ,0.85                   ,0.27
+    Transition: Factor block 0
+      ,L1.Global,   error variance
+Global,0.13     ,0.00
+        Transition: Factor block 1
+          ,L1.Employment,   error variance
+Employment,0.12         ,0.00
+   Transition: Factor block 2
+     ,L1.Uncat,   error variance
+Uncat,0.93    ,0.00
+
+Warnings:
+[1] Covariance matrix not calculated.

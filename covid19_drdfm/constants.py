@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 NAME_MAP = {
     "Pandemic_1": "Cases1",
     "Pandemic_2": "Cases2",
@@ -108,6 +110,11 @@ FACTORS = {
     "TBill30yr": ("Global", "Uncat"),
     "FFR": ("Global", "Uncat"),
 }
+
+FACTORS_GROUPED = defaultdict(list)
+for key, (_, second) in FACTORS.items():
+    FACTORS_GROUPED[second].append(key)
+FACTORS_GROUPED = dict(FACTORS_GROUPED)
 
 DIFF_COLS = [
     "Cases1",
