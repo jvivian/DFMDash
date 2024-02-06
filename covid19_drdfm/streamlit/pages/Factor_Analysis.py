@@ -39,7 +39,7 @@ new = normalize(raw.query("State == @state")[columns])
 
 # Normalize factors and add to new dataframe
 df["Time"] = new["Time"]
-new[factor] = normalize(df)[factor]
+new[factor] = normalize(df[df.State == state])[factor]
 
 # Melt into format for plotting
 melted_df = new.drop(columns="State").melt(id_vars=["Time"], value_name="value")
