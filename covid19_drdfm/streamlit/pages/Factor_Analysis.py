@@ -48,3 +48,24 @@ melted_df["Label"] = [5 if x == factor else 1 for x in melted_df.variable]
 # Plot
 f = px.line(melted_df, x="Time", y="value", color="variable", hover_data="variable", line_dash="Label")
 st.plotly_chart(f, use_container_width=True)
+
+# Model Results
+results_path = path_to_results / state / "results.csv"
+model_path = path_to_results / state / "model.csv"
+
+values = pd.Series()
+with open(results_path) as f:
+    for line in f.readlines():
+        if "AIC" in line:
+            values["AIC"] = float(line.strip().split(",")[-1])
+        elif "Log Likelihood" in line:
+            values["LogLikelihood"] = float(line.strip().split(",")[-1])
+        elif "EM" in line:
+            values["EM Iterations"] = float(line.strip().split(",")[-1])
+
+_, c1, c2, c3, _ = st.columns(5)
+help_msgs = ["LogLikelihood: Higher is better", "AIC: Lower is better", "Number of steps to convergence"]
+for val, col, msg in zip(values.index, [c1, c2, c3], help_msgs):
+    col.metric(val, values[val], help=msg)
+
+# TODO: Plot values against distribution of (i.e. against AIC for all states)
