@@ -4,14 +4,14 @@ Model: ,Dynamic Factor Model   ,  # of observed variables:   ,4
        ,+ AR(1) idiosyncratic  ,  Idiosyncratic disturbances:,AR(1)
 Sample:,2012-02-01 00:00:00    ,  Standardize variables:     ,True
        ,- 2022-12-01 00:00:00  ,                             ,
-   Observed variables / factor loadings
-Dep. variable,Global,Employment,Inflation
-Employment1  ,X     ,X         ,
-Employment2  ,X     ,X         ,
-CPIU         ,X     ,          ,X
-PCEC         ,X     ,          ,X
+ Observed variables / factor loadings
+Dep. variable,Global,Employment,Uncat
+GDP          ,X     ,          ,X
+Prod         ,X     ,          ,X
+UI           ,X     ,X         ,
+UR           ,X     ,X         ,
  Factor blocks:
   block   ,order
 Global    ,1
 Employment,1
-Inflation ,1
+Uncat     ,1

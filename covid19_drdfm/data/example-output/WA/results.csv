@@ -1,28 +1,28 @@
                          Dynamic Factor Results
-Dep. Variable:  ,"Employment1", and 3 more,  No. Observations:  ,132
-Model:          ,Dynamic Factor Model     ,  Log Likelihood     ,-82.943
-                ,+ 3 factors in 3 blocks  ,  AIC                ,209.887
-                ,+ AR(1) idiosyncratic    ,  BIC                ,273.308
-Date:           ,Sun, 04 Feb 2024         ,  HQIC               ,235.658
-Time:           ,18:48:28                 ,  EM Iterations      ,3334
-Sample:         ,01-01-2012               ,                     ,
-                ,- 12-01-2022             ,                     ,
-Covariance Type:,Not computed             ,                     ,
-                          Observation equation:
-Factor loadings:,Global,Employment,Inflation,   idiosyncratic: AR(1),var.
-Employment1     ,-0.56 ,0.26      ,.        ,-0.10                  ,0.00
-Employment2     ,-0.58 ,0.18      ,.        ,-0.16                  ,0.04
-CPIU            ,-0.35 ,.         ,-0.57    ,0.59                   ,0.65
-PCEC            ,-0.48 ,.         ,0.42     ,-0.05                  ,0.00
+Dep. Variable:  ,"GDP", and 3 more      ,  No. Observations:  ,132
+Model:          ,Dynamic Factor Model   ,  Log Likelihood     ,-198.833
+                ,+ 3 factors in 3 blocks,  AIC                ,441.665
+                ,+ AR(1) idiosyncratic  ,  BIC                ,505.087
+Date:           ,Mon, 05 Feb 2024       ,  HQIC               ,467.437
+Time:           ,19:33:56               ,  EM Iterations      ,1699
+Sample:         ,01-01-2012             ,                     ,
+                ,- 12-01-2022           ,                     ,
+Covariance Type:,Not computed           ,                     ,
+                        Observation equation:
+Factor loadings:,Global,Employment,Uncat,   idiosyncratic: AR(1),var.
+GDP             ,-0.65 ,.         ,0.48 ,0.01                   ,0.00
+Prod            ,0.20  ,.         ,0.69 ,-0.04                  ,1.00
+UI              ,0.72  ,-0.41     ,.    ,0.30                   ,0.77
+UR              ,0.11  ,-0.70     ,.    ,0.86                   ,0.15
     Transition: Factor block 0
       ,L1.Global,   error variance
-Global,0.03     ,0.01
+Global,0.96     ,0.00
         Transition: Factor block 1
           ,L1.Employment,   error variance
-Employment,0.02         ,9.53
-       Transition: Factor block 2
-         ,L1.Inflation,   error variance
-Inflation,1.01        ,0.00
+Employment,0.66         ,0.35
+   Transition: Factor block 2
+     ,L1.Uncat,   error variance
+Uncat,-0.02   ,0.00
 
 Warnings:
 [1] Covariance matrix not calculated.
