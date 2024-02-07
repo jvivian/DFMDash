@@ -1,1 +1,1 @@
-{"Uncat": ["GDP", "Prod"], "Employment": ["UI", "UR"], "Consumption": [], "Inflation": [], "Response": [], "Pandemic": [], "global_multiplier": 0, "outdir": "./example-output"}
+{"Uncat": ["GDP", "RPFI", "FixAss"], "Employment": ["UI", "PartR", "UR"], "Consumption": ["Cons3", "Cons5"], "Inflation": ["CPIU", "PCE"], "Response": ["Mask2", "School"], "Pandemic": ["Hosp1", "Deaths1"], "global_multiplier": 2, "outdir": "./test-1-global"}

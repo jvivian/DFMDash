@@ -1,0 +1,3 @@
+KY	Matrix is not positive definite
+SD	Removal of missing values has eliminated all data.
+TN	Removal of missing values has eliminated all data.

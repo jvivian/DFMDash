@@ -1,17 +1,31 @@
              Model Specification: Dynamic Factor Model
-Model: ,Dynamic Factor Model   ,  # of observed variables:   ,4
-       ,+ 3 factors in 3 blocks,  # of factor blocks:        ,3
+Model: ,Dynamic Factor Model   ,  # of observed variables:   ,14
+       ,+ 8 factors in 7 blocks,  # of factor blocks:        ,7
        ,+ AR(1) idiosyncratic  ,  Idiosyncratic disturbances:,AR(1)
 Sample:,2012-01-01 00:00:00    ,  Standardize variables:     ,True
        ,- 2022-12-01 00:00:00  ,                             ,
- Observed variables / factor loadings
-Dep. variable,Global,Employment,Uncat
-GDP          ,X     ,          ,X
-Prod         ,X     ,          ,X
-UI           ,X     ,X         ,
-UR           ,X     ,X         ,
- Factor blocks:
-  block   ,order
-Global    ,1
-Employment,1
-Uncat     ,1
+                          Observed variables / factor loadings
+Dep. variable,Global.1,Global.2,Response,Pandemic,Uncat,Consumption,Employment,Inflation
+GDP          ,X       ,X       ,        ,        ,X    ,           ,          ,
+RPFI         ,X       ,X       ,        ,        ,X    ,           ,          ,
+FixAss       ,X       ,X       ,        ,        ,X    ,           ,          ,
+UI           ,X       ,X       ,        ,        ,     ,           ,X         ,
+PartR        ,X       ,X       ,        ,        ,     ,           ,X         ,
+UR           ,X       ,X       ,        ,        ,     ,           ,X         ,
+Cons3        ,X       ,X       ,        ,        ,     ,X          ,          ,
+Cons5        ,X       ,X       ,        ,        ,     ,X          ,          ,
+CPIU         ,X       ,X       ,        ,        ,     ,           ,          ,X
+PCE          ,X       ,X       ,        ,        ,     ,           ,          ,X
+Mask2        ,X       ,X       ,X       ,        ,     ,           ,          ,
+School       ,X       ,X       ,X       ,        ,     ,           ,          ,
+Hosp1        ,X       ,X       ,        ,X       ,     ,           ,          ,
+Deaths1      ,X       ,X       ,        ,X       ,     ,           ,          ,
+     Factor blocks:
+      block       ,order
+Global.1, Global.2,1
+Response          ,1
+Pandemic          ,1
+Uncat             ,1
+Consumption       ,1
+Employment        ,1
+Inflation         ,1
