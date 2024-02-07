@@ -21,8 +21,10 @@ path_to_results = Path(st.text_input("Path to results", value="./covid19_drdfm/d
 factor_path = path_to_results / "filtered-factors.csv"
 df = pd.read_csv(factor_path)
 
+# st.dataframe(df.head())
+# st.write()
 # Selection parameters
-factor = st.sidebar.selectbox("Factor", df.columns[2:-1])
+factor = st.sidebar.selectbox("Factor", [x for x in df.columns if "Global." not in x and "Unnamed" not in x])
 state = st.sidebar.selectbox("State", sorted(df.State.unique()))
 
 # Grab first state to fetch valid variables

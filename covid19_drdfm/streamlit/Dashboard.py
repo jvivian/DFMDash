@@ -27,6 +27,7 @@ def run_parameterized_model(
     state: str,
     outdir: Path,
     columns: list[str],
+    factors: dict[str, tuple[str, str]],
     global_multiplier: int = 2,
     maxiter: int = 10_000,
 ) -> sm.tsa.DynamicFactor:
@@ -47,8 +48,6 @@ def run_parameterized_model(
     columns = list(columns)  # + ["State", "Time"]
     columns = [x for x in columns if x in df.columns]
     new = df[columns]
-    variables = list(factors.keys())
-    _ = [factors.pop(var) for var in variables if var not in columns]
     # Save input data
     outdir.mkdir(exist_ok=True)
     out = outdir / state
@@ -86,7 +85,6 @@ df = get_df()
 sub = pd.Series([x for x in df.columns if x not in ["State", "Time"]], name="Variables").to_frame()
 factors = FACTORS.copy()
 factor_vars = list(factors.keys())
-_ = [factors.pop(x) for x in factor_vars if x not in df.columns]
 sub["Group"] = [factors[x][1] for x in sub.Variables if x in df.columns]
 
 center_title("Dynamic Factor Model Runner")
@@ -162,13 +160,16 @@ outdir.mkdir(exist_ok=True)
 with open(outdir / "log.txt", "w") as f:
     json.dump(selectors, f)
 
+
 progress_text = "Running model on designated states..."
 my_bar = c.progress(0, text=progress_text)
 
 n = len(state_sel)
-
+_ = [factors.pop(x) for x in factor_vars if x not in df.columns]
 for i, state in enumerate(state_sel):
-    run_parameterized_model(df, state, outdir, columns=columns, global_multiplier=mult_sel, maxiter=maxiter)
+    run_parameterized_model(
+        df, state, outdir, columns=columns, factors=factors, global_multiplier=mult_sel, maxiter=maxiter
+    )
     my_bar.progress((i + 1) / n, text=progress_text)
 
 my_bar.empty()
