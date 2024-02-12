@@ -72,8 +72,8 @@ def run_parameterized_model(
         f.write(results.summary().as_csv())
     filtered = results.factors["filtered"]
     filtered["State"] = state
-    # filtered.index = new.index
-    filtered.to_csv(out / "filtered-factors.csv", index=None)
+    filtered.index = new.index
+    filtered.to_csv(out / "filtered-factors.csv")
     return model
 
 
@@ -178,7 +178,7 @@ filt_paths = [
     subdir / "filtered-factors.csv" for subdir in outdir.iterdir() if (subdir / "filtered-factors.csv").exists()
 ]
 dfs = [pd.read_csv(x) for x in filt_paths]
-filt_df = pd.concat([x for x in dfs if ~x.empty])
+filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
 filt_df.to_csv(outdir / "filtered-factors.csv")
 st.dataframe(filt_df)
 
