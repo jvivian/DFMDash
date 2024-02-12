@@ -24,7 +24,7 @@ df = pd.read_csv(factor_path)
 # st.dataframe(df.head())
 # st.write()
 # Selection parameters
-factor = st.sidebar.selectbox("Factor", [x for x in df.columns if "Global." not in x and "Unnamed" not in x])
+factor = st.sidebar.selectbox("Factor", [x for x in df.columns if "Global" not in x and "Unnamed" not in x])
 state = st.sidebar.selectbox("State", sorted(df.State.unique()))
 
 # Grab first state to fetch valid variables
@@ -37,7 +37,7 @@ factor_vars = [x for x in FACTORS_GROUPED[factor] if x in valid_cols]
 columns = [*factor_vars, "State", "Time"]
 
 # Normalize original data for state / valid variables
-new = normalize(raw.query("State == @state")[columns])
+new = normalize(raw.query("State == @state")[columns]).iloc[1:]
 
 # Normalize factors and add to new dataframe
 df["Time"] = new["Time"]
