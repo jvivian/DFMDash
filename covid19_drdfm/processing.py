@@ -17,7 +17,7 @@ import pandas as pd
 import yaml
 from sklearn.preprocessing import MinMaxScaler
 
-from covid19_drdfm.constants import DIFF_COLS, LOG_DIFF_COLS, NAME_MAP
+from covid19_drdfm.constants import NAME_MAP
 
 ROOT_DIR = Path(__file__).parent.absolute()
 DATA_DIR = ROOT_DIR / "data/processed"
@@ -41,10 +41,6 @@ def get_df() -> pd.DataFrame:
         .pipe(adjust_inflation)
         .pipe(add_datetime)
         .pipe(adjust_pandemic_response)
-        .pipe(diff_vars, cols=DIFF_COLS)
-        .pipe(diff_vars, cols=LOG_DIFF_COLS, log=True)
-        # .pipe(normalize)
-        .drop(index=0)  # Drop first row with NaNs from diff
     )
 
 

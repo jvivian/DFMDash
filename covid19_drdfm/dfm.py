@@ -12,8 +12,8 @@ import statsmodels.api as sm
 from rich import print as pprint
 from statsmodels.tsa.stattools import adfuller
 
-from covid19_drdfm.constants import FACTORS
-from covid19_drdfm.processing import normalize
+from covid19_drdfm.constants import DIFF_COLS, FACTORS, LOG_DIFF_COLS
+from covid19_drdfm.processing import diff_vars, normalize
 
 
 @dataclass
@@ -38,12 +38,11 @@ def state_process(df: pd.DataFrame, state: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Processed DataFrame, ready for model
     """
-    df = df[df.State == state]
+    df = df[df.State == state].pipe(diff_vars, cols=DIFF_COLS).pipe(diff_vars, cols=LOG_DIFF_COLS, log=True).iloc[1:]
     df = normalize(df).fillna(0)
     const_cols = [x for x in df.columns if is_constant(df[x])]
     pprint(f"Constant Columns...dropping\n{const_cols}")
-    df = df.drop(columns=const_cols).set_index("Time", drop=True)
-    return df
+    return df.drop(columns=const_cols).set_index("Time", drop=True)
 
 
 def get_nonstationary_columns(df: pd.DataFrame) -> list[str]:

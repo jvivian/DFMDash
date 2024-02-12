@@ -19,29 +19,33 @@ raw = get_df()
 # Parameter for results
 path_to_results = Path(st.text_input("Path to results", value="./covid19_drdfm/data/example-output/"))
 factor_path = path_to_results / "filtered-factors.csv"
-df = pd.read_csv(factor_path)
+df = pd.read_csv(factor_path, index_col=0)
+df["Time"] = df.index
 
-# st.dataframe(df.head())
-# st.write()
-# Selection parameters
-factor = st.sidebar.selectbox("Factor", [x for x in df.columns if "Global." not in x and "Unnamed" not in x])
+factor = st.sidebar.selectbox(
+    "Factor", [x for x in df.columns if "Global" not in x and "Unnamed" not in x and "Time" not in x]
+)
 state = st.sidebar.selectbox("State", sorted(df.State.unique()))
+
+with st.expander("State Factors"):
+    st.dataframe(df)
 
 # Grab first state to fetch valid variables
 for state_subdir in path_to_results.iterdir():
     if not state_subdir.is_dir():
         continue
     valid_cols = pd.read_csv(state_subdir / "df.tsv", sep="\t").columns
+    # valid_cols = [x for x in valid_cols i]
     break
 factor_vars = [x for x in FACTORS_GROUPED[factor] if x in valid_cols]
 columns = [*factor_vars, "State", "Time"]
 
 # Normalize original data for state / valid variables
-new = normalize(raw.query("State == @state")[columns])
+new = normalize(raw.query("State == @state")[columns].iloc[1:])  # .reset_index(drop=True)
 
 # Normalize factors and add to new dataframe
-df["Time"] = new["Time"]
-new[factor] = normalize(df[df.State == state])[factor]
+df = normalize(df[df.State == state]).reset_index(drop=True)
+new[factor] = list(df[factor])
 
 # Melt into format for plotting
 melted_df = new.drop(columns="State").melt(id_vars=["Time"], value_name="value")

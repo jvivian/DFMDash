@@ -51,7 +51,6 @@ def run_parameterized_model(
     # Save input data
     outdir.mkdir(exist_ok=True)
     out = outdir / state
-    # pprint(f"Saving state input information to {out}")
     out.mkdir(exist_ok=True)
     new.to_excel(out / "df.xlsx")
     new.to_csv(out / "df.tsv", sep="\t")
@@ -59,6 +58,7 @@ def run_parameterized_model(
     if (out / "model.csv").exists():
         st.warning(f"Existing model detected in {outdir}, loading instead...")
         return
+    factors = {k: v for k, v in factors.items() if k in new.columns}
     model = sm.tsa.DynamicFactorMQ(new, factors=factors, factor_multiplicities=factor_multiplicities)
     try:
         results = model.fit(disp=10, maxiter=maxiter)
@@ -72,7 +72,8 @@ def run_parameterized_model(
         f.write(results.summary().as_csv())
     filtered = results.factors["filtered"]
     filtered["State"] = state
-    filtered.to_csv(out / "filtered-factors.csv", index=None)
+    filtered.index = new.index
+    filtered.to_csv(out / "filtered-factors.csv")
     return model
 
 
@@ -177,13 +178,13 @@ filt_paths = [
     subdir / "filtered-factors.csv" for subdir in outdir.iterdir() if (subdir / "filtered-factors.csv").exists()
 ]
 dfs = [pd.read_csv(x) for x in filt_paths]
-filt_df = pd.concat([x for x in dfs if ~x.empty])
+filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
 filt_df.to_csv(outdir / "filtered-factors.csv")
 st.dataframe(filt_df)
 
 end = time.time()
 hours, rem = divmod(end - start, 3600)
 minutes, seconds = divmod(rem, 60)
-pprint(f"Runtime: {int(hours):0>2}H:{int(minutes):0>2}M:{seconds:05.2f}S")
+st.write(f"Runtime: {int(hours):0>2}H:{int(minutes):0>2}M:{seconds:05.2f}S")
 
 st.balloons()
