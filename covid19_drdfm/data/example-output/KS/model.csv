@@ -1,30 +1,36 @@
              Model Specification: Dynamic Factor Model
-Model: ,Dynamic Factor Model   ,  # of observed variables:   ,13
-       ,+ 8 factors in 7 blocks,  # of factor blocks:        ,7
+Model: ,Dynamic Factor Model   ,  # of observed variables:   ,20
+       ,+ 6 factors in 6 blocks,  # of factor blocks:        ,6
        ,+ AR(1) idiosyncratic  ,  Idiosyncratic disturbances:,AR(1)
-Sample:,2012-01-01 00:00:00    ,  Standardize variables:     ,True
+Sample:,2012-02-01 00:00:00    ,  Standardize variables:     ,True
        ,- 2022-12-01 00:00:00  ,                             ,
-                          Observed variables / factor loadings
-Dep. variable,Global.1,Global.2,Response,Pandemic,Uncat,Consumption,Employment,Inflation
-GDP          ,X       ,X       ,        ,        ,X    ,           ,          ,
-RPFI         ,X       ,X       ,        ,        ,X    ,           ,          ,
-FixAss       ,X       ,X       ,        ,        ,X    ,           ,          ,
-UI           ,X       ,X       ,        ,        ,     ,           ,X         ,
-PartR        ,X       ,X       ,        ,        ,     ,           ,X         ,
-UR           ,X       ,X       ,        ,        ,     ,           ,X         ,
-Cons3        ,X       ,X       ,        ,        ,     ,X          ,          ,
-Cons5        ,X       ,X       ,        ,        ,     ,X          ,          ,
-CPIU         ,X       ,X       ,        ,        ,     ,           ,          ,X
-PCE          ,X       ,X       ,        ,        ,     ,           ,          ,X
-Mask2        ,X       ,X       ,X       ,        ,     ,           ,          ,
-Hosp1        ,X       ,X       ,        ,X       ,     ,           ,          ,
-Deaths1      ,X       ,X       ,        ,X       ,     ,           ,          ,
-     Factor blocks:
-      block       ,order
-Global.1, Global.2,1
-Response          ,1
-Pandemic          ,1
-Uncat             ,1
-Consumption       ,1
-Employment        ,1
-Inflation         ,1
+                Observed variables / factor loadings
+Dep. variable,Global,Pandemic,Consumption,Employment,Inflation,Uncat
+TBill1yr     ,X     ,        ,           ,          ,         ,X
+TBill10yr    ,X     ,        ,           ,          ,         ,X
+Employment1  ,X     ,        ,           ,X         ,         ,
+Employment2  ,X     ,        ,           ,X         ,         ,
+Cons1        ,X     ,        ,X          ,          ,         ,
+Cons5        ,X     ,        ,X          ,          ,         ,
+CPIU         ,X     ,        ,           ,          ,X        ,
+PCE          ,X     ,        ,           ,          ,X        ,
+Cases5       ,X     ,X       ,           ,          ,         ,
+Cases2       ,X     ,X       ,           ,          ,         ,
+Deaths5      ,X     ,X       ,           ,          ,         ,
+Deaths2      ,X     ,X       ,           ,          ,         ,
+Cases3       ,X     ,X       ,           ,          ,         ,
+Deaths3      ,X     ,X       ,           ,          ,         ,
+Cases4       ,X     ,X       ,           ,          ,         ,
+Hosp2        ,X     ,X       ,           ,          ,         ,
+Cases1       ,X     ,X       ,           ,          ,         ,
+Hosp1        ,X     ,X       ,           ,          ,         ,
+Deaths4      ,X     ,X       ,           ,          ,         ,
+Deaths1      ,X     ,X       ,           ,          ,         ,
+  Factor blocks:
+   block   ,order
+Global     ,1
+Pandemic   ,1
+Consumption,1
+Employment ,1
+Inflation  ,1
+Uncat      ,1
