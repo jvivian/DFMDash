@@ -22,9 +22,8 @@ factor_path = path_to_results / "filtered-factors.csv"
 df = pd.read_csv(factor_path, index_col=0)
 df["Time"] = df.index
 
-factor = st.sidebar.selectbox(
-    "Factor", [x for x in df.columns if "Global" not in x and "Unnamed" not in x and "Time" not in x]
-)
+filter_list = ["Global", "Unnamed", "Time", "State"]
+factor = st.sidebar.selectbox("Factor", [x for x in df.columns if x not in filter_list])
 state = st.sidebar.selectbox("State", sorted(df.State.unique()))
 
 with st.expander("State Factors"):
