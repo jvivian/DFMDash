@@ -11,7 +11,7 @@ from rich import print as pprint
 from sklearn.preprocessing import MinMaxScaler
 
 from covid19_drdfm.constants import FACTORS
-from covid19_drdfm.dfm import state_process
+from covid19_drdfm.dfm import run_parameterized_model
 from covid19_drdfm.processing import get_df
 
 st.set_page_config(layout="wide")
@@ -20,61 +20,6 @@ pio.templates.default = "plotly_white"
 
 def center_title(text):
     return st.markdown(f"<h1 style='text-align: center; color: grey;'>{text}</h1>", unsafe_allow_html=True)
-
-
-def run_parameterized_model(
-    df: pd.DataFrame,
-    state: str,
-    outdir: Path,
-    columns: list[str],
-    factors: dict[str, tuple[str, str]],
-    global_multiplier: int = 2,
-    maxiter: int = 10_000,
-) -> sm.tsa.DynamicFactor:
-    """Run DFM for a given state
-
-    Args:
-        df (pd.DataFrame): DataFrame processed via `covid19_drdfm.run`
-        state (str): Two-letter state code to process
-        outdir (str): Output directory for model CSV files
-
-    Returns:
-        sm.tsa.DynamicFactor: Dynamic Factor Model
-
-    """
-    # Factors and input data
-    factor_multiplicities = {"Global": global_multiplier}
-    df = state_process(df, state)
-    columns = list(columns)  # + ["State", "Time"]
-    columns = [x for x in columns if x in df.columns]
-    new = df[columns]
-    # Save input data
-    outdir.mkdir(exist_ok=True)
-    out = outdir / state
-    out.mkdir(exist_ok=True)
-    new.to_excel(out / "df.xlsx")
-    new.to_csv(out / "df.tsv", sep="\t")
-    # Run Model
-    if (out / "model.csv").exists():
-        st.warning(f"Existing model detected in {outdir}, loading instead...")
-        return
-    factors = {k: v for k, v in factors.items() if k in new.columns}
-    model = sm.tsa.DynamicFactorMQ(new, factors=factors, factor_multiplicities=factor_multiplicities)
-    try:
-        results = model.fit(disp=10, maxiter=maxiter)
-    except Exception as e:
-        with open(outdir / "failed.txt", "a") as f:
-            f.write(f"{state}\t{e}\n")
-        return
-    with open(out / "model.csv", "w") as f:
-        f.write(model.summary().as_csv())
-    with open(out / "results.csv", "w") as f:
-        f.write(results.summary().as_csv())
-    filtered = results.factors["filtered"]
-    filtered["State"] = state
-    filtered.index = new.index
-    filtered.to_csv(out / "filtered-factors.csv")
-    return model
 
 
 @st.cache_data
@@ -168,7 +113,7 @@ my_bar = c.progress(0, text=progress_text)
 n = len(state_sel)
 _ = [factors.pop(x) for x in factor_vars if x not in df.columns]
 for i, state in enumerate(state_sel):
-    run_parameterized_model(
+    _ = run_parameterized_model(
         df, state, outdir, columns=columns, factors=factors, global_multiplier=mult_sel, maxiter=maxiter
     )
     my_bar.progress((i + 1) / n, text=progress_text)

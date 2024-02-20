@@ -6,6 +6,7 @@ Main command to run model
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 import pandas as pd
 import statsmodels.api as sm
@@ -65,7 +66,15 @@ def get_nonstationary_columns(df: pd.DataFrame) -> list[str]:
     return non_stationary_columns
 
 
-def run_model(df: pd.DataFrame, state: str, outdir: Path, maxiter: int = 10_000):  # -> sm.tsa.DynamicFactor:
+def run_parameterized_model(
+    df: pd.DataFrame,
+    state: str,
+    outdir: Path,
+    columns: Optional[list[str]] = None,
+    factors: dict[str, tuple[str, str]] = FACTORS,
+    global_multiplier: int = 2,
+    maxiter: int = 10_000,
+) -> sm.tsa.DynamicFactor:
     """Run DFM for a given state
 
     Args:
@@ -73,32 +82,44 @@ def run_model(df: pd.DataFrame, state: str, outdir: Path, maxiter: int = 10_000)
         state (str): Two-letter state code to process
         outdir (str): Output directory for model CSV files
 
-    # Returns:
-        # sm.tsa.DynamicFactor: Dynamic Factor Model
-
+    Returns:
+        sm.tsa.DynamicFactor: Dynamic Factor Model
     """
+    # Factors and input data
     df = state_process(df, state)
-    save_df(df, outdir, state)
-    # Remove factors without an associated column
-    factors = FACTORS.copy()
-    factor_keys = list(factors.keys())
-    [factors.pop(var) for var in factor_keys if var not in df.columns]
-    # Load cached model if exists
-    if (outdir / state / "model.csv").exists():
-        model = sm.load(outdir / state / "model.csv")
-        return model, model.fit(disp=10)
-    # Try to run model, if it fails, note failure and return. Rust handles this so much better
+    if columns:
+        columns = [x for x in list(columns) if x in df.columns]
+        new = df[columns]
+    else:
+        new = df
+    # Save input data
+    outdir.mkdir(exist_ok=True)
+    out = outdir / state
+    out.mkdir(exist_ok=True)
+    new.to_excel(out / "df.xlsx")
+    new.to_csv(out / "df.tsv", sep="\t")
+    factors = {k: v for k, v in factors.items() if k in new.columns}
+    if global_multiplier == 0:
+        factors = {k: {v[1]} for k, v in factors.items()}
+        model = sm.tsa.DynamicFactorMQ(new, factors=factors)
+    else:
+        factor_multiplicities = {"Global": global_multiplier}
+        model = sm.tsa.DynamicFactorMQ(new, factors=factors, factor_multiplicities=factor_multiplicities)
     try:
-        factor_multiplicities = {"Global": 2}
-        model = sm.tsa.DynamicFactorMQ(df, factors=FACTORS, factor_multiplicities=factor_multiplicities)
         results = model.fit(disp=10, maxiter=maxiter)
     except Exception as e:
-        with open(outdir / "failed_convergence.txt", "a") as f:
+        with open(outdir / "failed.txt", "a") as f:
             f.write(f"{state}\t{e}\n")
-        return None, None
-    # Save output
-    save_results(df, model, results, outdir=outdir / state, verbose=True)
-    return model, results
+        return
+    with open(out / "model.csv", "w") as f:
+        f.write(model.summary().as_csv())
+    with open(out / "results.csv", "w") as f:
+        f.write(results.summary().as_csv())
+    filtered = results.factors["filtered"]
+    filtered["State"] = state
+    filtered.index = new.index
+    filtered.to_csv(out / "filtered-factors.csv")
+    return model
 
 
 def save_df(df: pd.DataFrame, outdir: Path, state: str):
