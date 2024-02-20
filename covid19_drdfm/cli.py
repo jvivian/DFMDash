@@ -14,7 +14,7 @@ from pathlib import Path
 
 import typer
 
-from covid19_drdfm.dfm import run_model
+from covid19_drdfm.dfm import run_parameterized_model
 from covid19_drdfm.processing import get_df, write
 
 app = typer.Typer()
@@ -32,7 +32,7 @@ def run_dfm(outdir: str):
     raw = get_df()
     # ? Add multiprocessing step here
     state = "NY"
-    run_model(raw, state, Path(outdir))
+    run_parameterized_model(raw, state, Path(outdir))
 
 
 @app.command("process")
