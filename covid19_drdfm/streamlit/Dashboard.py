@@ -110,7 +110,10 @@ filt_paths = [
     subdir / "filtered-factors.csv" for subdir in outdir.iterdir() if (subdir / "filtered-factors.csv").exists()
 ]
 dfs = [pd.read_csv(x) for x in filt_paths]
-filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
+try:
+    filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
+except ValueError:
+    filt_df = pd.DataFrame()
 filt_df.to_csv(outdir / "filtered-factors.csv")
 st.dataframe(filt_df)
 
@@ -118,5 +121,14 @@ end = time.time()
 hours, rem = divmod(end - start, 3600)
 minutes, seconds = divmod(rem, 60)
 st.write(f"Runtime: {int(hours):0>2}H:{int(minutes):0>2}M:{seconds:05.2f}S")
+
+fail_path = outdir / "failed.txt"
+if fail_path.exists():
+    with open(fail_path) as f:
+        lines = f.readlines()
+    _, c1, c2, _ = st.columns([0.1, 0.2, 0.6, 0.1])
+    c1.metric("Failures", value=len(lines))
+    lines = "\n".join(lines)
+    c2.warning(f"\t\tFailures Detected\n\n{lines}")
 
 st.balloons()
