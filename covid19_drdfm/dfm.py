@@ -93,7 +93,7 @@ def run_parameterized_model(
 
     # Run model, save output, log if failure occurs
     try:
-        model, results = _run_model(**locals())
+        model, results = _run_model(df, factors, global_multiplier, maxiter)
     except Exception as e:
         with open(outdir / "failed.txt", "a") as f:
             f.write(f"{state}\t{e}\n")
