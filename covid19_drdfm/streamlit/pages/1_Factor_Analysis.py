@@ -21,6 +21,7 @@ path_to_results = Path(st.text_input("Path to results", value="./covid19_drdfm/d
 factor_path = path_to_results / "filtered-factors.csv"
 df = pd.read_csv(factor_path, index_col=0)
 df["Time"] = df.index
+df.index.name = "Time"
 
 filter_list = ["Global", "Unnamed", "Time", "State"]
 factor = st.sidebar.selectbox("Factor", [x for x in df.columns if x not in filter_list])
@@ -40,7 +41,9 @@ factor_vars = [x for x in FACTORS_GROUPED[factor] if x in valid_cols]
 columns = [*factor_vars, "State", "Time"]
 
 # Normalize original data for state / valid variables
-new = normalize(raw.query("State == @state")[columns].iloc[1:])  # .reset_index(drop=True)
+raw = raw.set_index("Time", drop=False)
+raw = raw.loc[df.index, :]
+new = normalize(raw.query("State == @state")[columns])  # .iloc[1:])  # .reset_index(drop=True)
 
 # Normalize factors and add to new dataframe
 if st.sidebar.checkbox("Invert Factor"):
