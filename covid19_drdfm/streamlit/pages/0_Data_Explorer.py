@@ -1,7 +1,3 @@
-# Raw
-# Post-processed
-# Normalized
-
 from functools import reduce
 from pathlib import Path
 
@@ -10,16 +6,15 @@ import plotly.io as pio
 import plotly_express as px
 import streamlit as st
 
-from covid19_drdfm.constants import DIFF_COLS, LOG_DIFF_COLS, FACTORS_GROUPED
+from covid19_drdfm.constants import DIFF_COLS, FACTORS_GROUPED, LOG_DIFF_COLS
 from covid19_drdfm.processing import (
     add_datetime,
-    adjust_inflation,
     adjust_pandemic_response,
     diff_vars,
     fix_names,
     normalize,
 )
-from covid19_drdfm.dfm import state_process
+from covid19_drdfm.streamlit.plots import plot_correlations
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
@@ -45,7 +40,7 @@ def raw_data():
 
 
 @st.cache_data
-def processed_data(raw_data: pd.DataFrame, state: str) -> pd.DataFrame:
+def process_data(raw_data: pd.DataFrame, state: str) -> pd.DataFrame:
     return (
         raw_data[raw_data.State == state]
         .pipe(diff_vars, cols=DIFF_COLS)
@@ -62,28 +57,16 @@ factor = st.sidebar.selectbox("Factor", sorted(FACTORS_GROUPED))
 selections = ["Raw", "Processed", "Normalized"]
 selection = st.sidebar.selectbox("Data Processing", selections)
 
-proc = processed_data(raw, state)
-
-# Filter DataFrame based on user inputs
-# df_filtered = raw[(raw["State"] == state) & (raw["Time"].between(time_range[0], time_range[1]))]
-
-# Show normalized if so
+# Specify dataframe based on user choice
+proc = process_data(raw, state)
 df = proc if selection == "Processed" else raw
+df = normalize(proc).fillna(0) if selection == "Normalized" else df[df["State"] == state]
 
-with st.expander("Raw Data"):
-    st.dataframe(raw[raw.State == state])
+with st.expander(f"{selection} Dataframe"):
+    st.dataframe(df)
 
-with st.expander("Processed Data"):
-    st.dataframe(proc)
-
-with st.expander("Normalized"):
-    norm = normalize(proc).fillna(0)
-    st.dataframe(norm)
-
-df = norm if selection == "Normalized" else df[df["State"] == state]
-
+# Tidy data
 variables = FACTORS_GROUPED[factor] + ["Time"]
-
 melt = df[variables].melt(
     id_vars=["Time"],
     var_name="Variable",
@@ -91,7 +74,9 @@ melt = df[variables].melt(
 )
 
 # Create Plotly figure
-fig = px.line(melt, x="Time", y="Value", color="Variable")  # replace y with your variable column
-
-# Display Plotly figure in Streamlit
+fig = px.line(melt, x="Time", y="Value", color="Variable", title=f"{selection} Data of {factor} Factor Variables")
 st.plotly_chart(fig, use_container_width=True)
+
+# Display correlations for state
+st.warning(f"Correlations are calculated using {selection} dataframe")
+plot_correlations(df)
