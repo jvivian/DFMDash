@@ -43,6 +43,8 @@ columns = [*factor_vars, "State", "Time"]
 new = normalize(raw.query("State == @state")[columns].iloc[1:])  # .reset_index(drop=True)
 
 # Normalize factors and add to new dataframe
+if st.sidebar.checkbox("Invert Factor"):
+    df[factor] = df[factor] * -1
 df = normalize(df[df.State == state]).reset_index(drop=True)
 new[factor] = list(df[factor])
 
