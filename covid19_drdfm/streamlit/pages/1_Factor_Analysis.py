@@ -42,13 +42,13 @@ columns = [*factor_vars, "State", "Time"]
 
 # Normalize original data for state / valid variables
 raw = raw.set_index("Time", drop=False)
-raw = raw.loc[df.index, :]
-new = normalize(raw.query("State == @state")[columns])  # .iloc[1:])  # .reset_index(drop=True)
+new = normalize(raw[raw.State == state][columns]).set_index("Time", drop=False)
 
 # Normalize factors and add to new dataframe
 if st.sidebar.checkbox("Invert Factor"):
     df[factor] = df[factor] * -1
-df = normalize(df[df.State == state]).reset_index(drop=True)
+df = normalize(df[df.State == state]).set_index("Time", drop=False)  # .reset_index(drop=True)
+new = new.loc[df.index, :]
 new[factor] = list(df[factor])
 
 # Melt into format for plotting
