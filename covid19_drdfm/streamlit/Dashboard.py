@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import time
 from pathlib import Path
@@ -63,10 +64,12 @@ with st.form("DFM Model Runner"):
 
     # State selections
     state_sel = st.multiselect("States", df.State.unique(), default=df.State.unique())
-    c1, c2, c3 = st.columns([0.5, 0.25, 0.25])
+    c1, c2, c3, c4 = st.columns([0.35, 0.25, 0.20, 0.20])
     outdir = c1.text_input("Output Directory", value="./")
-    mult_sel = c2.slider("Global Multiplier", 0, 4, 2)
-    maxiter = c3.slider("Max EM Iterations", 1000, 20_000, 10_000, 100)
+    date_start = c2.date_input("Start Date", value=df.Time.min(), min_value=df.Time.min(), max_value=df.Time.max())
+    mult_sel = c3.slider("Global Multiplier", 0, 4, 2)
+    maxiter = c4.slider("Max EM Iterations", 1000, 20_000, 10_000, 100)
+    df = df[df.Time > date_start.isoformat()]
 
     # Metrics
     lengths = [len(selectors[x]) for x in selectors]
@@ -110,10 +113,7 @@ filt_paths = [
     subdir / "filtered-factors.csv" for subdir in outdir.iterdir() if (subdir / "filtered-factors.csv").exists()
 ]
 dfs = [pd.read_csv(x) for x in filt_paths]
-try:
-    filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
-except ValueError:
-    filt_df = pd.DataFrame()
+filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
 filt_df.to_csv(outdir / "filtered-factors.csv")
 st.dataframe(filt_df)
 
@@ -121,14 +121,5 @@ end = time.time()
 hours, rem = divmod(end - start, 3600)
 minutes, seconds = divmod(rem, 60)
 st.write(f"Runtime: {int(hours):0>2}H:{int(minutes):0>2}M:{seconds:05.2f}S")
-
-fail_path = outdir / "failed.txt"
-if fail_path.exists():
-    with open(fail_path) as f:
-        lines = f.readlines()
-    _, c1, c2, _ = st.columns([0.1, 0.2, 0.6, 0.1])
-    c1.metric("Failures", value=len(lines))
-    lines = "\n".join(lines)
-    c2.warning(f"\t\tFailures Detected\n\n{lines}")
 
 st.balloons()
