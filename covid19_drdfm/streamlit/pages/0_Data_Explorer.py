@@ -78,5 +78,5 @@ fig = px.line(melt, x="Time", y="Value", color="Variable", title=f"{selection} D
 st.plotly_chart(fig, use_container_width=True)
 
 # Display correlations for state
-st.warning(f"Correlations are calculated {selection} dataframe")
+st.warning(f"Correlations are calculated using {selection} dataframe")
 plot_correlations(df)
