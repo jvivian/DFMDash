@@ -17,13 +17,6 @@ from covid19_drdfm.constants import DIFF_COLS, FACTORS, LOG_DIFF_COLS
 from covid19_drdfm.processing import diff_vars, normalize
 
 
-@dataclass
-class StateData:
-    df: pd.DataFrame
-    model: sm.tsa.DynamicFactorMQ
-    # results:
-
-
 def is_constant(column) -> bool:
     """Returns True if a DataFrame column is constant"""
     return all(column == column.iloc[0])
@@ -85,28 +78,22 @@ def run_parameterized_model(
     Returns:
         sm.tsa.DynamicFactor: Dynamic Factor Model
     """
-    # Factors and input data
+    # Subset for state and columns of interest
     df = state_process(df, state)
     if columns:
         columns = [x for x in list(columns) if x in df.columns]
-        new = df[columns]
-    else:
-        new = df
-    # Save input data
+        df = df[columns]
+
+    # Save input to outdir
     outdir.mkdir(exist_ok=True)
     out = outdir / state
     out.mkdir(exist_ok=True)
-    new.to_excel(out / "df.xlsx")
-    new.to_csv(out / "df.tsv", sep="\t")
-    factors = {k: v for k, v in factors.items() if k in new.columns}
-    if global_multiplier == 0:
-        factors = {k: {v[1]} for k, v in factors.items()}
-        model = sm.tsa.DynamicFactorMQ(new, factors=factors)
-    else:
-        factor_multiplicities = {"Global": global_multiplier}
-        model = sm.tsa.DynamicFactorMQ(new, factors=factors, factor_multiplicities=factor_multiplicities)
+    df.to_excel(out / "df.xlsx")
+    df.to_csv(out / "df.tsv", sep="\t")
+
+    # Run model, save output, log if failure occurs
     try:
-        results = model.fit(disp=10, maxiter=maxiter)
+        model, results = _run_model(**locals())
     except Exception as e:
         with open(outdir / "failed.txt", "a") as f:
             f.write(f"{state}\t{e}\n")
@@ -117,9 +104,35 @@ def run_parameterized_model(
         f.write(results.summary().as_csv())
     filtered = results.factors["filtered"]
     filtered["State"] = state
-    filtered.index = new.index
+    filtered.index = df.index
     filtered.to_csv(out / "filtered-factors.csv")
     return model
+
+
+def _run_model(df: pd.DataFrame, factors: dict[str, tuple[str, str]], global_multiplier: int, maxiter: int):
+    """Run the model with the given parameters.
+
+    Args:
+        df (pd.DataFrame): Input DataFrame.
+        factors (dict[str, tuple[str, str]]): Factors to include in the model.
+        global_multiplier (int): Global multiplier.
+        maxiter (int): Maximum number of iterations.
+
+    Returns:
+        Tuple[sm.tsa.DynamicFactor, Any]: Model and results.
+    """
+    # Subset to valid factors based on columns
+    factors = {k: v for k, v in factors.items() if k in df.columns}
+    # Handle global multiplier edge condition when set to 0 by filtering factors
+    if global_multiplier == 0:
+        factors = {k: {v[1]} for k, v in factors.items()}
+        model = sm.tsa.DynamicFactorMQ(df, factors=factors)
+    else:
+        factor_multiplicities = {"Global": global_multiplier}
+        model = sm.tsa.DynamicFactorMQ(df, factors=factors, factor_multiplicities=factor_multiplicities)
+    # Fit model and return results
+    results = model.fit(disp=10, maxiter=maxiter)
+    return model, results
 
 
 def save_df(df: pd.DataFrame, outdir: Path, state: str):
