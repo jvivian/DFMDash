@@ -13,6 +13,7 @@ from sklearn.preprocessing import MinMaxScaler
 from covid19_drdfm.constants import FACTORS
 from covid19_drdfm.dfm import run_parameterized_model
 from covid19_drdfm.processing import get_df
+from covid19_drdfm.streamlit.plots import plot_correlations
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
@@ -28,30 +29,16 @@ def get_data():
 
 
 df = get_df()
-sub = pd.Series([x for x in df.columns if x not in ["State", "Time"]], name="Variables").to_frame()
+var_df = pd.Series([x for x in df.columns if x not in ["State", "Time"]], name="Variables").to_frame()
 factors = FACTORS.copy()
 factor_vars = list(factors.keys())
-sub["Group"] = [factors[x][1] for x in sub.Variables if x in df.columns]
+var_df["Group"] = [factors[x][1] for x in var_df.Variables if x in df.columns]
 
 center_title("Dynamic Factor Model Runner")
 
 with st.expander("Variable correlations"):
     st.write("Data is normalized between [0, 1] before calculating correlation")
-    c1, c2 = st.columns(2)
-    c3, c4 = st.columns(2)
-    c5, c6 = st.columns(2)
-    for group, stcol in zip(sub.Group.unique(), [c1, c2, c3, c4, c5, c6]):
-        cols = sub[sub.Group == group].Variables
-        corr = px.imshow(
-            pd.DataFrame(MinMaxScaler().fit_transform(df[cols]), columns=cols).corr(),
-            zmin=-1,
-            zmax=1,
-            color_continuous_scale="rdbu_r",
-            color_continuous_midpoint=0,
-        )
-        stcol.subheader(group)
-        stcol.plotly_chart(corr)
-
+    plot_correlations(df, normalize=True)
 
 with st.form("DFM Model Runner"):
     st.markdown(
@@ -70,8 +57,8 @@ with st.form("DFM Model Runner"):
     c3, c4 = st.columns(2)
     c5, c6 = st.columns(2)
     selectors = {}
-    for group, stcol in zip(sub.Group.unique(), [c1, c2, c3, c4, c5, c6]):
-        variables = sub[sub.Group == group].Variables
+    for group, stcol in zip(var_df.Group.unique(), [c1, c2, c3, c4, c5, c6]):
+        variables = var_df[var_df.Group == group].Variables
         selectors[group] = stcol.multiselect(group, variables, variables)
 
     # State selections
