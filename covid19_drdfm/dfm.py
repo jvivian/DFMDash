@@ -78,22 +78,29 @@ def run_parameterized_model(
     Returns:
         sm.tsa.DynamicFactor: Dynamic Factor Model
     """
-    # Subset for state and columns of interest
+    # Factors and input data
     df = state_process(df, state)
+    _ = get_nonstationary_columns(df)
     if columns:
         columns = [x for x in list(columns) if x in df.columns]
-        df = df[columns]
-
-    # Save input to outdir
+        new = df[columns]
+    else:
+        new = df
+    # Save input data
     outdir.mkdir(exist_ok=True)
     out = outdir / state
     out.mkdir(exist_ok=True)
-    df.to_excel(out / "df.xlsx")
-    df.to_csv(out / "df.tsv", sep="\t")
-
-    # Run model, save output, log if failure occurs
+    new.to_excel(out / "df.xlsx")
+    new.to_csv(out / "df.tsv", sep="\t")
+    factors = {k: v for k, v in factors.items() if k in new.columns}
+    if global_multiplier == 0:
+        factors = {k: {v[1]} for k, v in factors.items()}
+        model = sm.tsa.DynamicFactorMQ(new, factors=factors)
+    else:
+        factor_multiplicities = {"Global": global_multiplier}
+        model = sm.tsa.DynamicFactorMQ(new, factors=factors, factor_multiplicities=factor_multiplicities)
     try:
-        model, results = _run_model(df, factors, global_multiplier, maxiter)
+        results = model.fit(disp=10, maxiter=maxiter)
     except Exception as e:
         with open(outdir / "failed.txt", "a") as f:
             f.write(f"{state}\t{e}\n")
@@ -104,73 +111,6 @@ def run_parameterized_model(
         f.write(results.summary().as_csv())
     filtered = results.factors["filtered"]
     filtered["State"] = state
-    filtered.index = df.index
+    filtered.index = new.index
     filtered.to_csv(out / "filtered-factors.csv")
     return model
-
-
-def _run_model(df: pd.DataFrame, factors: dict[str, tuple[str, str]], global_multiplier: int, maxiter: int):
-    """Run the model with the given parameters.
-
-    Args:
-        df (pd.DataFrame): Input DataFrame.
-        factors (dict[str, tuple[str, str]]): Factors to include in the model.
-        global_multiplier (int): Global multiplier.
-        maxiter (int): Maximum number of iterations.
-
-    Returns:
-        Tuple[sm.tsa.DynamicFactor, Any]: Model and results.
-    """
-    # Subset to valid factors based on columns
-    factors = {k: v for k, v in factors.items() if k in df.columns}
-    # Handle global multiplier edge condition when set to 0 by filtering factors
-    if global_multiplier == 0:
-        factors = {k: {v[1]} for k, v in factors.items()}
-        model = sm.tsa.DynamicFactorMQ(df, factors=factors)
-    else:
-        factor_multiplicities = {"Global": global_multiplier}
-        model = sm.tsa.DynamicFactorMQ(df, factors=factors, factor_multiplicities=factor_multiplicities)
-    # Fit model and return results
-    results = model.fit(disp=10, maxiter=maxiter)
-    return model, results
-
-
-def save_df(df: pd.DataFrame, outdir: Path, state: str):
-    """Save DataFrame as CSV / Excel
-
-    Args:
-        df (pd.DataFrame): Input DataFrame to model
-        outdir (Path): output directory
-        state (str): State to subset by
-    """
-    outdir.mkdir(exist_ok=True)
-    state_dir = outdir / state
-    pprint(f"Saving state input information to {state_dir}")
-    state_dir.mkdir(exist_ok=True)
-    df.to_excel(state_dir / "df.xlsx")
-    df.to_csv(state_dir / "df.tsv", sep="\t")
-
-
-def save_results(df: pd.DataFrame, model, results, outdir: Path, verbose: bool = False):
-    """Save model and results to given directory
-
-    Args:
-        df pd.DataFrame: _description_
-        model (_type_): _description_
-        results (_type_): _description_
-        outdir (Path): _description_
-        verbose (bool, optional): _description_. Defaults to False.
-    """
-    if verbose is True:
-        pprint(model.summary())
-        pprint(results.summary())
-        # Output
-        pprint(f"Saving output to {outdir}")
-    with open(outdir / "model.csv", "w") as f:
-        f.write(model.summary().as_csv())
-    with open(outdir / "results.csv", "w") as f:
-        f.write(results.summary().as_csv())
-    non_stationary_cols = get_nonstationary_columns(df)
-    if non_stationary_cols:
-        with open(outdir / "non-stationary-columns.txt", "w") as f:
-            f.write("\n".join(non_stationary_cols))
