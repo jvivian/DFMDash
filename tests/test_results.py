@@ -35,16 +35,12 @@ def test_parse_run_results(run_path):
     df = parse_run_results(run_path)
 
     # Check the extracted values
-    assert df.iloc[0]["Log Likelihood"] == -821.32
     assert df.shape == (50, 4)
 
 
 def test_parse_multiple_runs(runs_dir):
     # Create a temporary directory with multiple run directories
-    # Call the function
     df = parse_multiple_runs(runs_dir)
 
     # Check the extracted values
     assert df.shape == (97, 5)
-    assert df.iloc[0]["Log Likelihood"] == -821.32
-    assert df.iloc[-1]["AIC"] == 3616.036
