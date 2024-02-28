@@ -17,14 +17,14 @@ raw = get_df()
 # TEST_DIR = Path('covid19_drdfm/data/example-output/')
 
 # Parameter for results
-path_to_results = Path(st.text_input("Path to results", value="./covid19_drdfm/data/example-output/"))
+path_to_results = Path(st.text_input("Path to results", value="./covid19_drdfm/data/example-data"))
 factor_path = path_to_results / "filtered-factors.csv"
 df = pd.read_csv(factor_path, index_col=0)
 df["Time"] = df.index
 df.index.name = "Time"
 
-filter_list = ["Global", "Unnamed", "Time", "State"]
-factor = st.sidebar.selectbox("Factor", [x for x in df.columns if x not in filter_list])
+filter_list = ["Unnamed", "Time", "State"]
+factor = st.sidebar.selectbox("Factor", [x for x in df.columns if x not in filter_list and "Global" not in x])
 state = st.sidebar.selectbox("State", sorted(df.State.unique()))
 
 with st.expander("State Factors"):
