@@ -12,6 +12,12 @@ st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
 
 
+def center_title(text):
+    return st.markdown(f"<h1 style='text-align: center; color: grey;'>{text}</h1>", unsafe_allow_html=True)
+
+
+center_title("Factor Analysis")
+
 # Read in data
 raw = get_df()
 # TEST_DIR = Path('covid19_drdfm/data/example-output/')
