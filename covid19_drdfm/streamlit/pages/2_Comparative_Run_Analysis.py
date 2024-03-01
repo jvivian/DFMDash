@@ -10,9 +10,7 @@ st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
 
 # Parameter to runs
-path_to_results = Path(
-    st.text_input("Path directory of runs", value="./covid19_drdfm/data/example-data/test-all-global-2")
-)
+path_to_results = Path(st.text_input("Path directory of runs", value="./covid19_drdfm/data/example-data"))
 
 df = parse_multiple_runs(path_to_results)
 

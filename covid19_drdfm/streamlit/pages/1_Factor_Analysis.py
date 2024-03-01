@@ -17,7 +17,7 @@ raw = get_df()
 # TEST_DIR = Path('covid19_drdfm/data/example-output/')
 
 # Parameter for results
-path_to_results = Path(st.text_input("Path to results", value="./covid19_drdfm/data/example-data"))
+path_to_results = Path(st.text_input("Path to results", value="./covid19_drdfm/data/example-data/test-all-global-2"))
 factor_path = path_to_results / "filtered-factors.csv"
 df = pd.read_csv(factor_path, index_col=0)
 df["Time"] = df.index
