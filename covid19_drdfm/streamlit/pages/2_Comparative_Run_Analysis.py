@@ -9,10 +9,15 @@ from covid19_drdfm.results import parse_multiple_runs
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
 
+
+def center_title(text):
+    return st.markdown(f"<h1 style='text-align: center; color: grey;'>{text}</h1>", unsafe_allow_html=True)
+
+
+center_title("Comparative Run Analysis")
+
 # Parameter to runs
-path_to_results = Path(
-    st.text_input("Path directory of runs", value="./covid19_drdfm/data/example-data/test-all-global-2")
-)
+path_to_results = Path(st.text_input("Path directory of runs", value="./covid19_drdfm/data/example-data"))
 
 df = parse_multiple_runs(path_to_results)
 
