@@ -1,4 +1,3 @@
-# %%
 """I/O and processing module
 
 Converts all input files into single consolidated dataframe that can be used
@@ -63,7 +62,7 @@ def get_df() -> pd.DataFrame:
     return get_raw().pipe(adjust_inflation).pipe(add_datetime).pipe(adjust_pandemic_response)
 
 
-def write(df: pd.DataFrame, outpath: Path):
+def write(df: pd.DataFrame, outpath: Path) -> None:
     """
     Write a pandas DataFrame to a file.
 
@@ -203,6 +202,3 @@ def normalize(df: pd.DataFrame) -> pd.DataFrame:
     new["State"] = meta_cols["State"]
     new["Time"] = meta_cols["Time"]
     return new
-
-
-# %%
