@@ -44,7 +44,7 @@ def test_run_model_global_0():
     shutil.rmtree("./testdir")
 
 
-@pytest.mark.skip(reason="State no longer failing")
+# @pytest.mark.skip(reason="State no longer failing")
 def test_run_failure():
     """
     Test the run_parameterized_model function for a state with known failure conditions
@@ -57,7 +57,8 @@ def test_run_failure():
         None
     """
     df = get_df()
-    state = "OR"
+    df = df[df.Time > "2019-01-01"]
+    state = "PA"
     run_parameterized_model(df, state, Path("./testdir"), global_multiplier=2)
     assert Path("./testdir/failed.txt").exists()
     shutil.rmtree("./testdir")
