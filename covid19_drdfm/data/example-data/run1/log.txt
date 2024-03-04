@@ -1,1 +1,0 @@
-{"Uncat": ["TBill1yr", "TBill10yr"], "Employment": ["Employment1", "Employment2"], "Consumption": ["Cons1", "Cons5"], "Inflation": ["CPIU", "PCE"], "Response": [], "Pandemic": ["Cases5", "Cases2", "Deaths5", "Deaths2", "Cases3", "Deaths3", "Cases4", "Hosp2", "Cases1", "Hosp1", "Deaths4", "Deaths1"], "global_multiplier": 1, "outdir": "./test-all-3"}
