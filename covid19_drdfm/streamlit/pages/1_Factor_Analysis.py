@@ -40,7 +40,7 @@ with st.expander("State Factors"):
 for state_subdir in path_to_results.iterdir():
     if not state_subdir.is_dir():
         continue
-    valid_cols = pd.read_csv(state_subdir / "df.tsv", sep="\t").columns
+    valid_cols = pd.read_csv(state_subdir / "df.csv").columns
     # valid_cols = [x for x in valid_cols i]
     break
 factor_vars = [x for x in FACTORS_GROUPED[factor] if x in valid_cols]

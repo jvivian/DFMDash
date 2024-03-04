@@ -4,7 +4,7 @@ Converts all input files into single consolidated dataframe that can be used
 downstream as model input
 
 This model input DataFrame can be generated with a single function:
-    - `df = run()`
+    - `df = get_df()`
 """
 
 from fractions import Fraction
@@ -23,29 +23,59 @@ ROOT_DIR = Path(__file__).parent.absolute()
 DATA_DIR = ROOT_DIR / "data/processed"
 
 
-def get_df() -> pd.DataFrame:
-    """Read input DataFrames and merge
+def _get_raw_df() -> pd.DataFrame:
+    """
+    Reads multiple CSV files specified in 'df_paths.txt' and return a combined pandas DataFrames.
 
     Returns:
-        pd.DataFrame: Merged DataFrame
+        pd.DataFrame: A pandas DataFrames containing the data from the CSV files.
     """
     with open(DATA_DIR / "df_paths.txt") as f:
         paths = [ROOT_DIR / x.strip() for x in f.readlines()]
     dfs = [pd.read_csv(x) for x in paths]
+    return reduce(lambda x, y: pd.merge(x, y, on=["State", "Year", "Period"], how="left"), dfs)
+
+
+def get_raw() -> pd.DataFrame:
+    """
+    Retrieves the raw data as a pandas DataFrame.
+
+    Returns:
+        pd.DataFrame: The raw data.
+    """
     return (
-        reduce(lambda x, y: pd.merge(x, y, on=["State", "Year", "Period"], how="left"), dfs)
+        _get_raw_df()
         .drop(columns=["Monetary_1_x", "Monetary_11_x"])
         .rename(columns={"Monetary_1_y": "Monetary_1", "Monetary_11_y": "Monetary_11"})
         .drop(columns=["Proportion", "proportion_vax2", "Pandemic_Response_8", "Distributed"])
         .pipe(fix_names)
-        .pipe(adjust_inflation)
-        .pipe(add_datetime)
-        .pipe(adjust_pandemic_response)
     )
 
 
-def write(df: pd.DataFrame, outpath: Path):
-    """Write dataframe given the extension"""
+def get_df() -> pd.DataFrame:
+    """
+    Retrieves and processes the raw data to generate a cleaned DataFrame.
+
+    Returns:
+        pd.DataFrame: The cleaned DataFrame.
+    """
+    return get_raw().pipe(adjust_inflation).pipe(add_datetime).pipe(adjust_pandemic_response)
+
+
+def write(df: pd.DataFrame, outpath: Path) -> None:
+    """
+    Write a pandas DataFrame to a file.
+
+    Parameters:
+        df (pd.DataFrame): The DataFrame to be written.
+        outpath (Path): The path to the output file.
+
+    Raises:
+        OSError: If the file extension is not supported.
+
+    Returns:
+        None
+    """
     ext = outpath.suffix
     if ext == ".xlsx":
         df.to_excel(outpath)
@@ -53,6 +83,8 @@ def write(df: pd.DataFrame, outpath: Path):
         df.to_csv(outpath)
     elif ext == ".parq" or ext == ".parquet":
         fastparquet.write(df, outpath)
+    elif ext == ".tsv":
+        df.to_csv(df, outpath, sep="\t")
     else:
         raise OSError
 
@@ -147,7 +179,6 @@ def diff_vars(df: pd.DataFrame, cols: list[str], log: bool = False) -> pd.DataFr
         pd.DataFrame: DataFrame with given vars differenced
     """
     if log:
-        # df[cols] = np.log(df[cols]).diff().fillna(0).apply(lambda x: np.log(x + 0))
         df[cols] = df[cols].apply(lambda x: np.log(x + 1)).diff()
     else:
         df[cols] = df[cols].diff()
@@ -164,7 +195,6 @@ def normalize(df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: Normalized and stationary DataFrame
     """
     meta_cols = df[["State", "Time"]].copy().reset_index(drop=True)
-    # df = df.drop(columns=["Time"]) if "Time" in df.columns else df
     df = df.drop(columns=["State", "Time"])
     # Normalize data
     scaler = MinMaxScaler()
