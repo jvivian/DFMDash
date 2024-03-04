@@ -14,7 +14,7 @@ from rich import print as pprint
 from statsmodels.tsa.stattools import adfuller
 
 from covid19_drdfm.constants import DIFF_COLS, FACTORS, LOG_DIFF_COLS
-from covid19_drdfm.processing import diff_vars, normalize
+from covid19_drdfm.processing import diff_vars, normalize, get_raw, write
 
 
 def is_constant(column) -> bool:
@@ -78,39 +78,45 @@ def run_parameterized_model(
     Returns:
         sm.tsa.DynamicFactor: Dynamic Factor Model
     """
-    # Factors and input data
     df = state_process(df, state)
     _ = get_nonstationary_columns(df)
-    if columns:
-        columns = [x for x in list(columns) if x in df.columns]
-        new = df[columns]
-    else:
-        new = df
-    # Save input data
-    outdir.mkdir(exist_ok=True)
-    out = outdir / state
-    out.mkdir(exist_ok=True)
-    new.to_excel(out / "df.xlsx")
-    new.to_csv(out / "df.tsv", sep="\t")
-    factors = {k: v for k, v in factors.items() if k in new.columns}
+    df = df[[x for x in list(columns) if x in df.columns]] if columns else df
+    factors = {k: v for k, v in factors.items() if k in df.columns}
+    _save_input(df, state, columns, outdir)
     if global_multiplier == 0:
         factors = {k: {v[1]} for k, v in factors.items()}
-        model = sm.tsa.DynamicFactorMQ(new, factors=factors)
+        model = sm.tsa.DynamicFactorMQ(df, factors=factors)
     else:
         factor_multiplicities = {"Global": global_multiplier}
-        model = sm.tsa.DynamicFactorMQ(new, factors=factors, factor_multiplicities=factor_multiplicities)
+        model = sm.tsa.DynamicFactorMQ(df, factors=factors, factor_multiplicities=factor_multiplicities)
     try:
         results = model.fit(disp=10, maxiter=maxiter)
     except Exception as e:
         with open(outdir / "failed.txt", "a") as f:
             f.write(f"{state}\t{e}\n")
         return
+    _save_output(df, model, results, state, outdir)
+    return model
+
+
+def _save_input(df, state, columns, outdir):
+    outdir.mkdir(exist_ok=True)
+    out = outdir / state
+    out.mkdir(exist_ok=True)
+    raw = get_raw().query("State == @state")
+    raw = raw[columns] if columns else raw
+    write(raw, out / "raw.csv")
+    write(df, (out / "df.xlsx"))
+    write(df, out / "df.csv")
+
+
+def _save_output(df, model, results, state, outdir):
+    out = outdir / state
     with open(out / "model.csv", "w") as f:
         f.write(model.summary().as_csv())
     with open(out / "results.csv", "w") as f:
         f.write(results.summary().as_csv())
     filtered = results.factors["filtered"]
     filtered["State"] = state
-    filtered.index = new.index
+    filtered.index = df.index
     filtered.to_csv(out / "filtered-factors.csv")
-    return model
