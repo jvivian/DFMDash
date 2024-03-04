@@ -1,3 +1,0 @@
-AL	Matrix is not positive definite
-MI	Matrix is not positive definite
-WA	Matrix is not positive definite

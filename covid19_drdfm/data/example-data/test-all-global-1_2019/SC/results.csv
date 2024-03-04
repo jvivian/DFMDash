@@ -1,0 +1,81 @@
+                         Dynamic Factor Results
+Dep. Variable:  ,"GDP", and 44 more     ,  No. Observations:  ,46
+Model:          ,Dynamic Factor Model   ,  Log Likelihood     ,-809.088
+                ,+ 7 factors in 7 blocks,  AIC                ,2006.177
+                ,+ AR(1) idiosyncratic  ,  BIC                ,2360.933
+Date:           ,Sun, 03 Mar 2024       ,  HQIC               ,2139.070
+Time:           ,21:24:39               ,  EM Iterations      ,1745
+Sample:         ,03-01-2019             ,                     ,
+                ,- 12-01-2022           ,                     ,
+Covariance Type:,Not computed           ,                     ,
+                                            Observation equation:
+Factor loadings:,Global,Pandemic,Uncat,Response,Consumption,Employment,Inflation,   idiosyncratic: AR(1),var.
+GDP             ,-0.04 ,.       ,-0.06,.       ,.          ,.         ,.        ,0.48                   ,0.79
+TBill1mo        ,-0.23 ,.       ,0.19 ,.       ,.          ,.         ,.        ,0.82                   ,0.05
+TBill6mo        ,-0.23 ,.       ,0.24 ,.       ,.          ,.         ,.        ,0.84                   ,0.00
+TBill1yr        ,-0.23 ,.       ,0.25 ,.       ,.          ,.         ,.        ,0.86                   ,0.00
+TBill5yr        ,-0.22 ,.       ,0.25 ,.       ,.          ,.         ,.        ,0.89                   ,0.02
+TBill10yr       ,-0.22 ,.       ,0.24 ,.       ,.          ,.         ,.        ,0.91                   ,0.03
+TBill30yr       ,-0.22 ,.       ,0.24 ,.       ,.          ,.         ,.        ,0.90                   ,0.05
+FixAss          ,0.15  ,.       ,-0.11,.       ,.          ,.         ,.        ,0.63                   ,0.50
+RPFI            ,0.05  ,.       ,-0.24,.       ,.          ,.         ,.        ,0.69                   ,0.67
+Prod            ,-0.03 ,.       ,-0.05,.       ,.          ,.         ,.        ,0.00                   ,1.15
+FFR             ,-0.23 ,.       ,0.18 ,.       ,.          ,.         ,.        ,0.81                   ,0.06
+UI              ,0.08  ,.       ,.    ,.       ,.          ,-0.53     ,.        ,0.47                   ,0.12
+Employment1     ,-0.08 ,.       ,.    ,.       ,.          ,0.52      ,.        ,-0.24                  ,0.02
+Employment2     ,-0.09 ,.       ,.    ,.       ,.          ,0.52      ,.        ,0.85                   ,0.00
+PartR           ,-0.10 ,.       ,.    ,.       ,.          ,-0.00     ,.        ,0.95                   ,0.11
+UR              ,0.22  ,.       ,.    ,.       ,.          ,-0.19     ,.        ,0.73                   ,0.25
+Cons1           ,0.02  ,.       ,.    ,.       ,-0.46      ,.         ,.        ,0.96                   ,0.00
+Cons3           ,0.19  ,.       ,.    ,.       ,-0.28      ,.         ,.        ,0.91                   ,0.01
+Cons4           ,0.11  ,.       ,.    ,.       ,-0.43      ,.         ,.        ,0.84                   ,0.02
+Cons5           ,-0.06 ,.       ,.    ,.       ,-0.43      ,.         ,.        ,0.94                   ,0.00
+Cons2           ,0.16  ,.       ,.    ,.       ,-0.39      ,.         ,.        ,0.91                   ,0.00
+CPIU            ,-0.06 ,.       ,.    ,.       ,.          ,.         ,-0.50    ,-1.64                  ,0.00
+PCEC            ,-0.03 ,.       ,.    ,.       ,.          ,.         ,-0.44    ,0.29                   ,0.43
+PCE             ,-0.04 ,.       ,.    ,.       ,.          ,.         ,-0.52    ,0.14                   ,0.11
+CPI             ,-0.04 ,.       ,.    ,.       ,.          ,.         ,-0.49    ,0.74                   ,0.04
+ARP             ,0.03  ,.       ,.    ,-0.13   ,.          ,.         ,.        ,0.03                   ,1.05
+CARES           ,0.12  ,.       ,.    ,0.37    ,.          ,.         ,.        ,0.28                   ,1.30
+PPP             ,0.12  ,.       ,.    ,0.37    ,.          ,.         ,.        ,0.28                   ,1.30
+Vax1            ,-0.03 ,.       ,.    ,-0.37   ,.          ,.         ,.        ,1.06                   ,0.00
+Vax3            ,-0.04 ,.       ,.    ,-0.36   ,.          ,.         ,.        ,1.08                   ,0.00
+Gather4         ,0.17  ,.       ,.    ,0.26    ,.          ,.         ,.        ,0.73                   ,0.27
+Mask1           ,0.15  ,.       ,.    ,-0.25   ,.          ,.         ,.        ,0.85                   ,0.28
+School          ,0.15  ,.       ,.    ,0.36    ,.          ,.         ,.        ,0.76                   ,0.43
+Cases5          ,0.09  ,-0.22   ,.    ,.       ,.          ,.         ,.        ,0.14                   ,0.72
+Cases2          ,0.09  ,-0.23   ,.    ,.       ,.          ,.         ,.        ,0.13                   ,0.71
+Deaths5         ,0.09  ,-0.05   ,.    ,.       ,.          ,.         ,.        ,0.26                   ,0.95
+Deaths2         ,0.09  ,-0.05   ,.    ,.       ,.          ,.         ,.        ,0.25                   ,0.95
+Cases3          ,0.10  ,-0.22   ,.    ,.       ,.          ,.         ,.        ,0.21                   ,0.71
+Deaths3         ,0.18  ,-0.10   ,.    ,.       ,.          ,.         ,.        ,0.20                   ,0.58
+Cases4          ,0.20  ,-0.25   ,.    ,.       ,.          ,.         ,.        ,-0.03                  ,0.13
+Cases1          ,0.20  ,-0.25   ,.    ,.       ,.          ,.         ,.        ,-0.04                  ,0.12
+Hosp2           ,0.20  ,-0.26   ,.    ,.       ,.          ,.         ,.        ,0.19                   ,0.06
+Hosp1           ,0.20  ,-0.26   ,.    ,.       ,.          ,.         ,.        ,0.16                   ,0.07
+Deaths4         ,0.20  ,-0.27   ,.    ,.       ,.          ,.         ,.        ,-0.26                  ,0.00
+Deaths1         ,0.20  ,-0.27   ,.    ,.       ,.          ,.         ,.        ,-0.23                  ,0.00
+    Transition: Factor block 0
+      ,L1.Global,   error variance
+Global,0.89     ,2.99
+      Transition: Factor block 1
+        ,L1.Pandemic,   error variance
+Pandemic,0.39       ,10.00
+   Transition: Factor block 2
+     ,L1.Uncat,   error variance
+Uncat,0.54    ,6.13
+      Transition: Factor block 3
+        ,L1.Response,   error variance
+Response,0.96       ,0.08
+         Transition: Factor block 4
+           ,L1.Consumption,   error variance
+Consumption,0.49          ,3.50
+        Transition: Factor block 5
+          ,L1.Employment,   error variance
+Employment,0.09         ,3.92
+       Transition: Factor block 6
+         ,L1.Inflation,   error variance
+Inflation,0.59        ,2.65
+
+Warnings:
+[1] Covariance matrix not calculated.
