@@ -58,7 +58,7 @@ def test_run_failure():
     """
     df = get_df()
     df = df[df.Time > "2019-01-01"]
-    state = "WY"
+    state = "PA"
     run_parameterized_model(df, state, Path("./testdir"), global_multiplier=2)
     assert Path("./testdir/failed.txt").exists()
     shutil.rmtree("./testdir")
