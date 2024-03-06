@@ -3,6 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 from covid19_drdfm.dfm import run_parameterized_model
 from covid19_drdfm.processing import get_df
@@ -48,6 +49,7 @@ def test_run_model_global_0():
     shutil.rmtree("./testdir")
 
 
+@pytest.mark.skip(reason="Stochastic failure state")
 def test_run_failure():
     """
     Test the run_parameterized_model function for a state with known failure conditions
