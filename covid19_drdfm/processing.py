@@ -48,6 +48,7 @@ def get_raw() -> pd.DataFrame:
         .drop(columns=["Monetary_1_x", "Monetary_11_x"])
         .rename(columns={"Monetary_1_y": "Monetary_1", "Monetary_11_y": "Monetary_11"})
         .drop(columns=["Proportion", "proportion_vax2", "Pandemic_Response_8", "Distributed"])
+        .pipe(add_datetime)
         .pipe(fix_names)
     )
 
@@ -59,7 +60,7 @@ def get_df() -> pd.DataFrame:
     Returns:
         pd.DataFrame: The cleaned DataFrame.
     """
-    return get_raw().pipe(adjust_inflation).pipe(add_datetime).pipe(adjust_pandemic_response)
+    return get_raw().pipe(adjust_inflation).pipe(adjust_pandemic_response)
 
 
 def write(df: pd.DataFrame, outpath: Path) -> None:
