@@ -10,9 +10,9 @@ from covid19_drdfm.processing import (
     add_datetime,
     adjust_inflation,
     adjust_pandemic_response,
+    fix_names,
     get_df,
     get_govt_fund_dist,
-    fix_names,
 )
 
 
@@ -36,13 +36,13 @@ def test_get_govt_fund_dist():
     assert int(sum(govt_fund) + 0.00001) == 1, "Distribution must sum to 1"
 
 
-def test_adjust_inflation(raw_data):
+def test_adjust_inflation(raw_data: pd.DataFrame):
     input_df = raw_data.copy().pipe(fix_names)
     output_df = adjust_inflation(input_df)
     assert input_df.Cons1.iloc[0] < output_df.Cons1.iloc[0]
 
 
-def test_adjust_pandemic_response(raw_data):
+def test_adjust_pandemic_response(raw_data: pd.DataFrame):
     input_df = raw_data.copy().pipe(fix_names)
     #! Note - this is testing functionality, but is used per-state not on whole df
     out = adjust_pandemic_response(input_df)
@@ -52,7 +52,7 @@ def test_adjust_pandemic_response(raw_data):
         assert int(df[r].sum()) == int(out[r].sum())
 
 
-def test_fix_datetime(raw_data):
+def test_fix_datetime(raw_data: pd.DataFrame):
     input_df = raw_data.copy()
     output_df = add_datetime(input_df)
     assert isinstance(output_df["Time"][0], pd.Timestamp)

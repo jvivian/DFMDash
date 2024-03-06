@@ -4,7 +4,6 @@ Main command to run model
     - `c19_dfm run`
 """
 
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -14,7 +13,7 @@ from rich import print as pprint
 from statsmodels.tsa.stattools import adfuller
 
 from covid19_drdfm.constants import DIFF_COLS, FACTORS, LOG_DIFF_COLS
-from covid19_drdfm.processing import diff_vars, normalize, get_raw, write
+from covid19_drdfm.processing import diff_vars, get_raw, normalize, write
 
 
 def is_constant(column) -> bool:
@@ -104,7 +103,8 @@ def _save_input(df, state, columns, outdir):
     out = outdir / state
     out.mkdir(exist_ok=True)
     raw = get_raw().query("State == @state")
-    raw = raw[columns] if columns else raw
+    raw = raw[columns + ["Time"]] if columns else raw
+    raw = raw.set_index("Time").loc[df.index]
     write(raw, out / "raw.csv")
     write(df, (out / "df.xlsx"))
     write(df, out / "df.csv")
@@ -118,5 +118,7 @@ def _save_output(df, model, results, state, outdir):
         f.write(results.summary().as_csv())
     filtered = results.factors["filtered"]
     filtered["State"] = state
-    filtered.index = df.index
+    raw = pd.read_csv(out / "raw.csv", index_col=0)
+    filtered.index = raw.index
+    filtered = filtered.merge(raw, left_index=True, right_index=True)
     filtered.to_csv(out / "filtered-factors.csv")
