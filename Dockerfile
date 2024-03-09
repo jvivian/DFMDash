@@ -5,6 +5,10 @@ FROM python:3.9-slim-buster
 ENV POETRY_VERSION=1.4 \
     POETRY_VIRTUALENVS_CREATE=false
 
+
+# Install dev tools
+RUN apt-get update -y && apt-get install git -y
+
 # Install poetry
 RUN pip install "poetry==$POETRY_VERSION"
 
