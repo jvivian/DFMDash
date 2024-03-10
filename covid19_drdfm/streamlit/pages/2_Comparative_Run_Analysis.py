@@ -55,13 +55,13 @@ def create_plot(df):
 
 
 def get_summary(df):
-   # Median metrics
-   col1, col2, col3 = st.columns(3)
-   col1.metric("Median Log Likelihood", df["Log Likelihood"].median())
-   col2.metric("Median AIC", df["AIC"].median())
-   col3.metric("Median EM Iterations", df["EM Iterations"].median())
-   
-   
+    # Median metrics
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Median Log Likelihood", df["Log Likelihood"].median())
+    col2.metric("Median AIC", df["AIC"].median())
+    col3.metric("Median EM Iterations", df["EM Iterations"].median())
+
+
 def show_summary(df):
     run = st.selectbox("Select a run", df["Run"].unique())
     filtered_df = df[(df["Run"] == run)]
