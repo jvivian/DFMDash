@@ -21,10 +21,8 @@ def center_title(text):
 center_title("Comparative Run Analysis")
 
 # Parameter to runs
-run_paths_string = "./covid19_drdfm/data/example-data"
-run_paths = Path(run_paths_string)
-path_to_results = Path(st.text_input("Path directory of runs", value=run_paths_string))
-df = parse_multiple_runs(path_to_results)
+run_dir = Path(st.text_input("Path directory of runs", value="./covid19_drdfm/data/example-data"))
+df = parse_multiple_runs(run_dir)
 
 
 def create_plot(df):
@@ -56,35 +54,19 @@ def create_plot(df):
     return metric
 
 
-def count_failed_states(run_name: str):
+def count_failed_states(run_dir: Path, run_name: str):
     """Count the number of failed states for a specific run"""
-    failed_states_count = 0
-    failed_file_path = run_paths / run_name / "failed.txt"
-    if failed_file_path.exists():
-        with open(failed_file_path) as failed_file:
-            for line in failed_file:
-                if "Matrix is not positive definite" in line:
-                    failed_states_count += 1
-    return failed_states_count
-
-
-def calculate_deviation(run_name):
-    """Calculate deviation from the run with the least failed states"""
-    min_failed_states = float("inf")
-    for run_path in run_paths.iterdir():
-        if run_path.is_dir():
-            failed_states_count = count_failed_states(run_path.name)
-            min_failed_states = min(min_failed_states, failed_states_count)
-
-    failed_states_count = count_failed_states(run_name)
-    deviation = -(failed_states_count - min_failed_states)
-    return deviation
+    failed_file_path = run_dir / run_name / "failed.txt"
+    if not failed_file_path.exists():
+        return 0
+    with open(failed_file_path) as failed_file:
+        return len(failed_file.readlines())
 
 
 def get_summary(df, run_name):
     # Median metrics
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Number of Failed States", count_failed_states(run_name), calculate_deviation(run_name))
+    col1.metric("Number of Failed States", count_failed_states(run_dir, run_name))
     col2.metric("Median Log Likelihood", df["Log Likelihood"].median())
     col3.metric("Median AIC", df["AIC"].median())
     col4.metric("Median EM Iterations", df["EM Iterations"].median())
