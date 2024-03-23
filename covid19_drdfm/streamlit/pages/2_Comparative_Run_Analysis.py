@@ -55,28 +55,31 @@ def create_plot(df):
     st.plotly_chart(fig, use_container_width=True)
     return metric
 
-# Function to get number of failed states
-def count_failed_states(run_name):
+
+def count_failed_states(run_name: str):
+    """Count the number of failed states for a specific run"""
     failed_states_count = 0
     failed_file_path = run_paths / run_name / "failed.txt"
     if failed_file_path.exists():
-        with open(failed_file_path, 'r') as failed_file:
+        with open(failed_file_path) as failed_file:
             for line in failed_file:
                 if "Matrix is not positive definite" in line:
                     failed_states_count += 1
-    return failed_states_count 
+    return failed_states_count
 
-# Function to calculate deviation from the minimum number of failed states for a specific run
+
 def calculate_deviation(run_name):
-    min_failed_states = float('inf')
+    """Calculate deviation from the run with the least failed states"""
+    min_failed_states = float("inf")
     for run_path in run_paths.iterdir():
         if run_path.is_dir():
             failed_states_count = count_failed_states(run_path.name)
             min_failed_states = min(min_failed_states, failed_states_count)
-    
+
     failed_states_count = count_failed_states(run_name)
-    deviation = - (failed_states_count - min_failed_states)
+    deviation = -(failed_states_count - min_failed_states)
     return deviation
+
 
 def get_summary(df, run_name):
     # Median metrics
