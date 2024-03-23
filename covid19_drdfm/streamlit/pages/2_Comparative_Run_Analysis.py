@@ -15,7 +15,8 @@ pio.templates.default = "plotly_white"
 
 
 def center_title(text):
-    return st.markdown(f"<h1 style='text-align: center; color: grey;'>{text}</h1>", unsafe_allow_html=True)
+    txt = f"<h1 style='text-align: center; color: grey;'>{text}</h1>"
+    return st.markdown(txt, unsafe_allow_html=True)
 
 
 center_title("Comparative Run Analysis")
@@ -54,7 +55,7 @@ def create_plot(df):
     return metric
 
 
-def count_failed_states(run_dir: Path, run_name: str):
+def num_failures(run_dir: Path, run_name: str):
     """Count the number of failed states for a specific run"""
     failed_file_path = run_dir / run_name / "failed.txt"
     if not failed_file_path.exists():
@@ -63,10 +64,16 @@ def count_failed_states(run_dir: Path, run_name: str):
         return len(failed_file.readlines())
 
 
+def delta_failures(run_dir: Path, run_name: str):
+    """Calculate deviation from the run with the least failed states"""
+    min_failures = min([num_failures(run_dir, run_name) for run_name in run_dir.iterdir()])
+    return min_failures - num_failures(run_dir, run_name)
+
+
 def get_summary(df, run_name):
     # Median metrics
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Number of Failed States", count_failed_states(run_dir, run_name))
+    col1.metric("Number of Failed States", num_failures(run_dir, run_name), delta_failures(run_dir, run_name))
     col2.metric("Median Log Likelihood", df["Log Likelihood"].median())
     col3.metric("Median AIC", df["AIC"].median())
     col4.metric("Median EM Iterations", df["EM Iterations"].median())
