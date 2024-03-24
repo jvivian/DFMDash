@@ -116,6 +116,11 @@ for key, (_, second) in FACTORS.items():
     FACTORS_GROUPED[second].append(key)
 FACTORS_GROUPED = dict(FACTORS_GROUPED)
 
+GROUPED_FACTORS = {}
+for key, values in FACTORS_GROUPED.items():
+    for value in values:
+        GROUPED_FACTORS[value] = key
+
 DIFF_COLS = [
     "Cases1",
     "Cases2",
