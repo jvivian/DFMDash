@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 from typer.testing import CliRunner
 
-from covid19_drdfm.cli import PreprocessingFailure, app, process_data
+from covid19_drdfm.cli import PreprocessingFailure, app, create_project_df
 
 runner = CliRunner()
 
@@ -17,11 +17,11 @@ def test_process():
     assert path.exists()
     os.remove(path)
     with pytest.raises(PreprocessingFailure):
-        process_data("/foo/bar/zoobar/file.pq")
+        create_project_df("/foo/bar/zoobar/file.pq")
     with pytest.raises(PreprocessingFailure):
-        process_data("/foo/bar/zoobar/file.csv")
+        create_project_df("/foo/bar/zoobar/file.csv")
     with pytest.raises(PreprocessingFailure):
-        process_data("/foo/bar/zoobar/file.parquet")
+        create_project_df("/foo/bar/zoobar/file.parquet")
 
 
 def test_run():
