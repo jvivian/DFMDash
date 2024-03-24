@@ -26,6 +26,50 @@ dev = ["anywidget", "geopandas", "hatch", "ipython", "m2r", "mypy", "pandas-stub
 doc = ["docutils", "jinja2", "myst-parser", "numpydoc", "pillow (>=9,<10)", "pydata-sphinx-theme (>=0.14.1)", "scipy", "sphinx", "sphinx-copybutton", "sphinx-design", "sphinxext-altair"]
 
 [[package]]
+name = "anndata"
+version = "0.10.6"
+description = "Annotated data."
+category = "main"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "anndata-0.10.6-py3-none-any.whl", hash = "sha256:2c625149472fab4430f402208e7bf1efa6a7d45fa5c14827c8122305f4dca206"},
+    {file = "anndata-0.10.6.tar.gz", hash = "sha256:16ada7ed7d38552ce56d8e8b2348e18a5fc81294ce8a7ea282acf30dc42cd6c2"},
+]
+
+[package.dependencies]
+array-api-compat = ">1.4,<1.5 || >1.5"
+exceptiongroup = {version = "*", markers = "python_version < \"3.11\""}
+h5py = ">=3.1"
+natsort = "*"
+numpy = ">=1.23"
+packaging = ">=20.0"
+pandas = ">=1.4,<2.1.0rc0 || >2.1.0rc0,<2.1.2 || >2.1.2"
+scipy = ">1.8"
+
+[package.extras]
+dev = ["pytest-xdist", "setuptools-scm"]
+doc = ["awkward (>=2.0.7)", "ipython", "myst-parser", "nbsphinx", "readthedocs-sphinx-search", "scanpydoc[theme,typehints] (>=0.13.4)", "sphinx (>=4.4)", "sphinx-autodoc-typehints (>=1.11.0)", "sphinx-book-theme (>=1.1.0)", "sphinx-copybutton", "sphinx-design (>=0.5.0)", "sphinx-issues", "sphinxext-opengraph", "zarr"]
+gpu = ["cupy"]
+test = ["awkward (>=2.3)", "boltons", "dask[array,distributed] (>=2022.09.2)", "httpx", "joblib", "loompy (>=3.0.5)", "matplotlib", "openpyxl", "pyarrow", "pytest (>=7.3)", "pytest-cov (>=2.10)", "pytest-memray", "pytest-mock", "scanpy", "scikit-learn", "zarr"]
+
+[[package]]
+name = "array-api-compat"
+version = "1.5.1"
+description = "A wrapper around NumPy and other array libraries to make them compatible with the Array API standard"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "array_api_compat-1.5.1-py3-none-any.whl", hash = "sha256:9bf347a274439409244266351de4a9e494499a0679744999d2b2c14aa898a846"},
+    {file = "array_api_compat-1.5.1.tar.gz", hash = "sha256:5044d260d137ad67018eaf15f3efe0882e9d036fd47f0a7127a44493b620e08e"},
+]
+
+[package.extras]
+cupy = ["cupy"]
+numpy = ["numpy"]
+
+[[package]]
 name = "arviz"
 version = "0.17.0"
 description = "Exploratory analysis of Bayesian models"
@@ -778,7 +822,7 @@ multipledispatch = "*"
 name = "exceptiongroup"
 version = "1.2.0"
 description = "Backport of PEP 654 (exception groups)"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1843,6 +1887,22 @@ files = [
     {file = "mypy_extensions-1.0.0-py3-none-any.whl", hash = "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d"},
     {file = "mypy_extensions-1.0.0.tar.gz", hash = "sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782"},
 ]
+
+[[package]]
+name = "natsort"
+version = "8.4.0"
+description = "Simple yet flexible natural sorting in Python."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "natsort-8.4.0-py3-none-any.whl", hash = "sha256:4732914fb471f56b5cce04d7bae6f164a592c7712e1c85f9ef585e197299521c"},
+    {file = "natsort-8.4.0.tar.gz", hash = "sha256:45312c4a0e5507593da193dedd04abb1469253b601ecaf63445ad80f0a1ea581"},
+]
+
+[package.extras]
+fast = ["fastnumbers (>=2.0.0)"]
+icu = ["PyICU (>=1.0.0)"]
 
 [[package]]
 name = "nbclient"
@@ -3789,4 +3849,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.9.7 || >3.9.7,<3.12"
-content-hash = "f8d16475175f6870a61b62992f0c484c7b873da0cf0602880626ea54ab6d6eee"
+content-hash = "65be221222f4fe6df71d1c2f38b76b9ffd4d249fac94fe92c6187d66d7dea143"
