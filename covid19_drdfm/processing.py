@@ -10,11 +10,14 @@ This model input DataFrame can be generated with a single function:
 from fractions import Fraction
 from functools import reduce
 from pathlib import Path
+from typing import Optional
 
+import anndata as ann
 import fastparquet
 import numpy as np
 import pandas as pd
 import yaml
+from anndata import AnnData
 from sklearn.preprocessing import MinMaxScaler
 
 from covid19_drdfm.constants import NAME_MAP
@@ -63,7 +66,39 @@ def get_df() -> pd.DataFrame:
     return get_raw().pipe(adjust_inflation).pipe(adjust_pandemic_response)
 
 
-def write(df: pd.DataFrame, outpath: Path) -> None:
+def get_project_h5ad() -> AnnData:
+    """
+    Load data.h5ad from the DATA_DIR and return.
+
+    Returns:
+        AnnData: The loaded AnnData object.
+    """
+    return ann.read_h5ad(DATA_DIR / "data.h5ad")
+
+
+def parse_csvs_to_ad(data: Path, factors: Path, metadata: Optional[Path]) -> AnnData:
+    """
+    Parses the input numerical data, factors variable, and observational metadata
+    to create an AnnData object.
+
+    Parameters:
+        data (str): Path to the numerical data CSV file.
+        factors (str): Path to the factors variable CSV file.
+        metadata (Optional[str]): Path to the observational metadata CSV file.
+
+    Returns:
+        AnnData: The created AnnData object.
+    """
+    data_df = pd.read_csv(data)
+    factors_df = pd.read_csv(factors, index_col=0)
+    metadata_df = pd.read_csv(metadata, index_col=0) if metadata else None
+
+    # Create AnnData object
+    ad = AnnData(X=data_df.values, obs=metadata_df, var=factors_df)
+    return ad
+
+
+def write_df(df: pd.DataFrame, outpath: Path) -> None:
     """
     Write a pandas DataFrame to a file.
 
