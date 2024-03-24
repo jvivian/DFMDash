@@ -3,6 +3,7 @@ from pathlib import Path
 import arviz as az
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import plotly.io as pio
 import plotly_express as px
 import pymc as pm
@@ -70,8 +71,9 @@ def delta_failures(run_dir: Path, run_name: str):
     return min_failures - num_failures(run_dir, run_name)
 
 
-def get_summary(df, run_name):
+def get_summary(df: pd.DataFrame):
     # Median metrics
+    run_name = df.Run.iloc[0]
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Number of Failed States", num_failures(run_dir, run_name), delta_failures(run_dir, run_name))
     col2.metric("Median Log Likelihood", df["Log Likelihood"].median())
@@ -79,10 +81,10 @@ def get_summary(df, run_name):
     col4.metric("Median EM Iterations", df["EM Iterations"].median())
 
 
-def show_summary(df):
+def show_summary(df: pd.DataFrame):
     run = st.selectbox("Select a run", df["Run"].unique())
     filtered_df = df[(df["Run"] == run)]
-    return get_summary(filtered_df, run)
+    return get_summary(filtered_df)
 
 
 def run_normal(df, metric):
