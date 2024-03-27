@@ -53,27 +53,29 @@ class ModelRunner:
             except Exception as e:
                 self.failures[batch_name] = e
                 continue
-            filtered_factors = self.process_factors(res.factors["filtered"], data.raw, batch.obs)
+            filtered_factors = process_factors(res.factors["filtered"], data.raw, batch.obs)
             result = Result(batch_name, res, model, filtered_factors)
             result.write(self.outdir)
             self.results.append(result)
+        print("All runs completed!")
         return self
 
-    def write_failures(self, outdir: str):
+    def write_failures(self):
         for name, failure in self.failures.items():
-            with open(outdir / "failed.txt", "a") as f:
+            with open(self.outdir / "failed.txt", "a") as f:
                 f.write(f"{name}\t{failure}\n")
-
-    def process_factors(self, factors: pd.DataFrame, raw: pd.DataFrame, obs: pd.DataFrame) -> pd.DataFrame:
-        factors.index = raw.index
-        factors = factors.merge(raw, left_index=True, right_index=True)
-        factors.columns = [f"Factor_{x}" for x in factors.columns]
-        if not obs.empty:
-            factors = factors.merge(obs, left_index=True, right_index=True)
-        return factors
 
     def get_batches(self) -> dict[str, AnnData]:
         """Get batches from AnnData object"""
         if not self.batch:
             return {None: self.ad}  # Didn't know you could use None as a key, cool
         return {x: self.ad[self.ad.obs[self.batch] == x] for x in self.ad.obs[self.batch].unique()}
+
+
+def process_factors(factors: pd.DataFrame, raw: pd.DataFrame, obs: pd.DataFrame) -> pd.DataFrame:
+    factors.index = raw.index
+    factors = factors.merge(raw, left_index=True, right_index=True)
+    factors.columns = [f"Factor_{x}" for x in factors.columns]
+    if not obs.empty:
+        factors = factors.merge(obs, left_index=True, right_index=True)
+    return factors
