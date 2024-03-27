@@ -28,6 +28,7 @@ class DataLoader:
         return self
 
     def dfs_to_ad(self, data: pd.DataFrame, factors: pd.DataFrame, metadata: Optional[pd.DataFrame]) -> AnnData:
+        data = data[factors.index]  # Force dataframe to be in same order as factor input
         return AnnData(X=data, obs=metadata, var=factors)
 
     def write_csvs(self, outdir: Path) -> "DataLoader":
