@@ -1,15 +1,11 @@
 from fractions import Fraction
 from functools import reduce
 from pathlib import Path
-from typing import Optional
 
 import anndata as ann
-import fastparquet
-import numpy as np
 import pandas as pd
 import yaml
 from anndata import AnnData
-from sklearn.preprocessing import MinMaxScaler
 
 from covid19_drdfm.constants import NAME_MAP
 
@@ -49,7 +45,7 @@ def get_raw() -> pd.DataFrame:
 
 def get_df() -> pd.DataFrame:
     """
-    Retrieves and processes the raw data to generate a cleaned DataFrame.
+    Retrieves and processes the raw covid19 data to generate a cleaned DataFrame.
 
     Returns:
         pd.DataFrame: The cleaned DataFrame.
@@ -59,7 +55,7 @@ def get_df() -> pd.DataFrame:
 
 def get_project_h5ad() -> AnnData:
     """
-    Load data.h5ad from the DATA_DIR and return.
+    Load covid19 data.h5ad from the DATA_DIR and return.
 
     Returns:
         AnnData: The loaded AnnData object.
