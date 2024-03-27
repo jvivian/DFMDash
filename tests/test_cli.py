@@ -5,26 +5,43 @@ from pathlib import Path
 import pytest
 from typer.testing import CliRunner
 
-from covid19_drdfm.cli import PreprocessingFailure, app, create_project_df
+from covid19_drdfm.cli import app
+from covid19_drdfm.covid19 import DATA_DIR
 
 runner = CliRunner()
 
-
-def test_process():
-    res = runner.invoke(app, ["process", "test.xlsx"])
-    path = Path("./test.xlsx")
-    assert res.exit_code == 0
-    assert path.exists()
-    os.remove(path)
-    with pytest.raises(PreprocessingFailure):
-        create_project_df("/foo/bar/zoobar/file.pq")
-    with pytest.raises(PreprocessingFailure):
-        create_project_df("/foo/bar/zoobar/file.csv")
-    with pytest.raises(PreprocessingFailure):
-        create_project_df("/foo/bar/zoobar/file.parquet")
+# TODO: Change to be test.h5ad with small state subset
+def test_run_dfm(tmpdir):
+    result = runner.invoke(app, ["run", str(DATA_DIR / "test.h5ad"), str(tmpdir), "--batch", "State"])
+    assert result.exit_code == 0
+    assert (Path(tmpdir) / "AK").exists()
 
 
-def test_run():
-    res = runner.invoke(app, ["run", "./testdir-runner"])
-    assert res.exit_code == 0
-    shutil.rmtree("./testdir-runner")
+def test_create_input_h5ad(tmpdir):
+    data_path = DATA_DIR / "data.csv"
+    factor_path = DATA_DIR / "factors.csv"
+    metadata_path = DATA_DIR / "metadata.csv"
+    result = runner.invoke(
+        app,
+        [
+            "create_input_data",
+            f"{tmpdir}/test.h5ad",
+            str(data_path),
+            str(factor_path),
+            "--metadata-path",
+            str(metadata_path),
+        ],
+    )
+    assert result.exit_code == 0
+
+
+def test_create_project_data(tmpdir):
+    result = runner.invoke(app, ["create_covid_project_data", str(tmpdir)])
+    assert result.exit_code == 0
+
+
+#! Dashboard is not easily testable
+# def test_launch_dashboard():
+#     result = runner.invoke(app, ["launch_dashboard"])
+#     assert result.exit_code == 0
+#     assert "Launching dashboard..." in result.output
