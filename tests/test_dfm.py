@@ -1,3 +1,4 @@
+import shutil
 import unittest
 from pathlib import Path
 from covid19_drdfm.dfm import ModelRunner
@@ -15,8 +16,13 @@ class TestModelRunner(unittest.TestCase):
         self.ad = get_project_h5ad()
         self.ad = self.ad[self.ad.obs.State.isin(STATES), :]
         self.outdir = Path("./test-output")
+        self.outdir.mkdir(exist_ok=True)
         self.batch = "State"
         self.model_runner = ModelRunner(self.ad, self.outdir, self.batch)
+
+    def tearDown(self):
+        if self.outdir.exists():
+            shutil.rmtree(self.outdir)
 
     def test_init(self):
         self.assertIsInstance(self.model_runner.ad, AnnData)

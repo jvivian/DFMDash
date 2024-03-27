@@ -50,7 +50,7 @@ def test_adjust_pandemic_response():
 def test_add_datetime():
     df = _get_raw_df()
     df_with_datetime = add_datetime(df)
-    assert isinstance(df_with_datetime['Time'], pd.Series)
+    assert isinstance(df_with_datetime["Time"], pd.Series)
     assert isinstance(df_with_datetime, pd.DataFrame)
 
 
