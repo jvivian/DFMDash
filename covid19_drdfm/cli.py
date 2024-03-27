@@ -9,43 +9,51 @@ Help
 Process data and generate parquet DataFrame
     - `c19_dfm process ./outfile.xlsx`
 """
+import anndata as ann
 
 import subprocess
 from pathlib import Path
 from typing import Optional
 
-import pandas as pd
 import typer
 from rich import print
 
-from covid19_drdfm.constants import DIFF_COLS, GROUPED_FACTORS, LOG_DIFF_COLS
+from covid19_drdfm.covid19 import get_project_h5ad
 
-# from covid19_drdfm.dfm import run_parameterized_model
-from covid19_drdfm.processing import get_df, parse_csvs_to_ad, write_df
+from covid19_drdfm.io import DataLoader
+from covid19_drdfm.dfm import ModelRunner
 
 app = typer.Typer()
 
 
-# # TODO: Change to support "batching" based on observational column (e.g. "State")
-# @app.command("run")
-# def run_dfm(
-#     outdir: Path,
-#     state: str = typer.Option("NY", help="State to run the model for"),
-#     global_multiplier: int = 1,
-#     maxiter: int = 10_000,
-# ):
-#     """Run Model"""
-#     raw = get_df()
-#     # ? Add multiprocessing step here
-#     run_parameterized_model(raw, state, outdir, global_multiplier=global_multiplier, maxiter=maxiter)
+@app.command("run")
+def run_dfm(
+    h5ad: Path,
+    outdir: Path,
+    batch: str = typer.Option(help="Name of column in h5ad.obs to use as batch variable"),
+    global_multiplier: int = 1,
+    maxiter: int = 10_000,
+):
+    ad = ann.read_h5ad(h5ad)
+    model = ModelRunner(ad, outdir, batch)
+    model.run(maxiter, global_multiplier)
 
 
 @app.command("create_input_data")
-def create_input_h5ad(output: Path, data_path: Path, factor_path: Path, metadata_path: Optional[Path]):
+def create_input_h5ad(
+    h5ad_out: Path,
+    data_path: Path,
+    factor_path: Path,
+    metadata_path: Optional[Path] = typer.Option(help="Path to metadata (needed if batching data)"),
+):
     """
     Convert data, factor, and metadata CSVs to H5AD and save output
+
+    Example: c19dfm create_input_h5ad data.h5ad ./data.csv ./factors.csv --metadata ./metadata.csv
     """
-    parse_csvs_to_ad(data_path, factor_path, metadata_path).write(output)
+    print(f"Creating H5AD at {h5ad_out}")
+    data = DataLoader().load(data_path, factor_path, metadata_path)
+    data.write_h5ad(h5ad_out)
 
 
 @app.command("create_covid_project_data")
@@ -53,18 +61,8 @@ def create_project_data(outdir: Path):
     """
     Create H5AD object of covid19 response and economic data
     """
-    df = get_df()
-    data_path = outdir / "data.csv"
-    meta_path = outdir / "metadata.csv"
-    factor_path = outdir / "factors.csv"
-    df.drop(columns=["Time", "State"]).to_csv(data_path, index=None)
-    write_df(df.set_index("Time")[["State"]], meta_path)
-    factors = pd.Series(GROUPED_FACTORS).to_frame(name="factor")
-    factors.index.name = "variable"
-    factors["difference"] = [x in DIFF_COLS for x in factors.index]
-    factors["logdiff"] = [x in LOG_DIFF_COLS for x in factors.index]
-    write_df(factors, factor_path)
-    parse_csvs_to_ad(data_path, factor_path, meta_path).write(outdir / "data.h5ad")
+    ad = get_project_h5ad()
+    ad.write(outdir / "data.h5ad")
     print(f"Project data successfully created at {outdir}/data.h5ad !")
 
 
