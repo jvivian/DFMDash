@@ -30,12 +30,14 @@ class DataLoader:
     def dfs_to_ad(self, data: pd.DataFrame, factors: pd.DataFrame, metadata: Optional[pd.DataFrame]) -> AnnData:
         return AnnData(X=data, obs=metadata, var=factors)
 
-    def write_csvs(self, outdir: Path) -> None:
+    def write_csvs(self, outdir: Path) -> "DataLoader":
         outdir.mkdir(exist_ok=True)
         self.data.to_csv(outdir / "data.csv")
         self.var.to_csv(outdir / "factors.csv")
         self.obs.to_csv(outdir / "metadata.csv")
+        return self
 
-    def write_h5ad(self, outdir: Path) -> None:
+    def write_h5ad(self, outdir: Path) -> "DataLoader":
         outdir.mkdir(exist_ok=True)
         self.ad.write(outdir / "data.h5ad")
+        return self
