@@ -9,8 +9,9 @@ import streamlit as st
 
 from covid19_drdfm.constants import FACTORS
 
-# from covid19_drdfm.dfm import run_parameterized_model
-from covid19_drdfm.processing import get_df
+from covid19_drdfm.covid19 import get_df, get_project_h5ad
+from covid19_drdfm.dfm import ModelRunner
+
 from covid19_drdfm.streamlit.plots import plot_correlations
 
 st.set_page_config(layout="wide")
@@ -100,9 +101,10 @@ my_bar = c.progress(0, text=progress_text)
 n = len(state_sel)
 _ = [factors.pop(x) for x in factor_vars if x not in df.columns]
 for i, state in enumerate(state_sel):
-    _ = run_parameterized_model(
-        df, state, outdir, columns=columns, factors=factors, global_multiplier=mult_sel, maxiter=maxiter
-    )
+    ad = get_project_h5ad()
+    ad = ad[ad.obs.State == state]
+    model = ModelRunner(ad, outdir=outdir)
+    model.run(maxiter=maxiter, global_multiplier=mult_sel, columns=df.columns)
     my_bar.progress((i + 1) / n, text=progress_text)
 
 my_bar.empty()
