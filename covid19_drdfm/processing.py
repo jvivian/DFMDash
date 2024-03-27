@@ -1,5 +1,4 @@
 """Processing module - stores all inputs to run Dynamic Factor Model."""
-
 import json
 from pathlib import Path
 from typing import Optional
@@ -9,9 +8,6 @@ import pandas as pd
 from anndata import AnnData
 from sklearn.preprocessing import MinMaxScaler
 from statsmodels.tsa.stattools import adfuller
-
-ROOT_DIR = Path(__file__).parent.absolute()
-DATA_DIR = ROOT_DIR / "data/processed"
 
 
 class DataProcessor:
