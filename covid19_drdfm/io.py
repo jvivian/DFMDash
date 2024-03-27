@@ -22,7 +22,7 @@ class DataLoader:
 
     def convert(self, ad: AnnData) -> "DataLoader":
         self.ad = ad
-        self.data = ad.X
+        self.data = ad.to_df()
         self.var = ad.var
         self.obs = ad.obs
         return self
