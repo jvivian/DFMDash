@@ -1,19 +1,15 @@
 from functools import reduce
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import plotly.io as pio
 import plotly_express as px
+from sklearn.preprocessing import MinMaxScaler
 import streamlit as st
 
 from covid19_drdfm.constants import DIFF_COLS, FACTORS_GROUPED, LOG_DIFF_COLS
-from covid19_drdfm.processing import (
-    add_datetime,
-    adjust_pandemic_response,
-    diff_vars,
-    fix_names,
-    normalize,
-)
+from covid19_drdfm.covid19 import add_datetime, adjust_inflation, fix_names, adjust_pandemic_response
 from covid19_drdfm.streamlit.plots import plot_correlations
 
 st.set_page_config(layout="wide")
@@ -35,18 +31,23 @@ def raw_data():
         .drop(columns=["Proportion", "proportion_vax2", "Pandemic_Response_8", "Distributed"])
         .pipe(fix_names)
         .pipe(add_datetime)
+        .pipe(adjust_inflation)
         .pipe(adjust_pandemic_response)
     )
 
 
 @st.cache_data
 def process_data(raw_data: pd.DataFrame, state: str) -> pd.DataFrame:
-    return (
-        raw_data[raw_data.State == state]
-        .pipe(diff_vars, cols=DIFF_COLS)
-        .pipe(diff_vars, cols=LOG_DIFF_COLS, log=True)
-        .iloc[1:]
-    )
+    df = raw_data[raw_data.State == state]
+    df[DIFF_COLS] = df[DIFF_COLS].diff() 
+    df[LOG_DIFF_COLS] = df[LOG_DIFF_COLS].apply(lambda x: np.log(x + 1)).diff()
+    return df.iloc[1:]
+
+def normalize(df):
+    index = df.index
+    df = pd.DataFrame(MinMaxScaler().fit_transform(df), columns=df.columns)
+    df.index = index
+    return df
 
 
 # Read in data
