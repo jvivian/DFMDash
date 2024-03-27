@@ -3,10 +3,11 @@ from pathlib import Path
 import pandas as pd
 import plotly.io as pio
 import plotly_express as px
+from sklearn.preprocessing import MinMaxScaler
 import streamlit as st
 
 from covid19_drdfm.constants import FACTORS_GROUPED
-from covid19_drdfm.processing import get_df, normalize
+from covid19_drdfm.covid19 import get_df
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
@@ -15,6 +16,13 @@ pio.templates.default = "plotly_white"
 def center_title(text):
     return st.markdown(f"<h1 style='text-align: center; color: grey;'>{text}</h1>", unsafe_allow_html=True)
 
+def normalize(df):
+    metadata = df[['State', 'Time']]
+    df = df.drop(columns=['State', 'Time'])
+    df = pd.DataFrame(MinMaxScaler().fit_transform(df), columns=df.columns)
+    df.index = metadata.index
+    df[['State', 'Time']] = metadata[['State', 'Time']]
+    return df
 
 center_title("Factor Analysis")
 
