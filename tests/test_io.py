@@ -7,16 +7,17 @@ from covid19_drdfm.io import DataLoader
 from covid19_drdfm.covid19 import DATA_DIR
 import pytest
 
+
 @pytest.fixture()
 def dfs():
-    data = pd.read_csv(DATA_DIR / 'data.csv')
-    factors = pd.read_csv(DATA_DIR / 'factors.csv', index_col=0)
-    metadata = pd.read_csv(DATA_DIR / 'metadata.csv', index_col=0)
+    data = pd.read_csv(DATA_DIR / "data.csv")
+    factors = pd.read_csv(DATA_DIR / "factors.csv", index_col=0)
+    metadata = pd.read_csv(DATA_DIR / "metadata.csv", index_col=0)
     return data, factors, metadata
-    
+
 
 def test_load(tmpdir):
-    outdir = Path(tmpdir / 'test_load')
+    outdir = Path(tmpdir / "test_load")
     outdir.mkdir(exist_ok=True)
     loader = DataLoader()
     data_path = outdir / "./test_data.csv"
@@ -24,7 +25,7 @@ def test_load(tmpdir):
     metadata_path = outdir / "./test_metadata.csv"
 
     test_data = pd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6]})
-    test_factors = pd.DataFrame({"factor": ["Zoo", 'Zoo']}, index=['A', 'B'])
+    test_factors = pd.DataFrame({"factor": ["Zoo", "Zoo"]}, index=["A", "B"])
     test_metadata = pd.DataFrame({"State": ["S1", "S2", "S3"]})
 
     test_data.to_csv(data_path, index=False)
@@ -44,10 +45,15 @@ def test_load(tmpdir):
 
     shutil.rmtree(outdir)
 
+
 def test_convert():
     loader = DataLoader()
 
-    ad = AnnData(X=np.array([[1, 2], [3, 4]]), obs=pd.DataFrame({"Sample": ["S1", "S2"]}), var=pd.DataFrame({"Factor": ["X", "Y"]}))
+    ad = AnnData(
+        X=np.array([[1, 2], [3, 4]]),
+        obs=pd.DataFrame({"Sample": ["S1", "S2"]}),
+        var=pd.DataFrame({"Factor": ["X", "Y"]}),
+    )
     loader.convert(ad)
 
     assert loader.ad is ad
@@ -55,9 +61,10 @@ def test_convert():
     assert loader.var.equals(ad.var)
     assert loader.obs.equals(ad.obs)
 
+
 def test_write_csvs(tmpdir):
     loader = DataLoader()
-    outdir = Path(tmpdir / 'test_csvs')
+    outdir = Path(tmpdir / "test_csvs")
 
     loader.data = pd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6]})
     loader.var = pd.DataFrame({"Factor": ["X", "Y", "Z"]})
@@ -70,11 +77,16 @@ def test_write_csvs(tmpdir):
 
     shutil.rmtree(outdir)
 
+
 def test_write_h5ad(tmpdir):
     loader = DataLoader()
-    outdir = Path(tmpdir / 'test_h5ad')
+    outdir = Path(tmpdir / "test_h5ad")
 
-    loader.ad = AnnData(X=np.array([[1, 2], [3, 4]]), obs=pd.DataFrame({"Sample": ["S1", "S2"]}), var=pd.DataFrame({"Factor": ["X", "Y"]}))
+    loader.ad = AnnData(
+        X=np.array([[1, 2], [3, 4]]),
+        obs=pd.DataFrame({"Sample": ["S1", "S2"]}),
+        var=pd.DataFrame({"Factor": ["X", "Y"]}),
+    )
     loader.write_h5ad(outdir)
     assert (outdir / "data.h5ad").exists()
 
