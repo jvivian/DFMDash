@@ -21,9 +21,6 @@ class DataProcessor:
         self.global_multiplier = global_multiplier
         self.multiplicities = {"Global": global_multiplier}
         self.maxiter = maxiter
-        self.diff_cols = self.get_diff_cols()
-        self.log_diff_cols = self.get_logdiff_cols()
-        self.factors = self.get_factors()
         self.non_stationary_cols = None
         self.raw: pd.DataFrame = None
         self.df: pd.DataFrame = None
@@ -37,15 +34,8 @@ class DataProcessor:
             print(f"Invalid columns removed!\nInput: {columns}\nFiltered: {filtered_columns}")
         self.raw = self.ad.to_df()[columns] if columns else self.ad.to_df()
         self.df = self.raw.copy()
-        if self.diff_cols:
-            self.df = self.diff_vars()
-        if self.log_diff_cols:
-            self.df = self.logdiff_vars()
-        if self.diff_cols or self.log_diff_cols:
-            self.df = self.df.iloc[1:].fillna(0)  # Trim first row with NAs
-            self.raw = self.raw.iloc[1:]  # Trim raw dataframe for parity
-        self.df.drop_constant_cols().normalize()
-        self.factors = {k: v for k, v in self.factors.items() if k in self.df.columns}
+        self.process_differences().drop_constant_cols().normalize()
+        self.factors = {k: v for k, v in self.get_factors().items() if k in self.df.columns}
         self.stationary_columns = self.get_nonstationary_columns()
 
         return self
@@ -62,7 +52,7 @@ class DataProcessor:
                     "maxiter": self.maxiter,
                     "non_stationary_cols": self.non_stationary_cols,
                     "diff_cols": self.diff_cols,
-                    "log_diff_cols": self.log_diff_cols,
+                    "logdiff_cols": self.logdiff_cols,
                 },
                 f,
             )
@@ -75,6 +65,19 @@ class DataProcessor:
         if self.global_multiplier == 0:
             return {k: (v,) for k, v in factors.items()}
         return {k: ("Global", v) for k, v in factors.items()}
+
+    def process_differences(self) -> "DataProcessor":
+        self.diff_cols = self.get_diff_cols()
+        self.logdiff_cols = self.get_logdiff_cols()
+        if self.diff_cols:
+            self.diff_vars()
+        if self.logdiff_cols:
+            self.logdiff_vars()
+        if self.diff_cols or self.logdiff_cols:
+            self.df = self.df.iloc[1:]
+            self.raw = self.raw.iloc[1:]  # Trim raw dataframe for parity
+        self.df = self.df.fillna(0)
+        return self
 
     def drop_constant_cols(self) -> "DataProcessor":
         """Drops constant columns from the DataFrame."""
@@ -90,7 +93,7 @@ class DataProcessor:
         return self._get_cols("logdiff")
 
     def _get_cols(self, colname: str) -> list[str]:
-        if colname not in self.ad.var.columns:
+        if colname not in self.df.columns:
             return []
         return self.ad.var.query(f"{colname} == True").index.to_list()
 
@@ -99,7 +102,7 @@ class DataProcessor:
         return self
 
     def logdiff_vars(self) -> "DataProcessor":
-        self.df[self.log_diff_cols] = self.df[self.log_diff_cols].apply(lambda x: np.log(x + 1)).diff()
+        self.df[self.logdiff_cols] = self.df[self.logdiff_cols].apply(lambda x: np.log(x + 1)).diff()
         return self
 
     def get_nonstationary_columns(self) -> list[str]:
@@ -126,7 +129,9 @@ class DataProcessor:
         Returns:
             pd.DataFrame: Normalized and stationary DataFrame
         """
-        return pd.DataFrame(MinMaxScaler().fit_transform(self.df), columns=self.df.columns)
+        self.df = pd.DataFrame(MinMaxScaler().fit_transform(self.df), columns=self.df.columns)
+        self.df.index = self.raw.index
+        return self
 
 
 def is_constant(column) -> bool:
