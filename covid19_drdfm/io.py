@@ -1,68 +1,41 @@
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
-import fastparquet
 import pandas as pd
 from anndata import AnnData
 
 
-def parse_csvs_to_ad(data: Path, factors: Path, metadata: Optional[Path]) -> AnnData:
-    """
-    Parses the input numerical data, factors variable, and observational metadata
-    to create an AnnData object.
+@dataclass
+class DataLoader:
+    ad: Optional[AnnData] = None
+    data: Optional[pd.DataFrame] = None
+    var: Optional[pd.DataFrame] = None
+    obs: Optional[pd.DataFrame] = None
 
-    Parameters:
-        data (str): Path to the numerical data CSV file.
-        factors (str): Path to the factors variable CSV file.
-        metadata (Optional[str]): Path to the observational metadata CSV file.
+    def load(self, data: Path, factors: Path, metadata: Optional[Path] = None) -> "DataLoader":
+        self.data = pd.read_csv(data)
+        self.var = pd.read_csv(factors, index_col=0)
+        self.obs = pd.read_csv(metadata, index_col=0) if metadata else None
+        self.ad = self.dfs_to_ad(self.data, self.var, self.obs)
+        return self
 
-    Returns:
-        AnnData: The created AnnData object.
-    """
-    data_df = pd.read_csv(data)
-    factors_df = pd.read_csv(factors, index_col=0)
-    metadata_df = pd.read_csv(metadata, index_col=0) if metadata else None
-    return dfs_to_ad(data_df, factors_df, metadata_df)
+    def convert(self, ad: AnnData) -> "DataLoader":
+        self.ad = ad
+        self.data = ad.X
+        self.var = ad.var
+        self.obs = ad.obs
+        return self
 
+    def dfs_to_ad(self, data: pd.DataFrame, factors: pd.DataFrame, metadata: Optional[pd.DataFrame]) -> AnnData:
+        return AnnData(X=data, obs=metadata, var=factors)
 
-def dfs_to_ad(data: pd.DataFrame, factors: pd.DataFrame, metadata: Optional[pd.DataFrame]) -> AnnData:
-    """
-    Parses the input numerical data, factors variable, and observational metadata
-    to create an AnnData object.
+    def write_csvs(self, outdir: Path) -> None:
+        outdir.mkdir(exist_ok=True)
+        self.data.to_csv(outdir / "data.csv")
+        self.var.to_csv(outdir / "factors.csv")
+        self.obs.to_csv(outdir / "metadata.csv")
 
-    Parameters:
-        data (pd.DataFrame): The numerical data DataFrame.
-        factors (pd.DataFrame): The factors variable DataFrame.
-        metadata (Optional[pd.DataFrame]): The observational metadata DataFrame.
-
-    Returns:
-        AnnData: The created AnnData object.
-    """
-    return AnnData(X=data, obs=metadata, var=factors)
-
-
-def write_df(df: pd.DataFrame, outpath: Path) -> None:
-    """
-    Write a pandas DataFrame to a file.
-
-    Parameters:
-        df (pd.DataFrame): The DataFrame to be written.
-        outpath (Path): The path to the output file.
-
-    Raises:
-        OSError: If the file extension is not supported.
-
-    Returns:
-        None
-    """
-    ext = outpath.suffix
-    if ext == ".xlsx":
-        df.to_excel(outpath)
-    elif ext == ".csv":
-        df.to_csv(outpath)
-    elif ext == ".parq" or ext == ".parquet":
-        fastparquet.write(df, outpath)
-    elif ext == ".tsv":
-        df.to_csv(outpath, sep="\t")
-    else:
-        raise OSError
+    def write_h5ad(self, outdir: Path) -> None:
+        outdir.mkdir(exist_ok=True)
+        self.ad.write(outdir / "data.h5ad")
