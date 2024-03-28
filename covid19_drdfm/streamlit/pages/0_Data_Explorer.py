@@ -39,9 +39,10 @@ def raw_data():
 @st.cache_data
 def process_data(raw_data: pd.DataFrame, state: str) -> pd.DataFrame:
     df = raw_data[raw_data.State == state]
-    df[DIFF_COLS] = df[DIFF_COLS].diff() 
+    df[DIFF_COLS] = df[DIFF_COLS].diff()
     df[LOG_DIFF_COLS] = df[LOG_DIFF_COLS].apply(lambda x: np.log(x + 1)).diff()
     return df.iloc[1:]
+
 
 def normalize(df):
     index = df.index

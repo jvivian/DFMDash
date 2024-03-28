@@ -16,13 +16,15 @@ pio.templates.default = "plotly_white"
 def center_title(text):
     return st.markdown(f"<h1 style='text-align: center; color: grey;'>{text}</h1>", unsafe_allow_html=True)
 
+
 def normalize(df):
-    metadata = df[['State', 'Time']]
-    df = df.drop(columns=['State', 'Time'])
+    metadata = df[["State", "Time"]]
+    df = df.drop(columns=["State", "Time"])
     df = pd.DataFrame(MinMaxScaler().fit_transform(df), columns=df.columns)
     df.index = metadata.index
-    df[['State', 'Time']] = metadata[['State', 'Time']]
+    df[["State", "Time"]] = metadata[["State", "Time"]]
     return df
+
 
 center_title("Factor Analysis")
 
