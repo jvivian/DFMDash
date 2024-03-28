@@ -4,9 +4,8 @@ from pathlib import Path
 from covid19_drdfm.dfm import ModelRunner
 from anndata import AnnData
 from covid19_drdfm.covid19 import get_project_h5ad
-from covid19_drdfm.io import DataLoader
 
-COLUMNS = ["PCE", "CPIU", "Hosp1", "Deaths1"]
+COLUMNS = ["PCE", "CPIU", "Hosp1", "Hosp2"]
 STATES = ["AK", "CA"]
 
 
