@@ -138,9 +138,10 @@ class DataProcessor:
         Returns:
             list[str]: List of columns that satisfy the condition
         """
-        if colname not in self.df.columns:
+        if colname not in self.ad.var.columns:
             return []
-        return self.ad.var.query(f"{colname} == True").index.to_list()
+        columns = self.ad.var.query(f"{colname} == True").index.to_list()
+        return [x for x in columns if x in self.df.columns]
 
     def diff_vars(self) -> "DataProcessor":
         """Performs differencing on the specified columns
