@@ -12,7 +12,13 @@ from statsmodels.tsa.stattools import adfuller
 
 class DataProcessor:
     def __init__(self, ad: AnnData, global_multiplier: int = 1, maxiter: int = 10_000):
-        """Prepares inputs for running model"""
+        """Prepares inputs for running model
+
+        Args:
+            ad (AnnData): Annotated data object
+            global_multiplier (int, optional): Global multiplier. Defaults to 1.
+            maxiter (int, optional): Maximum number of iterations. Defaults to 10_000.
+        """
         self.ad = ad
         self.global_multiplier = global_multiplier
         self.multiplicities = {"Global": global_multiplier}
@@ -25,6 +31,14 @@ class DataProcessor:
         return f"DataProcessor(ad={self.ad}, global_multiplier={self.global_multiplier}, maxiter={self.maxiter})"
 
     def process(self, columns: Optional[list[str]] = None) -> "DataProcessor":
+        """Processes the data for the Dynamic Factor Model
+
+        Args:
+            columns (Optional[list[str]], optional): Subset of columns to use. Defaults to None, which uses all columns.
+
+        Returns:
+            DataProcessor: Stores processed data
+        """
         filtered_columns = [x for x in columns if x in columns] if columns else None
         if filtered_columns and len(filtered_columns) != len(columns):
             print(f"Invalid columns removed!\nInput: {columns}\nFiltered: {filtered_columns}")
@@ -37,6 +51,11 @@ class DataProcessor:
         return self
 
     def write(self, outdir: Path):
+        """Writes the processed input data and run info to outdir
+
+        Args:
+            outdir (Path): Output directory
+        """
         outdir.mkdir(exist_ok=True)
         self.raw.to_csv(outdir / "raw.csv")
         self.df.to_csv(outdir / "df.csv")
@@ -54,6 +73,11 @@ class DataProcessor:
             )
 
     def get_factors(self) -> dict[str, tuple[str]]:
+        """Gets the factor dictionary from the AnnData object for the DFM
+
+        Returns:
+            dict[str, tuple[str]]: Dictionary of factors
+        """
         if "factor" not in self.ad.var.columns:
             msg = "No `factor` column in AnnData input. Please add to `.var`"
             raise RuntimeError(msg)
@@ -63,6 +87,11 @@ class DataProcessor:
         return {k: ("Global", v) for k, v in factors.items()}
 
     def process_differences(self) -> "DataProcessor":
+        """Processes the differences in the data
+
+        Returns:
+            DataProcessor: Processed data
+        """
         self.diff_cols = self.get_diff_cols()
         self.logdiff_cols = self.get_logdiff_cols()
         if self.diff_cols:
@@ -76,36 +105,66 @@ class DataProcessor:
         return self
 
     def drop_constant_cols(self) -> "DataProcessor":
-        """Drops constant columns from the DataFrame."""
+        """Drops constant columns from the DataFrame.
+
+        Returns:
+            DataProcessor: Processed data
+        """
         self.df = self.df.loc[:, self.df.columns[~self.df.apply(is_constant)]]
         return self
 
     def get_diff_cols(self) -> list[str]:
-        """Returns the columns that should be differenced."""
+        """Returns the columns that should be differenced.
+
+        Returns:
+            list[str]: List of columns to be differenced
+        """
         return self._get_cols("difference")
 
     def get_logdiff_cols(self) -> list[str]:
-        """Returns the columns that should be log-differenced."""
+        """Returns the columns that should be log-differenced.
+
+        Returns:
+            list[str]: List of columns to be log-differenced
+        """
         return self._get_cols("logdiff")
 
     def _get_cols(self, colname: str) -> list[str]:
+        """Helper function to get columns based on a specific condition
+
+        Args:
+            colname (str): Name of the condition
+
+        Returns:
+            list[str]: List of columns that satisfy the condition
+        """
         if colname not in self.df.columns:
             return []
         return self.ad.var.query(f"{colname} == True").index.to_list()
 
     def diff_vars(self) -> "DataProcessor":
+        """Performs differencing on the specified columns
+
+        Returns:
+            DataProcessor: Processed data
+        """
         self.df[self.diff_cols] = self.df[self.diff_cols].diff()
         return self
 
     def logdiff_vars(self) -> "DataProcessor":
+        """Performs log-differencing on the specified columns
+
+        Returns:
+            DataProcessor: Processed data
+        """
         self.df[self.logdiff_cols] = self.df[self.logdiff_cols].apply(lambda x: np.log(x + 1)).diff()
         return self
 
     def get_nonstationary_columns(self) -> list[str]:
-        """Run AD-Fuller on tests and report failures
+        """Runs AD-Fuller test on columns and returns non-stationary columns
 
         Returns:
-            Model: Model with non-stationary columns
+            list[str]: List of non-stationary columns
         """
         cols = []
         for col in self.df.columns:
@@ -117,13 +176,10 @@ class DataProcessor:
         return cols
 
     def normalize(self) -> "DataProcessor":
-        """Normalize data between 0 and 1
-
-        Args:
-            df (pd.DataFrame): State data, pre-normalization
+        """Normalizes the data between 0 and 1
 
         Returns:
-            pd.DataFrame: Normalized and stationary DataFrame
+            DataProcessor: Processed data
         """
         self.df = pd.DataFrame(MinMaxScaler().fit_transform(self.df), columns=self.df.columns)
         self.df.index = self.raw.index
