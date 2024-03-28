@@ -54,6 +54,20 @@ def create_plot(df):
     return metric
 
 
+def get_summary(df):
+    # Median metrics
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Median Log Likelihood", df["Log Likelihood"].median())
+    col2.metric("Median AIC", df["AIC"].median())
+    col3.metric("Median EM Iterations", df["EM Iterations"].median())
+
+
+def show_summary(df):
+    run = st.selectbox("Select a run", df["Run"].unique())
+    filtered_df = df[(df["Run"] == run)]
+    return get_summary(filtered_df)
+
+
 def run_normal(df, metric):
     # Declare runs as a parameter
     with st.form("ABtest"):
@@ -149,6 +163,10 @@ with st.expander("Data"):
 
 # Plot metrics across runs
 metric = create_plot(df)
+
+# Metrics by run in column form
+with st.expander("Summary"):
+    show_summary(df)
 
 # Bayesian A/B Testing
 _ab_blurb()
