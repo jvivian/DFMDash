@@ -1,3 +1,4 @@
+"""IO module containing `DataLoader` for interop between DataFrames/CSVs and AnnData H5AD"""
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
@@ -8,6 +9,28 @@ from anndata import AnnData
 
 @dataclass
 class DataLoader:
+    """
+    A class for loading and manipulating data for the covid19-drDFM project.
+
+    Attributes:
+        ad (Optional[AnnData]): An optional AnnData object representing the loaded data.
+        data (Optional[pd.DataFrame]): An optional pandas DataFrame representing the data.
+        var (Optional[pd.DataFrame]): An optional pandas DataFrame representing the factors.
+        obs (Optional[pd.DataFrame]): An optional pandas DataFrame representing the metadata.
+
+    Methods:
+        load(data: Path, factors: Path, metadata: Optional[Path] = None) -> DataLoader:
+            Loads the data, factors, and metadata from the specified paths and returns the DataLoader object.
+        convert(ad: AnnData) -> DataLoader:
+            Converts the provided AnnData object to DataLoader format and returns the DataLoader object.
+        dfs_to_ad(data: pd.DataFrame, factors: pd.DataFrame, metadata: Optional[pd.DataFrame]) -> AnnData:
+            Converts the provided pandas DataFrames to an AnnData object and returns it.
+        write_csvs(outdir: Path) -> DataLoader:
+            Writes the data, factors, and metadata to CSV files in the specified output directory and returns the DataLoader object.
+        write_h5ad(outdir: Path) -> DataLoader:
+            Writes the AnnData object to an H5AD file in the specified output directory and returns the DataLoader object.
+    """
+
     ad: Optional[AnnData] = None
     data: Optional[pd.DataFrame] = None
     var: Optional[pd.DataFrame] = None
