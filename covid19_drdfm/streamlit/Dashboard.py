@@ -7,8 +7,10 @@ import plotly.io as pio
 import streamlit as st
 
 from covid19_drdfm.constants import FACTORS
-from covid19_drdfm.dfm import run_parameterized_model
-from covid19_drdfm.processing import get_df
+
+from covid19_drdfm.covid19 import get_df, get_project_h5ad
+from covid19_drdfm.dfm import ModelRunner
+
 from covid19_drdfm.streamlit.plots import plot_correlations
 
 st.set_page_config(layout="wide")
@@ -24,17 +26,19 @@ def get_data():
     return get_df()
 
 
-df = get_df()
-var_df = pd.Series([x for x in df.columns if x not in ["State", "Time"]], name="Variables").to_frame()
+ad = get_project_h5ad()
 factors = FACTORS.copy()
 factor_vars = list(factors.keys())
-var_df["Group"] = [factors[x][1] for x in var_df.Variables if x in df.columns]
+var_df = ad.var
+var_df["Group"] = var_df["factor"]
+var_df["Variables"] = var_df.index
+ad.obs["Time"] = pd.to_datetime(ad.obs.index)
 
 center_title("Dynamic Factor Model Runner")
 
 with st.expander("Variable correlations"):
     st.write("Data is normalized between [0, 1] before calculating correlation")
-    plot_correlations(df, normalize=True)
+    plot_correlations(ad.to_df(), var_df, normalize=True)
 
 with st.form("DFM Model Runner"):
     st.markdown(
@@ -57,14 +61,16 @@ with st.form("DFM Model Runner"):
         variables = var_df[var_df.Group == group].Variables
         selectors[group] = stcol.multiselect(group, variables, variables)
 
-    # State selections
-    state_sel = st.multiselect("States", df.State.unique(), default=df.State.unique())
+    # Parameters
+    states = sorted(ad.obs.State.unique())
+    state_sel = st.multiselect("States", states, default=states)
     c1, c2, c3, c4 = st.columns([0.35, 0.25, 0.20, 0.20])
     outdir = c1.text_input("Output Directory", value="./")
-    date_start = c2.date_input("Start Date", value=df.Time.min(), min_value=df.Time.min(), max_value=df.Time.max())
+    min_val = ad.obs.Time.min()
+    date_start = c2.date_input("Start Date", value=min_val, min_value=min_val, max_value=ad.obs.Time.max())
     mult_sel = c3.slider("Global Multiplier", 0, 4, 2)
     maxiter = c4.slider("Max EM Iterations", 1000, 20_000, 10_000, 100)
-    df = df[df.Time > date_start.isoformat()]
+    ad = ad[ad.obs.index > date_start.isoformat()]
 
     # Metrics
     lengths = [len(selectors[x]) for x in selectors]
@@ -91,30 +97,26 @@ outdir.mkdir(exist_ok=True)
 with open(outdir / "log.txt", "w") as f:
     json.dump(selectors, f)
 
-
-progress_text = "Running model on designated states..."
-my_bar = c.progress(0, text=progress_text)
-
+# Run model for subset of states using batch mode
+# TODO: No per-batch update sucks, try and fix during dynamic refactor
 n = len(state_sel)
-_ = [factors.pop(x) for x in factor_vars if x not in df.columns]
-for i, state in enumerate(state_sel):
-    _ = run_parameterized_model(
-        df, state, outdir, columns=columns, factors=factors, global_multiplier=mult_sel, maxiter=maxiter
-    )
-    my_bar.progress((i + 1) / n, text=progress_text)
+ad = ad[ad.obs.State.isin(state_sel)]
+with st.spinner(f"Running {n} models..."):
+    model = ModelRunner(ad, outdir=outdir, batch="State")
+    model.run(maxiter=maxiter, global_multiplier=mult_sel, columns=columns)
 
-my_bar.empty()
-filt_paths = [
-    subdir / "filtered-factors.csv" for subdir in outdir.iterdir() if (subdir / "filtered-factors.csv").exists()
-]
+# Combine filtered output
+filt_paths = [subdir / "factors.csv" for subdir in outdir.iterdir() if (subdir / "factors.csv").exists()]
 dfs = [pd.read_csv(x) for x in filt_paths]
-filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
-filt_df.to_csv(outdir / "filtered-factors.csv")
-st.dataframe(filt_df)
+try:
+    filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
+    filt_df.to_csv(outdir / "factors.csv")
+    st.dataframe(filt_df)
+    st.balloons()
+except ValueError:
+    st.error(f"No runs succeeded!! Check failures.txt in {outdir}")
 
 end = time.time()
 hours, rem = divmod(end - start, 3600)
 minutes, seconds = divmod(rem, 60)
 st.write(f"Runtime: {int(hours):0>2}H:{int(minutes):0>2}M:{seconds:05.2f}S")
-
-st.balloons()

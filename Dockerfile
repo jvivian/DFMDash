@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.9-slim-buster
+FROM --platform=linux/amd64 python:3.9-slim-buster
 
 ENV POETRY_VERSION=1.4 \
     POETRY_VIRTUALENVS_CREATE=false
@@ -22,4 +22,5 @@ COPY . /code/
 # Project initialization:
 RUN poetry install --no-interaction
 
-CMD ["c19dfm", "--help"]
+ENTRYPOINT ["poetry", "run", "c19dfm"]
+CMD ["--help"]

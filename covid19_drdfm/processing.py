@@ -1,205 +1,192 @@
-"""I/O and processing module
-
-Converts all input files into single consolidated dataframe that can be used
-downstream as model input
-
-This model input DataFrame can be generated with a single function:
-    - `df = get_df()`
-"""
-
-from fractions import Fraction
-from functools import reduce
+"""Processing module - stores all inputs to run Dynamic Factor Model."""
+import json
 from pathlib import Path
+from typing import Optional
 
-import fastparquet
 import numpy as np
 import pandas as pd
-import yaml
+from anndata import AnnData
 from sklearn.preprocessing import MinMaxScaler
-
-from covid19_drdfm.constants import NAME_MAP
-
-ROOT_DIR = Path(__file__).parent.absolute()
-DATA_DIR = ROOT_DIR / "data/processed"
+from statsmodels.tsa.stattools import adfuller
 
 
-def _get_raw_df() -> pd.DataFrame:
-    """
-    Reads multiple CSV files specified in 'df_paths.txt' and return a combined pandas DataFrames.
+class DataProcessor:
+    def __init__(self, ad: AnnData, global_multiplier: int = 1, maxiter: int = 10_000):
+        """Prepares inputs for running model
 
-    Returns:
-        pd.DataFrame: A pandas DataFrames containing the data from the CSV files.
-    """
-    with open(DATA_DIR / "df_paths.txt") as f:
-        paths = [ROOT_DIR / x.strip() for x in f.readlines()]
-    dfs = [pd.read_csv(x) for x in paths]
-    return reduce(lambda x, y: pd.merge(x, y, on=["State", "Year", "Period"], how="left"), dfs)
+        Args:
+            ad (AnnData): Annotated data object
+            global_multiplier (int, optional): Global multiplier. Defaults to 1.
+            maxiter (int, optional): Maximum number of iterations. Defaults to 10_000.
+        """
+        self.ad = ad
+        self.global_multiplier = global_multiplier
+        self.multiplicities = {"Global": global_multiplier}
+        self.maxiter = maxiter
+        self.non_stationary_cols = None
+        self.raw: pd.DataFrame = None
+        self.df: pd.DataFrame = None
+
+    def __repr__(self):
+        return f"DataProcessor(ad={self.ad}, global_multiplier={self.global_multiplier}, maxiter={self.maxiter})"
+
+    def process(self, columns: Optional[list[str]] = None) -> "DataProcessor":
+        """Processes the data for the Dynamic Factor Model
+
+        Args:
+            columns (Optional[list[str]], optional): Subset of columns to use. Defaults to None, which uses all columns.
+
+        Returns:
+            DataProcessor: Stores processed data
+        """
+        filtered_columns = [x for x in columns if x in columns] if columns else None
+        if filtered_columns and len(filtered_columns) != len(columns):
+            print(f"Invalid columns removed!\nInput: {columns}\nFiltered: {filtered_columns}")
+        self.raw = self.ad.to_df()[columns] if columns else self.ad.to_df()
+        self.df = self.raw.copy()
+        self.process_differences().drop_constant_cols().normalize()
+        self.factors = {k: v for k, v in self.get_factors().items() if k in self.df.columns}
+        self.stationary_columns = self.get_nonstationary_columns()
+
+        return self
+
+    def write(self, outdir: Path):
+        """Writes the processed input data and run info to outdir
+
+        Args:
+            outdir (Path): Output directory
+        """
+        outdir.mkdir(exist_ok=True)
+        self.raw.to_csv(outdir / "raw.csv")
+        self.df.to_csv(outdir / "df.csv")
+        with open(outdir / "run-info.json", "w") as f:
+            json.dump(
+                {
+                    "factor_map": self.factors,
+                    "global_multiplier": self.global_multiplier,
+                    "maxiter": self.maxiter,
+                    "non_stationary_cols": self.non_stationary_cols,
+                    "diff_cols": self.diff_cols,
+                    "logdiff_cols": self.logdiff_cols,
+                },
+                f,
+            )
+
+    def get_factors(self) -> dict[str, tuple[str]]:
+        """Gets the factor dictionary from the AnnData object for the DFM
+
+        Returns:
+            dict[str, tuple[str]]: Dictionary of factors
+        """
+        if "factor" not in self.ad.var.columns:
+            msg = "No `factor` column in AnnData input. Please add to `.var`"
+            raise RuntimeError(msg)
+        factors = self.ad.var.factor.to_dict()
+        if self.global_multiplier == 0:
+            return {k: (v,) for k, v in factors.items()}
+        return {k: ("Global", v) for k, v in factors.items()}
+
+    def process_differences(self) -> "DataProcessor":
+        """Processes the differences in the data
+
+        Returns:
+            DataProcessor: Processed data
+        """
+        self.diff_cols = self.get_diff_cols()
+        self.logdiff_cols = self.get_logdiff_cols()
+        if self.diff_cols:
+            self.diff_vars()
+        if self.logdiff_cols:
+            self.logdiff_vars()
+        if self.diff_cols or self.logdiff_cols:
+            self.df = self.df.iloc[1:]
+            self.raw = self.raw.iloc[1:]  # Trim raw dataframe for parity
+        self.df = self.df.fillna(0)
+        return self
+
+    def drop_constant_cols(self) -> "DataProcessor":
+        """Drops constant columns from the DataFrame.
+
+        Returns:
+            DataProcessor: Processed data
+        """
+        self.df = self.df.loc[:, self.df.columns[~self.df.apply(is_constant)]]
+        return self
+
+    def get_diff_cols(self) -> list[str]:
+        """Returns the columns that should be differenced.
+
+        Returns:
+            list[str]: List of columns to be differenced
+        """
+        return self._get_cols("difference")
+
+    def get_logdiff_cols(self) -> list[str]:
+        """Returns the columns that should be log-differenced.
+
+        Returns:
+            list[str]: List of columns to be log-differenced
+        """
+        return self._get_cols("logdiff")
+
+    def _get_cols(self, colname: str) -> list[str]:
+        """Helper function to get columns based on a specific condition
+
+        Args:
+            colname (str): Name of the condition
+
+        Returns:
+            list[str]: List of columns that satisfy the condition
+        """
+        if colname not in self.ad.var.columns:
+            return []
+        columns = self.ad.var.query(f"{colname} == True").index.to_list()
+        return [x for x in columns if x in self.df.columns]
+
+    def diff_vars(self) -> "DataProcessor":
+        """Performs differencing on the specified columns
+
+        Returns:
+            DataProcessor: Processed data
+        """
+        self.df[self.diff_cols] = self.df[self.diff_cols].diff()
+        return self
+
+    def logdiff_vars(self) -> "DataProcessor":
+        """Performs log-differencing on the specified columns
+
+        Returns:
+            DataProcessor: Processed data
+        """
+        self.df[self.logdiff_cols] = self.df[self.logdiff_cols].apply(lambda x: np.log(x + 1)).diff()
+        return self
+
+    def get_nonstationary_columns(self) -> list[str]:
+        """Runs AD-Fuller test on columns and returns non-stationary columns
+
+        Returns:
+            list[str]: List of non-stationary columns
+        """
+        cols = []
+        for col in self.df.columns:
+            result = adfuller(self.df[col])
+            p_value = result[1]
+            if p_value > 0.25:  # TODO: Ask Aaron/Josh - p-value 0.25 is pretty weird
+                cols.append(col)
+        print(f"Columns that fail the ADF test (non-stationary)\n{cols}")
+        return cols
+
+    def normalize(self) -> "DataProcessor":
+        """Normalizes the data between 0 and 1
+
+        Returns:
+            DataProcessor: Processed data
+        """
+        self.df = pd.DataFrame(MinMaxScaler().fit_transform(self.df), columns=self.df.columns)
+        self.df.index = self.raw.index
+        return self
 
 
-def get_raw() -> pd.DataFrame:
-    """
-    Retrieves the raw data as a pandas DataFrame.
-
-    Returns:
-        pd.DataFrame: The raw data.
-    """
-    return (
-        _get_raw_df()
-        .drop(columns=["Monetary_1_x", "Monetary_11_x"])
-        .rename(columns={"Monetary_1_y": "Monetary_1", "Monetary_11_y": "Monetary_11"})
-        .drop(columns=["Proportion", "proportion_vax2", "Pandemic_Response_8", "Distributed"])
-        .pipe(add_datetime)
-        .pipe(fix_names)
-    )
-
-
-def get_df() -> pd.DataFrame:
-    """
-    Retrieves and processes the raw data to generate a cleaned DataFrame.
-
-    Returns:
-        pd.DataFrame: The cleaned DataFrame.
-    """
-    return get_raw().pipe(adjust_inflation).pipe(adjust_pandemic_response)
-
-
-def write(df: pd.DataFrame, outpath: Path) -> None:
-    """
-    Write a pandas DataFrame to a file.
-
-    Parameters:
-        df (pd.DataFrame): The DataFrame to be written.
-        outpath (Path): The path to the output file.
-
-    Raises:
-        OSError: If the file extension is not supported.
-
-    Returns:
-        None
-    """
-    ext = outpath.suffix
-    if ext == ".xlsx":
-        df.to_excel(outpath)
-    elif ext == ".csv":
-        df.to_csv(outpath)
-    elif ext == ".parq" or ext == ".parquet":
-        fastparquet.write(df, outpath)
-    elif ext == ".tsv":
-        df.to_csv(df, outpath, sep="\t")
-    else:
-        raise OSError
-
-
-def get_govt_fund_dist() -> list[float]:
-    """Reads in govt fund distribution from data/raw/govt_fund_dist.yml
-
-    Returns:
-        list[float]: Distribution values. Length equates to num_months
-    """
-    with open(DATA_DIR / "govt_fund_dist.yml") as f:
-        return [float(Fraction(x)) for x in yaml.safe_load(f)]
-
-
-def adjust_inflation(df: pd.DataFrame) -> pd.DataFrame:
-    """Adjust for inflation
-
-    Args:
-        df (pd.DataFrame): Input DataFrame (see `get_df`)
-
-    Returns:
-        pd.DataFrame: Adjusted DataFrame
-    """
-    return (
-        df.assign(Cons1=lambda x: x.Cons1.div(x.PCE / 100))
-        .assign(Cons2=lambda x: x.Cons2.div(x.PCE / 100))
-        .assign(Cons3=lambda x: x.Cons3.div(x.PCE / 100))
-        .assign(Cons4=lambda x: x.Cons4.div(x.PCE / 100))
-        .assign(Cons5=lambda x: x.Cons5.div(x.PCE / 100))
-        .assign(GDP=lambda x: x.GDP.div(x.PCE / 100))
-        .assign(FixAss=lambda x: x.FixAss.div(x.PCE / 100))
-    )
-
-
-def adjust_pandemic_response(df: pd.DataFrame) -> pd.DataFrame:
-    """Adjust pandemic response given fund distribution
-
-    Args:
-        df (pd.DataFrame): Input DataFrame
-
-    Returns:
-        pd.DataFrame: Adjusted DataFrame
-    """
-    govt_fund_dist = get_govt_fund_dist()
-    responses = ["ARP", "PPP", "CARES"]
-    for r in responses:
-        df[r] = df[r].astype(float)
-        i = df.index[df[r] > 0][0]
-        fund = df.loc[i, r]
-        for n in range(0, len(govt_fund_dist)):
-            df.loc[i + n, r] = fund * govt_fund_dist[n]
-    return df
-
-
-def add_datetime(df: pd.DataFrame) -> pd.DataFrame:
-    """Set `Time` column to `DateTime` dtype
-
-    Args:
-        df (pd.DataFrame): Input DataFrame
-
-    Returns:
-        pd.DataFrame: DType adjusted DataFrame
-    """
-    df = df.assign(Month=pd.to_numeric(df.Period.apply(lambda x: x[1:]))).assign(Day=1)
-    df["Time"] = pd.to_datetime({"year": df.Year, "month": df.Month, "day": df.Day})
-    return df.drop(columns=["Period", "Month", "Year", "Day"])
-
-
-def fix_names(df: pd.DataFrame) -> pd.DataFrame:
-    """Map sensible names to the merged input dataframe
-
-    Args:
-        df (pd.DataFrame): Input DataFrame after merging all input data
-
-    Returns:
-        pd.DataFrame: DataFrame with mapped names
-    """
-    return df.rename(columns=NAME_MAP)
-
-
-def diff_vars(df: pd.DataFrame, cols: list[str], log: bool = False) -> pd.DataFrame:
-    """Differences the set of variables within the dataframe
-        NOTE: Leaves a row with Nas
-
-
-    Args:
-        df (pd.DataFrame): Input DataFrame
-        cols (List[str]): List of columns to difference
-        log bool: Whether to take the log(difference) or not
-
-    Returns:
-        pd.DataFrame: DataFrame with given vars differenced
-    """
-    if log:
-        df[cols] = df[cols].apply(lambda x: np.log(x + 1)).diff()
-    else:
-        df[cols] = df[cols].diff()
-    return df
-
-
-def normalize(df: pd.DataFrame) -> pd.DataFrame:
-    """Normalize data and make stationary - scaling for post-DFM Synthetic Control Model
-
-    Args:
-        df (pd.DataFrame): State data, pre-normalization
-
-    Returns:
-        pd.DataFrame: Normalized and stationary DataFrame
-    """
-    meta_cols = df[["State", "Time"]].copy().reset_index(drop=True)
-    df = df.drop(columns=["State", "Time"])
-    # Normalize data
-    scaler = MinMaxScaler()
-    new = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)
-    new["State"] = meta_cols["State"]
-    new["Time"] = meta_cols["Time"]
-    return new
+def is_constant(column) -> bool:
+    """Returns True if a DataFrame column is constant"""
+    return all(column == column.iloc[0])
