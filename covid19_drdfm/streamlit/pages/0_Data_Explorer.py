@@ -9,7 +9,7 @@ from sklearn.preprocessing import MinMaxScaler
 import streamlit as st
 
 from covid19_drdfm.constants import DIFF_COLS, FACTORS_GROUPED, LOG_DIFF_COLS
-from covid19_drdfm.covid19 import add_datetime, adjust_inflation, fix_names, adjust_pandemic_response
+from covid19_drdfm.covid19 import add_datetime, adjust_inflation, fix_names, adjust_pandemic_response, get_project_h5ad
 from covid19_drdfm.streamlit.plots import plot_correlations
 
 st.set_page_config(layout="wide")
@@ -46,8 +46,11 @@ def process_data(raw_data: pd.DataFrame, state: str) -> pd.DataFrame:
 
 def normalize(df):
     index = df.index
-    df = pd.DataFrame(MinMaxScaler().fit_transform(df), columns=df.columns)
+    meta_vars = df[["State", "Time"]]
+    new = df.drop(columns=["State", "Time"])
+    df = pd.DataFrame(MinMaxScaler().fit_transform(new), columns=new.columns)
     df.index = index
+    df[["State", "Time"]] = meta_vars[["State", "Time"]]
     return df
 
 
@@ -81,4 +84,8 @@ st.plotly_chart(fig, use_container_width=True)
 
 # Display correlations for state
 st.warning(f"Correlations are calculated using {selection} dataframe")
-plot_correlations(df)
+ad = get_project_h5ad()
+var_df = ad.var
+var_df["Group"] = var_df["factor"]
+var_df["Variables"] = var_df.index
+plot_correlations(df, var_df=var_df)
