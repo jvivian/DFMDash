@@ -1,124 +1,150 @@
-"""Module for Dynamic Factor Model specification
+"""Module for Dynamic Factor `ModelRunner`"""
 
-Main command to run model
-    - `c19_dfm run`
-"""
-
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
 import pandas as pd
 import statsmodels.api as sm
-from rich import print as pprint
-from statsmodels.tsa.stattools import adfuller
+from anndata import AnnData
+from rich import print
+from rich.progress import track
 
-from covid19_drdfm.constants import DIFF_COLS, FACTORS, LOG_DIFF_COLS
-from covid19_drdfm.processing import diff_vars, get_raw, normalize, write
-
-
-def is_constant(column) -> bool:
-    """Returns True if a DataFrame column is constant"""
-    return all(column == column.iloc[0])
+from covid19_drdfm.processing import DataProcessor
 
 
-def state_process(df: pd.DataFrame, state: str) -> pd.DataFrame:
-    """Prepare data for a given state
+@dataclass
+class Result:
+    """
+    Represents the result of a dynamic factor model analysis.
+
+    Attributes:
+        name (Optional[str]): Name of the batch if batch is specified.
+        result (sm.tsa.DynamicFactor): The dynamic factor model result.
+        model (sm.tsa.DynamicFactorMQ): The dynamic factor model.
+        factors (pd.DataFrame): The factors obtained from the analysis.
+    """
+
+    name: Optional[str]
+    result: sm.tsa.DynamicFactor
+    model: sm.tsa.DynamicFactorMQ
+    factors: pd.DataFrame
+
+    def write(self, outdir: Path):
+        """
+        Writes the model summary, result summary, and factors to CSV files.
+
+        Args:
+            outdir (Path): The output directory where the files will be written.
+        """
+        out = outdir / self.name if self.name else outdir
+        with open(out / "model.csv", "w") as f:
+            f.write(self.model.summary().as_csv())
+        with open(out / "results.csv", "w") as f:
+            f.write(self.result.summary().as_csv())
+        self.factors.to_csv(out / "factors.csv")
+
+
+class ModelRunner:
+    """
+    A class for running dynamic factor models on batches of data.
+
+    Parameters:
+    - ad (AnnData): The AnnData object containing the data.
+    - outdir (Path, optional): The output directory for saving the results. Defaults to "./output".
+    - batch (str, optional): The batch column in the AnnData object. Defaults to None.
+
+    Attributes:
+    - ad (AnnData): The AnnData object containing the data.
+    - outdir (Path): The output directory for saving the results.
+    - batch (str): The batch column in the AnnData object.
+    - batches (dict[str, AnnData]): A dictionary of batches extracted from the AnnData object.
+    - results (list): A list to store the results of each model run.
+    - failures (dict): A dictionary to store any failures that occur during model runs.
+    """
+
+    def __init__(self, ad: AnnData, outdir: Path = Path("./output"), batch: Optional[str] = None):
+        self.ad = ad
+        self.outdir = outdir
+        self.batch = batch
+        self.batches: dict[str, AnnData] = self.get_batches()
+        self.results = []
+        self.failures = {}
+
+    def __repr__(self):
+        return f"ModelRunner(ad={self.ad}, outdir={self.outdir}, batch={self.batch})"
+
+    def run(self, maxiter=10_000, global_multiplier=1, columns: Optional[list[str]] = None) -> "ModelRunner":
+        """
+        Run the dynamic factor models on the batches of data.
+
+        Parameters:
+        - maxiter (int, optional): The maximum number of iterations for model fitting. Defaults to 10,000.
+        - global_multiplier (int, optional): A global multiplier for the model. Defaults to 1.
+        - columns (list[str], optional): The columns to include in the model. Defaults to None.
+
+        Returns:
+        - ModelRunner: The ModelRunner object.
+
+        Raises:
+        - Exception: If an error occurs during model fitting.
+        """
+        self.outdir.mkdir(exist_ok=True)
+        print(f"{len(self.batches)} batches to run")
+        for batch_name, batch in track(list(self.batches.items())):
+            data = DataProcessor(batch, global_multiplier, maxiter).process(columns)
+            data.write(self.outdir / batch_name) if batch_name else data.write(self.outdir)
+            model = sm.tsa.DynamicFactorMQ(data.df, factors=data.factors, factor_multiplicities=data.multiplicities)
+            try:
+                res = model.fit(disp=10, maxiter=data.maxiter)
+            except Exception as e:
+                self.failures[batch_name] = e
+                continue
+            filtered_factors = process_factors(res.factors["filtered"], data.raw, batch.obs)
+            result = Result(batch_name, res, model, filtered_factors)
+            result.write(self.outdir)
+            self.results.append(result)
+        print("All runs completed!")
+        return self
+
+    def write_failures(self):
+        """
+        Write the failures to a file.
+
+        The failures are written to a file named "failed.txt" in the output directory.
+        Each line in the file contains the batch name and the corresponding failure message.
+        """
+        for name, failure in self.failures.items():
+            with open(self.outdir / "failed.txt", "a") as f:
+                f.write(f"{name}\t{failure}\n")
+
+    def get_batches(self) -> dict[str, AnnData]:
+        """
+        Get batches from AnnData object.
+
+        Returns:
+        - dict[str, AnnData]: A dictionary of batches extracted from the AnnData object.
+        """
+        if not self.batch:
+            return {None: self.ad}  # Didn't know you could use None as a key, cool
+        return {x: self.ad[self.ad.obs[self.batch] == x] for x in self.ad.obs[self.batch].unique()}
+
+
+def process_factors(factors: pd.DataFrame, raw: pd.DataFrame, obs: pd.DataFrame) -> pd.DataFrame:
+    """
+    Process factors by merging them with raw and obs dataframes.
 
     Args:
-        df (pd.DataFrame): DataFrame generated by `c19dfm process`
-        state (str): Two-letter State Code to filter by (CA, AK, etc...)
+        factors (pd.DataFrame): The factors dataframe.
+        raw (pd.DataFrame): The raw dataframe.
+        obs (pd.DataFrame): The obs dataframe.
 
     Returns:
-        pd.DataFrame: Processed DataFrame, ready for model
+        pd.DataFrame: The merged factors dataframe.
     """
-    df = df[df.State == state].pipe(diff_vars, cols=DIFF_COLS).pipe(diff_vars, cols=LOG_DIFF_COLS, log=True).iloc[1:]
-    df = normalize(df).fillna(0)
-    const_cols = [x for x in df.columns if is_constant(df[x])]
-    pprint(f"Constant Columns...dropping\n{const_cols}")
-    return df.drop(columns=const_cols).set_index("Time", drop=True)
-
-
-def get_nonstationary_columns(df: pd.DataFrame) -> list[str]:
-    """Run AD-Fuller on tests and report failures
-
-    Args:
-        df (pd.DataFrame): Input DataFrame
-
-    Returns:
-        list[str]: List of columns that failed AD-Fuller test
-    """
-    non_stationary_columns = []
-    for col in df.columns:
-        result = adfuller(df[col])
-        p_value = result[1]
-        if p_value > 0.25:
-            non_stationary_columns.append(col)
-
-    pprint(f"Columns that fail the ADF test (non-stationary)\n{non_stationary_columns}")
-    return non_stationary_columns
-
-
-def run_parameterized_model(
-    df: pd.DataFrame,
-    state: str,
-    outdir: Path,
-    columns: Optional[list[str]] = None,
-    factors: dict[str, tuple[str, str]] = FACTORS,
-    global_multiplier: int = 2,
-    maxiter: int = 10_000,
-) -> sm.tsa.DynamicFactor:
-    """Run DFM for a given state
-
-    Args:
-        df (pd.DataFrame): DataFrame processed via `covid19_drdfm.run`
-        state (str): Two-letter state code to process
-        outdir (str): Output directory for model CSV files
-
-    Returns:
-        sm.tsa.DynamicFactor: Dynamic Factor Model
-    """
-    df = state_process(df, state)
-    _ = get_nonstationary_columns(df)
-    df = df[[x for x in list(columns) if x in df.columns]] if columns else df
-    factors = {k: v for k, v in factors.items() if k in df.columns}
-    _save_input(df, state, columns, outdir)
-    if global_multiplier == 0:
-        factors = {k: {v[1]} for k, v in factors.items()}
-        model = sm.tsa.DynamicFactorMQ(df, factors=factors)
-    else:
-        factor_multiplicities = {"Global": global_multiplier}
-        model = sm.tsa.DynamicFactorMQ(df, factors=factors, factor_multiplicities=factor_multiplicities)
-    try:
-        results = model.fit(disp=10, maxiter=maxiter)
-    except Exception as e:
-        with open(outdir / "failed.txt", "a") as f:
-            f.write(f"{state}\t{e}\n")
-        return
-    _save_output(df, model, results, state, outdir)
-    return model
-
-
-def _save_input(df, state, columns, outdir):
-    outdir.mkdir(exist_ok=True)
-    out = outdir / state
-    out.mkdir(exist_ok=True)
-    raw = get_raw().query("State == @state")
-    raw = raw[columns + ["Time"]] if columns else raw
-    raw = raw.set_index("Time").loc[df.index]
-    write(raw, out / "raw.csv")
-    write(df, (out / "df.xlsx"))
-    write(df, out / "df.csv")
-
-
-def _save_output(df, model, results, state, outdir):
-    out = outdir / state
-    with open(out / "model.csv", "w") as f:
-        f.write(model.summary().as_csv())
-    with open(out / "results.csv", "w") as f:
-        f.write(results.summary().as_csv())
-    filtered = results.factors["filtered"]
-    filtered["State"] = state
-    raw = pd.read_csv(out / "raw.csv", index_col=0)
-    filtered.index = raw.index
-    filtered = filtered.merge(raw, left_index=True, right_index=True)
-    filtered.to_csv(out / "filtered-factors.csv")
+    factors.index = raw.index
+    factors = factors.merge(raw, left_index=True, right_index=True)
+    factors.columns = [f"Factor_{x}" for x in factors.columns]
+    if not obs.empty:
+        factors = factors.merge(obs, left_index=True, right_index=True)
+    return factors

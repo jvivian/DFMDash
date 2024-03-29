@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from covid19_drdfm.processing import ROOT_DIR
+from covid19_drdfm.covid19 import ROOT_DIR
 from covid19_drdfm.results import parse_multiple_runs, parse_results, parse_run_results
 
 
@@ -31,16 +31,10 @@ def test_parse_results(result_path):
 
 
 def test_parse_run_results(run_path):
-    # Call the function
     df = parse_run_results(run_path)
-
-    # Check the extracted values
     assert df.shape == (50, 4)
 
 
 def test_parse_multiple_runs(runs_dir):
-    # Create a temporary directory with multiple run directories
     df = parse_multiple_runs(runs_dir)
-
-    # Check the extracted values
     assert df.shape == (87, 5)

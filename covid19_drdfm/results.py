@@ -66,6 +66,15 @@ def parse_run_results(directory: Path):
 
 
 def parse_multiple_runs(directory: Path):
+    """
+    Parses the results of multiple runs stored in subdirectories of the given directory.
+
+    Args:
+        directory (Path): The directory containing the subdirectories with the run results.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the parsed results of all runs.
+    """
     # Initialize an empty DataFrame
     all_runs = []
 

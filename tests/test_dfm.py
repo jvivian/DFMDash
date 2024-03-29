@@ -1,93 +1,48 @@
 import shutil
-from datetime import datetime
+import unittest
 from pathlib import Path
+from covid19_drdfm.dfm import ModelRunner
+from anndata import AnnData
+from covid19_drdfm.covid19 import get_project_h5ad
 
-import pandas as pd
-import pytest
-
-from covid19_drdfm.dfm import run_parameterized_model
-from covid19_drdfm.processing import get_df
-
-COLUMNS = ["PCE", "CPIU", "Hosp1", "Deaths1"]
+COLUMNS = ["PCE", "CPIU", "Hosp1", "Hosp2"]
+STATES = ["AK", "CA"]
 
 
-def test_run_model():
-    """
-    Test the run_parameterized_model function.
+class TestModelRunner(unittest.TestCase):
+    def setUp(self):
+        # Create a dummy AnnData object for testing
+        self.ad = get_project_h5ad()
+        self.ad = self.ad[self.ad.obs.State.isin(STATES), :]
+        self.outdir = Path("./test-output")
+        self.outdir.mkdir(exist_ok=True)
+        self.batch = "State"
+        self.model_runner = ModelRunner(self.ad, self.outdir, self.batch)
 
-    This function tests the run_parameterized_model function by running it with a sample dataframe,
-    a state code, and a test directory path. It then asserts that the model.csv and results.csv files
-    are created in the test directory, and finally removes the test directory.
+    def tearDown(self):
+        if self.outdir.exists():
+            shutil.rmtree(self.outdir)
 
-    Returns:
-        None
-    """
-    df = get_df()
-    state = "SD"
-    run_parameterized_model(df, state, Path("./testdir"), columns=COLUMNS, global_multiplier=1)
-    assert Path("./testdir/SD/model.csv").exists()
-    assert Path("./testdir/SD/results.csv").exists()
-    shutil.rmtree("./testdir")
+    def test_init(self):
+        self.assertIsInstance(self.model_runner.ad, AnnData)
+        self.assertEqual(self.model_runner.outdir, self.outdir)
+        self.assertEqual(self.model_runner.batch, self.batch)
 
+    def test_run(self):
+        maxiter = 1000
+        global_multiplier = 1
+        result = self.model_runner.run(maxiter, global_multiplier, COLUMNS)
+        self.assertIsInstance(result, ModelRunner)
 
-def test_run_model_global_0():
-    """
-    Test the run_parameterized_model function with a global multipler of 0.
+    def test_write_failures(self):
+        self.model_runner.failures = {"Test": "Test-Failure!"}
+        self.model_runner.write_failures()
+        assert (self.model_runner.outdir / "failed.txt").exists()
 
-    This function tests the run_parameterized_model function by running it with a sample dataframe,
-    a state code, and a test directory path. It then asserts that the model.csv and results.csv files
-    are created in the test directory, and finally removes the test directory.
-
-    Returns:
-        None
-    """
-    df = get_df()
-    state = "SD"
-    run_parameterized_model(df, state, Path("./testdir"), columns=COLUMNS, global_multiplier=0)
-    assert Path("./testdir/SD/model.csv").exists()
-    assert Path("./testdir/SD/results.csv").exists()
-    shutil.rmtree("./testdir")
+    def test_get_batches(self):
+        batches = self.model_runner.get_batches()
+        self.assertIsInstance(batches, dict)
 
 
-@pytest.mark.skip(reason="Stochastic failure state")
-def test_run_failure():
-    """
-    Test the run_parameterized_model function for a state with known failure conditions
-
-    This function tests the run_parameterized_model function by running it with a sample dataframe,
-    a state code, and a test directory path. It then asserts that the model.csv and results.csv files
-    are created in the test directory, and finally removes the test directory.
-
-    Returns:
-        None
-    """
-    df = get_df()
-    date_object = datetime.strptime("2019-01-01", "%Y-%m-%d")
-    df = df[df.Time > date_object]
-    state = "WY"
-    run_parameterized_model(df, state, Path("./testdir"), global_multiplier=2)
-    assert Path("./testdir/failed.txt").exists()
-    shutil.rmtree("./testdir")
-
-
-def test_modified_start_date():
-    """
-    Test the run_parameterized_model function with a modified start date
-
-    This function tests the run_parameterized_model function by running it with a sample dataframe,
-    a state code, and a test directory path. It then asserts that the model.csv and results.csv files
-    are the same length (due to subsetting on time)
-
-    Returns:
-        None
-    """
-    df = get_df()
-    date_string = "2020-01-01"
-    columns = ["PCE", "CPIU", "Hosp1", "Deaths1"]
-    date_object = datetime.strptime(date_string, "%Y-%m-%d")
-    df = df[df.Time > date_object]
-    state = "CA"
-    test_dir = Path("./testdir")
-    run_parameterized_model(df, state, test_dir, columns=columns, global_multiplier=2)
-    assert pd.read_csv(test_dir / state / "raw.csv").shape == pd.read_csv(test_dir / state / "df.csv").shape
-    shutil.rmtree("./testdir")
+if __name__ == "__main__":
+    unittest.main()

@@ -6,7 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 from covid19_drdfm.constants import FACTORS
 
 
-def plot_correlations(df: pd.DataFrame, normalize=False) -> None:
+def plot_correlations(df: pd.DataFrame, var_df: pd.DataFrame, normalize=False) -> None:
     """
     Plots the correlations between variables in the given DataFrame.
 
@@ -16,9 +16,6 @@ def plot_correlations(df: pd.DataFrame, normalize=False) -> None:
     Returns:
     None
     """
-    factors = FACTORS.copy()
-    var_df = pd.Series(df.drop(columns=["State", "Time"]).columns, name="Variables").to_frame()
-    var_df["Group"] = [factors[x][1] for x in var_df.Variables if x in df.columns]
     c1, c2 = st.columns(2)
     c3, c4 = st.columns(2)
     c5, c6 = st.columns(2)
