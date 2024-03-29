@@ -3,6 +3,7 @@ from pathlib import Path
 import arviz as az
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import plotly.io as pio
 import plotly_express as px
 import pymc as pm
@@ -15,14 +16,15 @@ pio.templates.default = "plotly_white"
 
 
 def center_title(text):
-    return st.markdown(f"<h1 style='text-align: center; color: grey;'>{text}</h1>", unsafe_allow_html=True)
+    txt = f"<h1 style='text-align: center; color: grey;'>{text}</h1>"
+    return st.markdown(txt, unsafe_allow_html=True)
 
 
 center_title("Comparative Run Analysis")
 
 # Parameter to runs
-path_to_results = Path(st.text_input("Path directory of runs", value="./covid19_drdfm/data/example-data"))
-df = parse_multiple_runs(path_to_results)
+run_dir = Path(st.text_input("Path directory of runs", value="./covid19_drdfm/data/example-data"))
+df = parse_multiple_runs(run_dir)
 
 
 def create_plot(df):
@@ -54,15 +56,32 @@ def create_plot(df):
     return metric
 
 
-def get_summary(df):
+def num_failures(run_dir: Path, run_name: str):
+    """Count the number of failed states for a specific run"""
+    failed_file_path = run_dir / run_name / "failed.txt"
+    if not failed_file_path.exists():
+        return 0
+    with open(failed_file_path) as failed_file:
+        return len(failed_file.readlines())
+
+
+def delta_failures(run_dir: Path, run_name: str):
+    """Calculate deviation from the run with the least failed states"""
+    min_failures = min([num_failures(run_dir, run_name) for run_name in run_dir.iterdir()])
+    return min_failures - num_failures(run_dir, run_name)
+
+
+def get_summary(df: pd.DataFrame):
     # Median metrics
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Median Log Likelihood", df["Log Likelihood"].median())
-    col2.metric("Median AIC", df["AIC"].median())
-    col3.metric("Median EM Iterations", df["EM Iterations"].median())
+    run_name = df.Run.iloc[0]
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Number of Failed States", num_failures(run_dir, run_name), delta_failures(run_dir, run_name))
+    col2.metric("Median Log Likelihood", df["Log Likelihood"].median())
+    col3.metric("Median AIC", df["AIC"].median())
+    col4.metric("Median EM Iterations", df["EM Iterations"].median())
 
 
-def show_summary(df):
+def show_summary(df: pd.DataFrame):
     run = st.selectbox("Select a run", df["Run"].unique())
     filtered_df = df[(df["Run"] == run)]
     return get_summary(filtered_df)

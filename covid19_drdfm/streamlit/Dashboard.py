@@ -1,4 +1,3 @@
-# TODO: Fix Dashboard to use h5ad file
 import json
 import time
 from pathlib import Path
