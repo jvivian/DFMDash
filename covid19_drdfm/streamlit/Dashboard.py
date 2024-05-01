@@ -105,6 +105,7 @@ with st.spinner(f"Running {n} models..."):
     model = ModelRunner(ad, outdir=outdir, batch="State")
     model.run(maxiter=maxiter, global_multiplier=mult_sel, columns=columns)
 
+
 # Combine filtered output
 filt_paths = [subdir / "factors.csv" for subdir in outdir.iterdir() if (subdir / "factors.csv").exists()]
 dfs = [pd.read_csv(x) for x in filt_paths]
@@ -112,9 +113,11 @@ try:
     filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
     filt_df.to_csv(outdir / "factors.csv")
     st.dataframe(filt_df)
+    model.ad.write(outdir / "data.h5ad")
     st.balloons()
 except ValueError:
     st.error(f"No runs succeeded!! Check failures.txt in {outdir}")
+
 
 end = time.time()
 hours, rem = divmod(end - start, 3600)

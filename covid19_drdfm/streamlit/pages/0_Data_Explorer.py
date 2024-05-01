@@ -5,11 +5,11 @@ import numpy as np
 import pandas as pd
 import plotly.io as pio
 import plotly_express as px
-from sklearn.preprocessing import MinMaxScaler
 import streamlit as st
+from sklearn.preprocessing import MinMaxScaler
 
 from covid19_drdfm.constants import DIFF_COLS, FACTORS_GROUPED, LOG_DIFF_COLS
-from covid19_drdfm.covid19 import add_datetime, adjust_inflation, fix_names, adjust_pandemic_response, get_project_h5ad
+from covid19_drdfm.covid19 import add_datetime, adjust_inflation, adjust_pandemic_response, fix_names, get_project_h5ad
 from covid19_drdfm.streamlit.plots import plot_correlations
 
 st.set_page_config(layout="wide")

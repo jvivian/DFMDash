@@ -103,7 +103,9 @@ class ModelRunner:
             filtered_factors = process_factors(res.factors["filtered"], data.raw, batch.obs)
             result = Result(batch_name, res, model, filtered_factors)
             result.write(self.outdir)
+            self.ad.uns[f"{batch_name}-factors"] = result.factors
             self.results.append(result)
+        # TODO: Concat factors across batch variables
         print("All runs completed!")
         return self
 
