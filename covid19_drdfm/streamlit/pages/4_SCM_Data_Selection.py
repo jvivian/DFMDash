@@ -25,6 +25,13 @@ ad = ann.read_h5ad(h5ad_path)
 st.write(ad)
 st.dataframe(ad.uns["factors"])
 
+# Read in data
+raw = ad 
+# Parameters
+state = st.sidebar.selectbox("Select State", sorted(raw["State"].unique()))
+factor = st.sidebar.selectbox("Factor", sorted(FACTORS_GROUPED))
+selections = ["Raw", "Processed", "Normalized"]
+selection = st.sidebar.selectbox("Data Processing", selections)
 
 # SELECT VARIABLES FOR PREVIEW TABLE
 # DROP DOWNS TO SELECT SERIES FROM H5AD FILE
@@ -32,8 +39,15 @@ st.dataframe(ad.uns["factors"])
 # ALSO BUTTON TO ADD EVERY SERIES
 # CAN ADD STATES OR LEAVE SOME OUT
 # BUTTON TO GENERATE PREVIEW TABLE
-
+proc = process_data(raw, state)
+df = proc if selection == "Processed" else raw
+df = normalize(proc).fillna(0) if selection == "Normalized" else df[df["State"] == state]
 # SELECT VARIABLES FOR MODEL
+Treatment_Month = st.sidebar.selectbox("Select Treatment Time", month)
+sc = Synth(df, "Pandemic", "state", "year", "Treatment_Month", "Comparison_State", n_optim=10, pen="auto")
+
+
+
 # SELECT Y (OUTCOME VARIABLE)
 # SELECT TREATMENT STATE
 # SELECT K PREDICTORS
