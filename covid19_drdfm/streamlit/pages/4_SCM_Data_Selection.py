@@ -5,6 +5,8 @@ from SyntheticControlMethods import DiffSynth, Synth
 import pandas as pd
 import plotly.io as pio
 import streamlit as st
+from covid19_drdfm.constants import FACTORS_GROUPED
+from covid19_drdfm.covid19 import get_df, get_project_h5ad
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_dark"
@@ -20,18 +22,35 @@ center_title("Synthetic Control Model Runner")
 # DATA SELECTION
 
 # SELECT H5AD FILE (DEFAULTS TO FILE USED FOR LAST DFM RUN)
-h5ad_path = st.text_input("H5AD path with factors", value="./covid19_drdfm/data/processed/data.h5ad")
+h5ad_path = st.text_input("H5AD path", value="./covid19_drdfm/data/processed/data.h5ad")
+factor_path = st.text_input("Factor path from successful run", value="covid19_drdfm/data/example-data/test-all-global-1_2019/filtered-factors.csv")
+
 ad = ann.read_h5ad(h5ad_path)
 st.write(ad)
-st.dataframe(ad.uns["factors"])
+#st.dataframe(ad.uns["factors"])
 
 # Read in data
-raw = ad 
+ad = get_project_h5ad()
+df = ad.to_df()
+df["Time"] = df.index
+df["State"] = ad.obs.State
+st.dataframe(ad.obs)
+st.dataframe(ad.var)
 # Parameters
-state = st.sidebar.selectbox("Select State", sorted(raw["State"].unique()))
+state = st.sidebar.selectbox("Select Treatment State", sorted(ad.obs["State"].unique()))
 factor = st.sidebar.selectbox("Factor", sorted(FACTORS_GROUPED))
-selections = ["Raw", "Processed", "Normalized"]
-selection = st.sidebar.selectbox("Data Processing", selections)
+treatment_month = st.sidebar.selectbox("Select Treatment Time", ad.obs.index)
+date_start = st.sidebar.selectbox("Start Date", value=df.Time.min(), min_value=df.Time.min(), max_value=ad.obs.Time.max())
+
+
+fdf = pd.read_csv(factor_path) 
+fdf = fdf.sort_values(["State", "Time"])
+df = df[df.Time > "2019-02-01"] #update tp be first in fdf
+df[factor] = fdf[factor].to_list()
+st.write(df)
+
+
+
 
 # SELECT VARIABLES FOR PREVIEW TABLE
 # DROP DOWNS TO SELECT SERIES FROM H5AD FILE
@@ -39,12 +58,11 @@ selection = st.sidebar.selectbox("Data Processing", selections)
 # ALSO BUTTON TO ADD EVERY SERIES
 # CAN ADD STATES OR LEAVE SOME OUT
 # BUTTON TO GENERATE PREVIEW TABLE
-proc = process_data(raw, state)
-df = proc if selection == "Processed" else raw
-df = normalize(proc).fillna(0) if selection == "Normalized" else df[df["State"] == state]
 # SELECT VARIABLES FOR MODEL
-Treatment_Month = st.sidebar.selectbox("Select Treatment Time", month)
-sc = Synth(df, "Pandemic", "state", "year", "Treatment_Month", "Comparison_State", n_optim=10, pen="auto")
+
+
+st.write(Synth)
+sc = Synth(df, factor, "State", "Time", treatment_month, state, n_optim=10, pen="auto")
 
 
 
