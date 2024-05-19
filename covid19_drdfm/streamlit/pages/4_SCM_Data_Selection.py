@@ -23,7 +23,7 @@ center_title("Synthetic Control Model Runner")
 h5ad_path = st.text_input("H5AD path with factors", value="./covid19_drdfm/data/processed/data.h5ad")
 ad = ann.read_h5ad(h5ad_path)
 st.write(ad)
-st.dataframe(ad.uns["factors"])
+st.write(ad.X)
 
 
 # SELECT VARIABLES FOR PREVIEW TABLE
