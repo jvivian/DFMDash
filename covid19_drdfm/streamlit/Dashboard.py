@@ -127,7 +127,7 @@ try:
     filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
     filt_df.to_csv(outdir / "factors.csv")
     st.dataframe(filt_df)
-    model.ad.write(outdir / "data.h5ad")
+    # model.ad.write(outdir / "data.h5ad")
     st.balloons()
 except ValueError:
     st.error(f"No runs succeeded!! Check failures.txt in {outdir}")

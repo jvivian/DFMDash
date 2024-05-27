@@ -36,10 +36,12 @@ raw = get_df()
 path_to_results = Path(
     st.text_input("Path to results", value="./covid19_drdfm/data/example-data/test-all-global-1_2019")
 )
-factor_path = path_to_results / "filtered-factors.csv"
+factor_path = path_to_results / "factors.csv"
 df = pd.read_csv(factor_path, index_col=0)
 df["Time"] = df.index
 df.index.name = "Time"
+cols_to_drop = [x for x in df.columns if "Time." in x]
+df = df.drop(columns=cols_to_drop)
 
 filter_list = ["Unnamed", "Time", "State"]
 factor = st.sidebar.selectbox("Factor", [x for x in df.columns if x not in filter_list and "Global" not in x])
@@ -55,22 +57,28 @@ for state_subdir in path_to_results.iterdir():
     valid_cols = pd.read_csv(state_subdir / "df.csv").columns
     # valid_cols = [x for x in valid_cols i]
     break
-factor_vars = [x for x in FACTORS_GROUPED[factor] if x in valid_cols]
+
+# Get factors and columns
+factor_vars = [x for x in FACTORS_GROUPED[factor.split("_")[1]] if x in valid_cols]
 columns = [*factor_vars, "State", "Time"]
 
 # Normalize original data for state / valid variables
-raw = raw.set_index("Time", drop=False)
-new = normalize(raw[raw.State == state][columns]).set_index("Time", drop=False)
+new = normalize(raw[raw.State == state][columns])
 
 # Normalize factors and add to new dataframe
 if st.sidebar.checkbox("Invert Factor"):
     df[factor] = df[factor] * -1
-df = normalize(df[df.State == state]).set_index("Time", drop=False)  # .reset_index(drop=True)
-new = new.loc[df.index, :]
-new[factor] = list(df[factor])
+df = normalize(df[df.State == state]).reset_index(drop=True)
+
+# Coerce time bullshit to get dates standardized
+df["Time"] = pd.to_datetime(df["Time"]).dt.date
+new["Time"] = pd.to_datetime(new["Time"]).dt.date
+df = df[[factor, "Time"]].merge(new, on="Time")
+with st.expander("Graph Data"):
+    st.dataframe(df)
 
 # Melt into format for plotting
-melted_df = new.drop(columns="State").melt(id_vars=["Time"], value_name="value")
+melted_df = df.drop(columns="State").melt(id_vars=["Time"], value_name="value")
 melted_df["Label"] = [5 if x == factor else 1 for x in melted_df.variable]
 
 # Plot
