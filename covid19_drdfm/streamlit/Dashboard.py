@@ -1,4 +1,4 @@
-import json
+import yaml
 import time
 from pathlib import Path
 
@@ -108,8 +108,8 @@ for x in [x for x in selectors if selectors[x]]:
 selectors.update({"global_multiplier": mult_sel, "outdir": outdir})
 outdir = Path(outdir)
 outdir.mkdir(exist_ok=True)
-with open(outdir / "log.txt", "w") as f:
-    json.dump(selectors, f)
+with open(outdir / "log.yaml", "w") as f:
+    yaml.dump(selectors, f)
 
 # Run model for subset of states using batch mode
 # TODO: No per-batch update sucks, try and fix during dynamic refactor
@@ -118,6 +118,7 @@ ad = ad[ad.obs.State.isin(state_sel)]
 with st.spinner(f"Running {n} models..."):
     model = ModelRunner(ad, outdir=outdir, batch="State")
     model.run(maxiter=maxiter, global_multiplier=mult_sel, columns=columns)
+    model.write_failures()
 
 
 # Combine filtered output
@@ -127,11 +128,16 @@ try:
     filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
     filt_df.to_csv(outdir / "factors.csv")
     st.dataframe(filt_df)
-    # model.ad.write(outdir / "data.h5ad")
+    model.ad.write(outdir / "data.h5ad")
     st.balloons()
 except ValueError:
     st.error(f"No runs succeeded!! Check failures.txt in {outdir}")
 
+
+if model.failures:
+    fail = model.failures
+    st.error(f"{len(fail)} Model(s) Failed")
+    st.write(fail)
 
 end = time.time()
 hours, rem = divmod(end - start, 3600)
