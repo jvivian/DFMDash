@@ -77,3 +77,7 @@ def launch_dashboard():
     current_dir = Path(__file__).resolve().parent
     dashboard_path = current_dir / "streamlit" / "Dashboard.py"
     subprocess.run(["streamlit", "run", dashboard_path])
+
+
+if __name__ == "__main__":
+    app()
