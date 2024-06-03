@@ -1,0 +1,2 @@
+AK	Matrix is not positive definite
+NY	Matrix is not positive definite

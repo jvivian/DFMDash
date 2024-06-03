@@ -1,0 +1,20 @@
+Consumption: []
+Employment: []
+Inflation: []
+Pandemic:
+- Cases1
+- Cases2
+- Cases3
+- Cases4
+- Cases5
+- Hosp1
+- Hosp2
+- Deaths1
+- Deaths2
+- Deaths3
+- Deaths4
+- Deaths5
+Response: []
+Uncat: []
+global_multiplier: 1
+outdir: covid19_drdfm/data/example-data/pandemic-only

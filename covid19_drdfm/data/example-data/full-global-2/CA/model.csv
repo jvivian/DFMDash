@@ -1,0 +1,62 @@
+             Model Specification: Dynamic Factor Model
+Model: ,Dynamic Factor Model   ,  # of observed variables:   ,45
+       ,+ 8 factors in 7 blocks,  # of factor blocks:        ,7
+       ,+ AR(1) idiosyncratic  ,  Idiosyncratic disturbances:,AR(1)
+Sample:,2012-03-01 00:00:00    ,  Standardize variables:     ,True
+       ,- 2022-12-01 00:00:00  ,                             ,
+                          Observed variables / factor loadings
+Dep. variable,Global.1,Global.2,Response,Pandemic,Uncat,Consumption,Employment,Inflation
+Cases1       ,X       ,X       ,        ,X       ,     ,           ,          ,
+Cases2       ,X       ,X       ,        ,X       ,     ,           ,          ,
+Cases3       ,X       ,X       ,        ,X       ,     ,           ,          ,
+Cases4       ,X       ,X       ,        ,X       ,     ,           ,          ,
+Cases5       ,X       ,X       ,        ,X       ,     ,           ,          ,
+Hosp1        ,X       ,X       ,        ,X       ,     ,           ,          ,
+Hosp2        ,X       ,X       ,        ,X       ,     ,           ,          ,
+Deaths1      ,X       ,X       ,        ,X       ,     ,           ,          ,
+Deaths2      ,X       ,X       ,        ,X       ,     ,           ,          ,
+Deaths3      ,X       ,X       ,        ,X       ,     ,           ,          ,
+Deaths4      ,X       ,X       ,        ,X       ,     ,           ,          ,
+Deaths5      ,X       ,X       ,        ,X       ,     ,           ,          ,
+Vax1         ,X       ,X       ,X       ,        ,     ,           ,          ,
+Vax3         ,X       ,X       ,X       ,        ,     ,           ,          ,
+Gather1      ,X       ,X       ,X       ,        ,     ,           ,          ,
+Gather2      ,X       ,X       ,X       ,        ,     ,           ,          ,
+Gather3      ,X       ,X       ,X       ,        ,     ,           ,          ,
+Gather4      ,X       ,X       ,X       ,        ,     ,           ,          ,
+Curfew       ,X       ,X       ,X       ,        ,     ,           ,          ,
+Mask1        ,X       ,X       ,X       ,        ,     ,           ,          ,
+Mask2        ,X       ,X       ,X       ,        ,     ,           ,          ,
+School       ,X       ,X       ,X       ,        ,     ,           ,          ,
+ARP          ,X       ,X       ,X       ,        ,     ,           ,          ,
+PPP          ,X       ,X       ,X       ,        ,     ,           ,          ,
+CARES        ,X       ,X       ,X       ,        ,     ,           ,          ,
+Cons1        ,X       ,X       ,        ,        ,     ,X          ,          ,
+Cons2        ,X       ,X       ,        ,        ,     ,X          ,          ,
+Cons3        ,X       ,X       ,        ,        ,     ,X          ,          ,
+Cons4        ,X       ,X       ,        ,        ,     ,X          ,          ,
+Cons5        ,X       ,X       ,        ,        ,     ,X          ,          ,
+Employment1  ,X       ,X       ,        ,        ,     ,           ,X         ,
+Employment2  ,X       ,X       ,        ,        ,     ,           ,X         ,
+UI           ,X       ,X       ,        ,        ,     ,           ,X         ,
+PartR        ,X       ,X       ,        ,        ,     ,           ,X         ,
+PCE          ,X       ,X       ,        ,        ,     ,           ,          ,X
+PCEC         ,X       ,X       ,        ,        ,     ,           ,          ,X
+Prod         ,X       ,X       ,        ,        ,X    ,           ,          ,
+GDP          ,X       ,X       ,        ,        ,X    ,           ,          ,
+TBill1mo     ,X       ,X       ,        ,        ,X    ,           ,          ,
+TBill6mo     ,X       ,X       ,        ,        ,X    ,           ,          ,
+TBill1yr     ,X       ,X       ,        ,        ,X    ,           ,          ,
+TBill5yr     ,X       ,X       ,        ,        ,X    ,           ,          ,
+TBill10yr    ,X       ,X       ,        ,        ,X    ,           ,          ,
+TBill30yr    ,X       ,X       ,        ,        ,X    ,           ,          ,
+FFR          ,X       ,X       ,        ,        ,X    ,           ,          ,
+     Factor blocks:
+      block       ,order
+Global.1, Global.2,1
+Response          ,1
+Pandemic          ,1
+Uncat             ,1
+Consumption       ,1
+Employment        ,1
+Inflation         ,1

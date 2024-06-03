@@ -1,0 +1,58 @@
+Consumption:
+- Cons1
+- Cons2
+- Cons3
+- Cons4
+- Cons5
+Employment:
+- Employment1
+- Employment2
+- UI
+- PartR
+- UR
+Inflation:
+- CPI
+- CPIU
+- PCE
+- PCEC
+Pandemic:
+- Cases1
+- Cases2
+- Cases3
+- Cases4
+- Cases5
+- Hosp1
+- Hosp2
+- Deaths1
+- Deaths2
+- Deaths3
+- Deaths4
+- Deaths5
+Response:
+- Vax1
+- Vax3
+- Gather1
+- Gather2
+- Gather3
+- Gather4
+- Curfew
+- Mask1
+- Mask2
+- School
+- ARP
+- PPP
+- CARES
+Uncat:
+- RPFI
+- FixAss
+- Prod
+- GDP
+- TBill1mo
+- TBill6mo
+- TBill1yr
+- TBill5yr
+- TBill10yr
+- TBill30yr
+- FFR
+global_multiplier: 1
+outdir: ./covid19_drdfm/data/example-data/full-global-1

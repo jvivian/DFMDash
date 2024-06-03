@@ -1,0 +1,54 @@
+diff_cols:
+- Cases1
+- Cases2
+- Cases3
+- Cases4
+- Cases5
+- Hosp1
+- Hosp2
+- Deaths1
+- Deaths2
+- Deaths3
+- Deaths4
+- Deaths5
+factor_map:
+  Cases1: !!python/tuple
+  - Global
+  - Pandemic
+  Cases2: !!python/tuple
+  - Global
+  - Pandemic
+  Cases3: !!python/tuple
+  - Global
+  - Pandemic
+  Cases4: !!python/tuple
+  - Global
+  - Pandemic
+  Cases5: !!python/tuple
+  - Global
+  - Pandemic
+  Deaths1: !!python/tuple
+  - Global
+  - Pandemic
+  Deaths2: !!python/tuple
+  - Global
+  - Pandemic
+  Deaths3: !!python/tuple
+  - Global
+  - Pandemic
+  Deaths4: !!python/tuple
+  - Global
+  - Pandemic
+  Deaths5: !!python/tuple
+  - Global
+  - Pandemic
+  Hosp1: !!python/tuple
+  - Global
+  - Pandemic
+  Hosp2: !!python/tuple
+  - Global
+  - Pandemic
+global_multiplier: 1
+logdiff_cols: []
+maxiter: 10000
+non_stationary_cols: null
