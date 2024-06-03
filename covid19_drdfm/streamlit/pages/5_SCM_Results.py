@@ -1,4 +1,0 @@
-#RESULTS
-
-#PLOT OF Y AND Y^
-#VECTOR OF Wj
