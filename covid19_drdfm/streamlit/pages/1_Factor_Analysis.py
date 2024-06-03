@@ -1,16 +1,19 @@
 from pathlib import Path
 
+import anndata as ann
 import pandas as pd
 import plotly.io as pio
 import plotly_express as px
-from sklearn.preprocessing import MinMaxScaler
 import streamlit as st
+from sklearn.preprocessing import MinMaxScaler
 
 from covid19_drdfm.constants import FACTORS_GROUPED
 from covid19_drdfm.covid19 import get_df
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
+
+EX_PATH = Path("./covid19_drdfm/data/example-data/pandemic-only")
 
 
 def center_title(text):
@@ -33,42 +36,50 @@ raw = get_df()
 # TEST_DIR = Path('covid19_drdfm/data/example-output/')
 
 # Parameter for results
-path_to_results = Path(
-    st.text_input("Path to results", value="./covid19_drdfm/data/example-data/test-all-global-1_2019")
-)
-factor_path = path_to_results / "factors.csv"
+res_dir = Path(st.text_input("Path to results", value=EX_PATH))
+factor_path = res_dir / "factors.csv"
 df = pd.read_csv(factor_path, index_col=0)
 df["Time"] = df.index
 df.index.name = "Time"
 cols_to_drop = [x for x in df.columns if "Time." in x]
 df = df.drop(columns=cols_to_drop)
+df.columns = [x.lstrip("Factor_") for x in df.columns]
+# st.dataframe(df)
+
+# AnnData
+# dfs = []
+# for subdir in res_dir.iterdir():
+#     if not subdir.is_dir():
+#         continue
+#     dfs.append(pd.read_csv(res_dir / 'df.csv'))
 
 filter_list = ["Unnamed", "Time", "State"]
-factor = st.sidebar.selectbox("Factor", [x for x in df.columns if x not in filter_list and "Global" not in x])
+factor = st.sidebar.selectbox("Factor", [x for x in df.columns if x not in filter_list])
 state = st.sidebar.selectbox("State", sorted(df.State.unique()))
 
+
 with st.expander("State Factors"):
-    st.dataframe(df)
+    st.dataframe(df[df.State == state])
+
 
 # Grab first state to fetch valid variables
-for state_subdir in path_to_results.iterdir():
-    if not state_subdir.is_dir():
-        continue
-    valid_cols = pd.read_csv(state_subdir / "df.csv").columns
-    # valid_cols = [x for x in valid_cols i]
-    break
-
+state_df = pd.read_csv(res_dir / state / "df.csv")
+cols = [x for x in df.columns if x in state_df.columns] + ["State"]
+# st.write(cols)
 # Get factors and columns
-factor_vars = [x for x in FACTORS_GROUPED[factor.split("_")[1]] if x in valid_cols]
-columns = [*factor_vars, "State", "Time"]
+# factor_vars = [x for x in FACTORS_GROUPED[factor.split("_")[1]] if x in valid_cols]  # and '_' in x]
+# columns = [*factor_vars, "State", "Time"]
+
 
 # Normalize original data for state / valid variables
-new = normalize(raw[raw.State == state][columns])
+new = normalize(raw[raw.State == state][cols])
+# st.dataframe(new)
 
 # Normalize factors and add to new dataframe
 if st.sidebar.checkbox("Invert Factor"):
     df[factor] = df[factor] * -1
 df = normalize(df[df.State == state]).reset_index(drop=True)
+
 
 # Coerce time bullshit to get dates standardized
 df["Time"] = pd.to_datetime(df["Time"]).dt.date
@@ -86,8 +97,8 @@ f = px.line(melted_df, x="Time", y="value", color="variable", hover_data="variab
 st.plotly_chart(f, use_container_width=True)
 
 # Model Results
-results_path = path_to_results / state / "results.csv"
-model_path = path_to_results / state / "model.csv"
+results_path = res_dir / state / "results.csv"
+model_path = res_dir / state / "model.csv"
 
 values = pd.Series()
 with open(results_path) as f:
