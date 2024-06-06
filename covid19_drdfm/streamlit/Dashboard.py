@@ -77,8 +77,10 @@ with st.form("DFM Model Runner"):
     # Transforms
     st.subheader("Transforms")
     c1, c2 = st.columns(2)
-    c1.multiselect("Difference", ad.var.index, default=ad.var[ad.var["difference"]].index.to_list())
-    c2.multiselect("LogDifference", ad.var.index, default=ad.var[ad.var["logdiff"]].index.to_list())
+    diff = c1.multiselect("Difference", ad.var.index, default=ad.var[ad.var["difference"]].index.to_list())
+    logdiff = c2.multiselect("LogDifference", ad.var.index, default=ad.var[ad.var["logdiff"]].index.to_list())
+    ad.var["difference"] = ad.var.index.isin(diff)
+    ad.var["logdiff"] = ad.var.index.isin(logdiff)
 
     # Variable Metadata
     with st.expander("Variable Metadata"):
@@ -97,7 +99,6 @@ with st.form("DFM Model Runner"):
 
 if not submitted:
     st.stop()
-
 
 start = time.time()
 _, c, _ = st.columns([0.3, 0.4, 0.3])
