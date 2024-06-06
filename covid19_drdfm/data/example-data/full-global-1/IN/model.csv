@@ -1,0 +1,65 @@
+             Model Specification: Dynamic Factor Model
+Model: ,Dynamic Factor Model   ,  # of observed variables:   ,48
+       ,+ 7 factors in 7 blocks,  # of factor blocks:        ,7
+       ,+ AR(1) idiosyncratic  ,  Idiosyncratic disturbances:,AR(1)
+Sample:,2012-03-01 00:00:00    ,  Standardize variables:     ,True
+       ,- 2022-12-01 00:00:00  ,                             ,
+                     Observed variables / factor loadings
+Dep. variable,Global,Response,Pandemic,Uncat,Consumption,Employment,Inflation
+Cases1       ,X     ,        ,X       ,     ,           ,          ,
+Cases2       ,X     ,        ,X       ,     ,           ,          ,
+Cases3       ,X     ,        ,X       ,     ,           ,          ,
+Cases4       ,X     ,        ,X       ,     ,           ,          ,
+Cases5       ,X     ,        ,X       ,     ,           ,          ,
+Hosp1        ,X     ,        ,X       ,     ,           ,          ,
+Hosp2        ,X     ,        ,X       ,     ,           ,          ,
+Deaths1      ,X     ,        ,X       ,     ,           ,          ,
+Deaths2      ,X     ,        ,X       ,     ,           ,          ,
+Deaths3      ,X     ,        ,X       ,     ,           ,          ,
+Deaths4      ,X     ,        ,X       ,     ,           ,          ,
+Deaths5      ,X     ,        ,X       ,     ,           ,          ,
+Vax1         ,X     ,X       ,        ,     ,           ,          ,
+Vax3         ,X     ,X       ,        ,     ,           ,          ,
+Gather1      ,X     ,X       ,        ,     ,           ,          ,
+Gather2      ,X     ,X       ,        ,     ,           ,          ,
+Gather3      ,X     ,X       ,        ,     ,           ,          ,
+Gather4      ,X     ,X       ,        ,     ,           ,          ,
+Curfew       ,X     ,X       ,        ,     ,           ,          ,
+Mask1        ,X     ,X       ,        ,     ,           ,          ,
+Mask2        ,X     ,X       ,        ,     ,           ,          ,
+School       ,X     ,X       ,        ,     ,           ,          ,
+ARP          ,X     ,X       ,        ,     ,           ,          ,
+PPP          ,X     ,X       ,        ,     ,           ,          ,
+CARES        ,X     ,X       ,        ,     ,           ,          ,
+Cons1        ,X     ,        ,        ,     ,X          ,          ,
+Cons2        ,X     ,        ,        ,     ,X          ,          ,
+Cons3        ,X     ,        ,        ,     ,X          ,          ,
+Cons4        ,X     ,        ,        ,     ,X          ,          ,
+Cons5        ,X     ,        ,        ,     ,X          ,          ,
+Employment1  ,X     ,        ,        ,     ,           ,X         ,
+Employment2  ,X     ,        ,        ,     ,           ,X         ,
+UI           ,X     ,        ,        ,     ,           ,X         ,
+PartR        ,X     ,        ,        ,     ,           ,X         ,
+CPI          ,X     ,        ,        ,     ,           ,          ,X
+CPIU         ,X     ,        ,        ,     ,           ,          ,X
+PCE          ,X     ,        ,        ,     ,           ,          ,X
+PCEC         ,X     ,        ,        ,     ,           ,          ,X
+FixAss       ,X     ,        ,        ,X    ,           ,          ,
+Prod         ,X     ,        ,        ,X    ,           ,          ,
+GDP          ,X     ,        ,        ,X    ,           ,          ,
+TBill1mo     ,X     ,        ,        ,X    ,           ,          ,
+TBill6mo     ,X     ,        ,        ,X    ,           ,          ,
+TBill1yr     ,X     ,        ,        ,X    ,           ,          ,
+TBill5yr     ,X     ,        ,        ,X    ,           ,          ,
+TBill10yr    ,X     ,        ,        ,X    ,           ,          ,
+TBill30yr    ,X     ,        ,        ,X    ,           ,          ,
+FFR          ,X     ,        ,        ,X    ,           ,          ,
+  Factor blocks:
+   block   ,order
+Global     ,1
+Response   ,1
+Pandemic   ,1
+Uncat      ,1
+Consumption,1
+Employment ,1
+Inflation  ,1

@@ -1,0 +1,175 @@
+diff_cols:
+- Cases1
+- Cases2
+- Cases3
+- Cases4
+- Cases5
+- Hosp1
+- Hosp2
+- Deaths1
+- Deaths2
+- Deaths3
+- Deaths4
+- Deaths5
+factor_map:
+  ARP: !!python/tuple
+  - Global
+  - Response
+  CARES: !!python/tuple
+  - Global
+  - Response
+  CPI: !!python/tuple
+  - Global
+  - Inflation
+  CPIU: !!python/tuple
+  - Global
+  - Inflation
+  Cases1: !!python/tuple
+  - Global
+  - Pandemic
+  Cases2: !!python/tuple
+  - Global
+  - Pandemic
+  Cases3: !!python/tuple
+  - Global
+  - Pandemic
+  Cases4: !!python/tuple
+  - Global
+  - Pandemic
+  Cases5: !!python/tuple
+  - Global
+  - Pandemic
+  Cons1: !!python/tuple
+  - Global
+  - Consumption
+  Cons2: !!python/tuple
+  - Global
+  - Consumption
+  Cons3: !!python/tuple
+  - Global
+  - Consumption
+  Cons4: !!python/tuple
+  - Global
+  - Consumption
+  Cons5: !!python/tuple
+  - Global
+  - Consumption
+  Curfew: !!python/tuple
+  - Global
+  - Response
+  Deaths1: !!python/tuple
+  - Global
+  - Pandemic
+  Deaths2: !!python/tuple
+  - Global
+  - Pandemic
+  Deaths3: !!python/tuple
+  - Global
+  - Pandemic
+  Deaths4: !!python/tuple
+  - Global
+  - Pandemic
+  Deaths5: !!python/tuple
+  - Global
+  - Pandemic
+  Employment1: !!python/tuple
+  - Global
+  - Employment
+  Employment2: !!python/tuple
+  - Global
+  - Employment
+  FFR: !!python/tuple
+  - Global
+  - Uncat
+  FixAss: !!python/tuple
+  - Global
+  - Uncat
+  GDP: !!python/tuple
+  - Global
+  - Uncat
+  Gather1: !!python/tuple
+  - Global
+  - Response
+  Gather2: !!python/tuple
+  - Global
+  - Response
+  Gather3: !!python/tuple
+  - Global
+  - Response
+  Gather4: !!python/tuple
+  - Global
+  - Response
+  Hosp1: !!python/tuple
+  - Global
+  - Pandemic
+  Hosp2: !!python/tuple
+  - Global
+  - Pandemic
+  Mask1: !!python/tuple
+  - Global
+  - Response
+  Mask2: !!python/tuple
+  - Global
+  - Response
+  PCEC: !!python/tuple
+  - Global
+  - Inflation
+  PPP: !!python/tuple
+  - Global
+  - Response
+  PartR: !!python/tuple
+  - Global
+  - Employment
+  Prod: !!python/tuple
+  - Global
+  - Uncat
+  School: !!python/tuple
+  - Global
+  - Response
+  TBill10yr: !!python/tuple
+  - Global
+  - Uncat
+  TBill1mo: !!python/tuple
+  - Global
+  - Uncat
+  TBill1yr: !!python/tuple
+  - Global
+  - Uncat
+  TBill30yr: !!python/tuple
+  - Global
+  - Uncat
+  TBill5yr: !!python/tuple
+  - Global
+  - Uncat
+  TBill6mo: !!python/tuple
+  - Global
+  - Uncat
+  UI: !!python/tuple
+  - Global
+  - Employment
+  Vax1: !!python/tuple
+  - Global
+  - Response
+  Vax3: !!python/tuple
+  - Global
+  - Response
+global_multiplier: 1
+logdiff_cols:
+- Cons1
+- Cons2
+- Cons3
+- Cons4
+- Cons5
+- Employment1
+- Employment2
+- UI
+- CPI
+- CPIU
+- PCE
+- PCEC
+- RPFI
+- FixAss
+- Prod
+- GDP
+maxiter: 10000
+non_stationary_cols: null

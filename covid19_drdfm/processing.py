@@ -1,10 +1,10 @@
 """Processing module - stores all inputs to run Dynamic Factor Model."""
-import json
 from pathlib import Path
 from typing import Optional
 
 import numpy as np
 import pandas as pd
+import yaml
 from anndata import AnnData
 from sklearn.preprocessing import MinMaxScaler
 from statsmodels.tsa.stattools import adfuller
@@ -59,8 +59,8 @@ class DataProcessor:
         outdir.mkdir(exist_ok=True)
         self.raw.to_csv(outdir / "raw.csv")
         self.df.to_csv(outdir / "df.csv")
-        with open(outdir / "run-info.json", "w") as f:
-            json.dump(
+        with open(outdir / "run-info.yaml", "w") as f:
+            yaml.dump(
                 {
                     "factor_map": self.factors,
                     "global_multiplier": self.global_multiplier,

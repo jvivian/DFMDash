@@ -42,4 +42,8 @@ docs: ## Build and serve the documentation
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: dashboard
+dashboard:
+	@streamlit run covid19_drdfm/streamlit/Dashboard.py
+
 .DEFAULT_GOAL := help

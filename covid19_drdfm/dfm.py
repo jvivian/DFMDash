@@ -90,6 +90,7 @@ class ModelRunner:
         - Exception: If an error occurs during model fitting.
         """
         self.outdir.mkdir(exist_ok=True)
+        # self.ad.obs = self.ad.obs.drop(columns="Time")
         print(f"{len(self.batches)} batches to run")
         for batch_name, batch in track(list(self.batches.items())):
             data = DataProcessor(batch, global_multiplier, maxiter).process(columns)
@@ -98,12 +99,16 @@ class ModelRunner:
             try:
                 res = model.fit(disp=10, maxiter=data.maxiter)
             except Exception as e:
+                print(f"[bold red]FAILURE[/]{e}")
                 self.failures[batch_name] = e
                 continue
             filtered_factors = process_factors(res.factors["filtered"], data.raw, batch.obs)
             result = Result(batch_name, res, model, filtered_factors)
             result.write(self.outdir)
+            # self.ad.uns["factors"] = result.factors.drop(columns="Time")
+            self.ad.write(self.outdir / batch_name / "data.h5ad")
             self.results.append(result)
+        # TODO: Concat factors across batch variables
         print("All runs completed!")
         return self
 

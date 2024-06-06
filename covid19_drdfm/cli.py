@@ -9,19 +9,18 @@ Help
 Process data and generate parquet DataFrame
     - `c19_dfm process ./outfile.xlsx`
 """
-import anndata as ann
 
 import subprocess
 from pathlib import Path
 from typing import Optional
 
+import anndata as ann
 import typer
 from rich import print
 
 from covid19_drdfm.covid19 import get_project_h5ad
-
-from covid19_drdfm.io import DataLoader
 from covid19_drdfm.dfm import ModelRunner
+from covid19_drdfm.io import DataLoader
 
 app = typer.Typer()
 
@@ -33,10 +32,14 @@ def run_dfm(
     batch: str = typer.Option(help="Name of column in h5ad.obs to use as batch variable"),
     global_multiplier: int = 1,
     maxiter: int = 10_000,
+    update_h5ad: bool = True,
 ):
     ad = ann.read_h5ad(h5ad)
     model = ModelRunner(ad, outdir, batch)
     model.run(maxiter, global_multiplier)
+    if update_h5ad:
+        print(f"[bold green]:heavy_check_mark: Updating H5ad {h5ad}")
+        model.ad.write_h5ad(h5ad)
 
 
 @app.command("create_input_data")
@@ -74,3 +77,7 @@ def launch_dashboard():
     current_dir = Path(__file__).resolve().parent
     dashboard_path = current_dir / "streamlit" / "Dashboard.py"
     subprocess.run(["streamlit", "run", dashboard_path])
+
+
+if __name__ == "__main__":
+    app()

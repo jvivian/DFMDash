@@ -28,7 +28,7 @@ def test_write(data, tmpdir):
     data.write(outdir)
     assert (outdir / "df.csv").exists()
     assert (outdir / "raw.csv").exists()
-    assert (outdir / "run-info.json").exists()
+    assert (outdir / "run-info.yaml").exists()
 
 
 def test_get_factors(data):

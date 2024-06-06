@@ -12,7 +12,7 @@ def runs_dir() -> pd.DataFrame:
 
 @pytest.fixture
 def run_path(runs_dir) -> pd.DataFrame:
-    return runs_dir / "test-all-global-1_2019"
+    return runs_dir / "pandemic-only"
 
 
 @pytest.fixture
@@ -37,4 +37,4 @@ def test_parse_run_results(run_path):
 
 def test_parse_multiple_runs(runs_dir):
     df = parse_multiple_runs(runs_dir)
-    assert df.shape == (87, 5)
+    assert df.shape == (196, 5)

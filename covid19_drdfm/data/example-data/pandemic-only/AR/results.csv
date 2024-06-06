@@ -1,0 +1,33 @@
+                         Dynamic Factor Results
+Dep. Variable:  ,"Cases1", and 11 more  ,  No. Observations:  ,130
+Model:          ,Dynamic Factor Model   ,  Log Likelihood     ,-1000.273
+                ,+ 2 factors in 2 blocks,  AIC                ,2104.545
+                ,+ AR(1) idiosyncratic  ,  BIC                ,2253.657
+Date:           ,Sun, 02 Jun 2024       ,  HQIC               ,2165.134
+Time:           ,22:32:43               ,  EM Iterations      ,44
+Sample:         ,03-01-2012             ,                     ,
+                ,- 12-01-2022           ,                     ,
+Covariance Type:,Not computed           ,                     ,
+                    Observation equation:
+Factor loadings:,Global,Pandemic,   idiosyncratic: AR(1),var.
+Cases1          ,-0.02 ,-0.19   ,0.43                   ,0.72
+Cases2          ,-0.31 ,0.21    ,-0.13                  ,0.72
+Cases3          ,-0.37 ,-0.21   ,0.94                   ,0.03
+Cases4          ,-0.29 ,-0.21   ,0.92                   ,0.07
+Cases5          ,-0.31 ,-0.27   ,0.97                   ,0.01
+Hosp1           ,-0.32 ,-0.12   ,0.94                   ,0.08
+Hosp2           ,-0.33 ,-0.27   ,0.93                   ,0.01
+Deaths1         ,0.32  ,-0.22   ,-0.22                  ,0.70
+Deaths2         ,0.31  ,-0.23   ,-0.25                  ,0.69
+Deaths3         ,0.28  ,-0.17   ,0.83                   ,0.14
+Deaths4         ,0.17  ,-0.28   ,0.57                   ,0.32
+Deaths5         ,0.26  ,-0.19   ,0.89                   ,0.09
+    Transition: Factor block 0
+      ,L1.Global,   error variance
+Global,0.24     ,4.79
+      Transition: Factor block 1
+        ,L1.Pandemic,   error variance
+Pandemic,0.90       ,0.65
+
+Warnings:
+[1] Covariance matrix not calculated.

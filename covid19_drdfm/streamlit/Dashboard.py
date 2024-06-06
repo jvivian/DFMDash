@@ -1,4 +1,4 @@
-import json
+import yaml
 import time
 from pathlib import Path
 
@@ -7,10 +7,8 @@ import plotly.io as pio
 import streamlit as st
 
 from covid19_drdfm.constants import FACTORS
-
 from covid19_drdfm.covid19 import get_df, get_project_h5ad
 from covid19_drdfm.dfm import ModelRunner
-
 from covid19_drdfm.streamlit.plots import plot_correlations
 
 st.set_page_config(layout="wide")
@@ -52,7 +50,9 @@ with st.form("DFM Model Runner"):
         """,
         unsafe_allow_html=True,
     )
-    # Variable selections
+
+    # Parameters
+    st.subheader("Factor/Variable Selection")
     c1, c2 = st.columns(2)
     c3, c4 = st.columns(2)
     c5, c6 = st.columns(2)
@@ -61,9 +61,11 @@ with st.form("DFM Model Runner"):
         variables = var_df[var_df.Group == group].Variables
         selectors[group] = stcol.multiselect(group, variables, variables)
 
-    # Parameters
+    st.subheader("Batch Variable")
     states = sorted(ad.obs.State.unique())
     state_sel = st.multiselect("States", states, default=states)
+
+    st.subheader("Parameters")
     c1, c2, c3, c4 = st.columns([0.35, 0.25, 0.20, 0.20])
     outdir = c1.text_input("Output Directory", value="./")
     min_val = ad.obs.Time.min()
@@ -72,7 +74,19 @@ with st.form("DFM Model Runner"):
     maxiter = c4.slider("Max EM Iterations", 1000, 20_000, 10_000, 100)
     ad = ad[ad.obs.index > date_start.isoformat()]
 
+    # Transforms
+    st.subheader("Transforms")
+    c1, c2 = st.columns(2)
+    c1.multiselect("Difference", ad.var.index, default=ad.var[ad.var["difference"]].index.to_list())
+    c2.multiselect("LogDifference", ad.var.index, default=ad.var[ad.var["logdiff"]].index.to_list())
+
+    # Variable Metadata
+    with st.expander("Variable Metadata"):
+        _, c, _ = st.columns([0.25, 0.5, 0.25])
+        c.dataframe(ad.var)
+
     # Metrics
+    st.subheader("Run Information")
     lengths = [len(selectors[x]) for x in selectors]
     num_groups = sum(1 for x in lengths if x != 0)
     _, f1, f2, _ = st.columns([0.25, 0.25, 0.25, 0.25])
@@ -94,8 +108,8 @@ for x in [x for x in selectors if selectors[x]]:
 selectors.update({"global_multiplier": mult_sel, "outdir": outdir})
 outdir = Path(outdir)
 outdir.mkdir(exist_ok=True)
-with open(outdir / "log.txt", "w") as f:
-    json.dump(selectors, f)
+with open(outdir / "log.yaml", "w") as f:
+    yaml.dump(selectors, f)
 
 # Run model for subset of states using batch mode
 # TODO: No per-batch update sucks, try and fix during dynamic refactor
@@ -104,6 +118,8 @@ ad = ad[ad.obs.State.isin(state_sel)]
 with st.spinner(f"Running {n} models..."):
     model = ModelRunner(ad, outdir=outdir, batch="State")
     model.run(maxiter=maxiter, global_multiplier=mult_sel, columns=columns)
+    model.write_failures()
+
 
 # Combine filtered output
 filt_paths = [subdir / "factors.csv" for subdir in outdir.iterdir() if (subdir / "factors.csv").exists()]
@@ -112,9 +128,16 @@ try:
     filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
     filt_df.to_csv(outdir / "factors.csv")
     st.dataframe(filt_df)
+    model.ad.write(outdir / "data.h5ad")
     st.balloons()
 except ValueError:
     st.error(f"No runs succeeded!! Check failures.txt in {outdir}")
+
+
+if model.failures:
+    fail = model.failures
+    st.error(f"{len(fail)} Model(s) Failed")
+    st.write(fail)
 
 end = time.time()
 hours, rem = divmod(end - start, 3600)
