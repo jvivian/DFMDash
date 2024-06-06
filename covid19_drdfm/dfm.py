@@ -90,7 +90,7 @@ class ModelRunner:
         - Exception: If an error occurs during model fitting.
         """
         self.outdir.mkdir(exist_ok=True)
-        self.ad.obs = self.ad.obs.drop(columns="Time")
+        # self.ad.obs = self.ad.obs.drop(columns="Time")
         print(f"{len(self.batches)} batches to run")
         for batch_name, batch in track(list(self.batches.items())):
             data = DataProcessor(batch, global_multiplier, maxiter).process(columns)
