@@ -1,0 +1,22 @@
+                          Dynamic Factor Results
+Dep. Variable:  ,"Pandemic_10", and 3 more,  No. Observations:  ,36
+Model:          ,Dynamic Factor Model     ,  Log Likelihood     ,-142.456
+                ,+ 1 factors in 1 blocks  ,  AIC                ,312.912
+                ,+ AR(1) idiosyncratic    ,  BIC                ,335.082
+Date:           ,Fri, 07 Jun 2024         ,  HQIC               ,320.650
+Time:           ,19:35:19                 ,  EM Iterations      ,57
+Sample:         ,01-01-2020               ,                     ,
+                ,- 12-01-2022             ,                     ,
+Covariance Type:,Not computed             ,                     ,
+                Observation equation:
+Factor loadings:,Pandemic,   idiosyncratic: AR(1),var.
+Pandemic_10     ,-0.32   ,0.63                   ,0.54
+Pandemic_9      ,-0.54   ,0.21                   ,0.29
+Pandemic_1      ,-0.50   ,0.10                   ,0.47
+Pandemic_7      ,-0.57   ,0.73                   ,0.11
+      Transition: Factor block 0
+        ,L1.Pandemic,   error variance
+Pandemic,0.79       ,0.77
+
+Warnings:
+[1] Covariance matrix not calculated.

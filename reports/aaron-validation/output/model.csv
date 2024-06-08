@@ -1,0 +1,15 @@
+             Model Specification: Dynamic Factor Model
+Model: ,Dynamic Factor Model   ,  # of observed variables:   ,4
+       ,+ 1 factors in 1 blocks,  # of factors:              ,1
+       ,+ AR(1) idiosyncratic  ,  Idiosyncratic disturbances:,AR(1)
+Sample:,2020-01-01 00:00:00    ,  Standardize variables:     ,True
+       ,- 2022-12-01 00:00:00  ,                             ,
+Observed variables / factor loadings
+Dep. variable,Pandemic
+Pandemic_10  ,X
+Pandemic_9   ,X
+Pandemic_1   ,X
+Pandemic_7   ,X
+Factor blocks:
+ block  ,order
+Pandemic,1
