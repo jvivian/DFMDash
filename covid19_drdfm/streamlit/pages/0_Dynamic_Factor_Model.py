@@ -173,6 +173,10 @@ data = DataHandler().get_data()
 ad = data.ad
 global_multiplier, out_dir = additional_params()
 batch = None if ad.obs.empty else ad.obs.columns[0]
+
+if not st.button("Run Model"):
+    st.stop()
+
 dfm = run_model(ad, out_dir, batch, global_multiplier)
 st.balloons()
 
