@@ -32,7 +32,7 @@ def normalize(df):
 center_title("Factor Analysis")
 
 # Read in data
-raw = get_df()
+# raw = get_df()
 # TEST_DIR = Path('covid19_drdfm/data/example-output/')
 
 # Parameter for results
@@ -72,8 +72,10 @@ cols = [x for x in df.columns if x in state_df.columns] + ["State"]
 
 
 # Normalize original data for state / valid variables
-new = normalize(raw[raw.State == state][cols])
-# st.dataframe(new)
+ad = ann.read_h5ad(res_dir / "data.h5ad")
+new = ad.to_df().reset_index()
+new["State"] = ad.obs["State"].to_list()
+
 
 # Normalize factors and add to new dataframe
 if st.sidebar.checkbox("Invert Factor"):

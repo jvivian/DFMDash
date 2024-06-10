@@ -152,7 +152,7 @@ def additional_params():
     if not out_dir:
         st.warning("Specify output directory (in sidebar) to continue")
         st.stop()
-    return global_multiplier, out_dir
+    return global_multiplier, Path(out_dir)
 
 
 def run_model(ad, out_dir, batch, global_multiplier) -> ModelRunner:
@@ -175,4 +175,14 @@ global_multiplier, out_dir = additional_params()
 batch = None if ad.obs.empty else ad.obs.columns[0]
 dfm = run_model(ad, out_dir, batch, global_multiplier)
 st.balloons()
-st.stop()
+
+filt_paths = [subdir / "factors.csv" for subdir in out_dir.iterdir() if (subdir / "factors.csv").exists()]
+dfs = [pd.read_csv(x) for x in filt_paths]
+try:
+    filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
+    filt_df.to_csv(out_dir / "factors.csv")
+    st.dataframe(filt_df)
+    dfm.ad.write(out_dir / "data.h5ad")
+    st.balloons()
+except ValueError:
+    st.error(f"No runs succeeded!! Check failures.txt in {out_dir}")
