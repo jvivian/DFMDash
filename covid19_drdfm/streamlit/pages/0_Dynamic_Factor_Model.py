@@ -51,10 +51,10 @@ class DataHandler:
         if self.df is None:
             st.error("DataFrame is empty! Check input data")
             st.stop()
-        batch_col = st.sidebar.selectbox("Select a batch column (optional):", ["None", *list(self.df.columns)])
-        if batch_col == "None":
+        self.batch_col = st.sidebar.selectbox("Select a batch column (optional):", ["None", *list(self.df.columns)])
+        if self.batch_col == "None":
             self.batch_col = None
-        self.non_batch_cols = [col for col in self.df.columns if col != batch_col]
+        self.non_batch_cols = [col for col in self.df.columns if col != self.batch_col]
         return self
 
     @staticmethod
@@ -137,12 +137,11 @@ class DataHandler:
             An AnnData object with additional metadata.
         """
         if self.batch_col and self.batch_col in self.df.columns:
-            ad = ann.AnnData(self.df.drop(columns=self.batch_col))
+            ad = ann.AnnData(self.df.drop(columns=[self.batch_col]))
             ad.obs[self.batch_col] = self.df[self.batch_col]
         else:
             ad = ann.AnnData(self.df)
-
-        ad.var["factor"] = [self.factor_mappings[x] for x in ad.var.index]
+        ad.var["factor"] = [self.factor_mappings[x] for x in self.non_batch_cols]
         self.ad = ad
         return ad
 
