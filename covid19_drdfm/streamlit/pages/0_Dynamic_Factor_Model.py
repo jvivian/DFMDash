@@ -28,7 +28,7 @@ class DataHandler:
         self.non_batch_cols: Optional[list[str]] = None
 
     def get_data(self) -> "DataHandler":
-        self.file_uploader().get_factor_mappings().apply_transforms().create_anndata()
+        self.file_uploader().get_factor_mappings().create_anndata().apply_transforms()
         return self
 
     def file_uploader(self) -> "DataHandler":
@@ -95,7 +95,8 @@ class DataHandler:
                 f"Select transform type for {opt}:", ("difference", "logdiff"), key=f"trans_{opt}"
             )
             transforms[opt] = transform
-            self.ad.var[transform] = None
+            if transform not in self.ad.var:
+                self.ad.var[transform] = None
             self.ad.var.loc[opt, transform] = True
         return self
 
@@ -125,7 +126,7 @@ class DataHandler:
         self.factor_mappings = factor_mappings
         return self
 
-    def create_anndata(self) -> ann.AnnData:
+    def create_anndata(self) -> "DataHandler":
         """
         Creates an AnnData object from the loaded DataFrame with optional batch column handling.
 
@@ -143,7 +144,7 @@ class DataHandler:
             ad = ann.AnnData(self.df)
         ad.var["factor"] = [self.factor_mappings[x] for x in self.non_batch_cols]
         self.ad = ad
-        return ad
+        return self
 
 
 def additional_params():
