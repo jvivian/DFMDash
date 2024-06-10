@@ -75,7 +75,7 @@ cols = [x for x in df.columns if x in state_df.columns] + ["State"]
 ad = ann.read_h5ad(res_dir / "data.h5ad")
 new = ad.to_df().reset_index()
 new["State"] = ad.obs["State"].to_list()
-
+new = normalize(new)
 
 # Normalize factors and add to new dataframe
 if st.sidebar.checkbox("Invert Factor"):
