@@ -1,10 +1,10 @@
-import yaml
 import time
 from pathlib import Path
 
 import pandas as pd
 import plotly.io as pio
 import streamlit as st
+import yaml
 
 from covid19_drdfm.constants import FACTORS
 from covid19_drdfm.covid19 import get_df, get_project_h5ad
@@ -32,7 +32,7 @@ var_df["Group"] = var_df["factor"]
 var_df["Variables"] = var_df.index
 ad.obs["Time"] = pd.to_datetime(ad.obs.index)
 
-center_title("Dynamic Factor Model Runner")
+center_title("Legacy Dynamic Factor Model Runner for Covid-19")
 
 with st.expander("Variable correlations"):
     st.write("Data is normalized between [0, 1] before calculating correlation")
