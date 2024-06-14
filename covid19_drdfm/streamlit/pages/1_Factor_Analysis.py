@@ -101,24 +101,27 @@ factor = st.sidebar.selectbox("Factor", factor_set)
 df = df[df["State"] == state]
 df = df[[factor]].join(new, on="Time")
 
+# st.write(factor_map)
 # st.dataframe(df.head())
 # st.dataframe(new.head())
 
 # Coerce time bullshit to get dates standardized
 # df["Time"] = pd.to_datetime(df["Time"]).dt.date
 # new["Time"] = pd.to_datetime(new["Time"]).dt.date
+col_opts = [x for x in df.columns.to_list() if x != "State"]
+cols = st.multiselect("Variables to plot", col_opts, default=col_opts)
 with st.expander("Graph Data"):
-    factor_cols = factor_map[factor_map["factor"] == factor]
-    if factor_cols.empty:
-        factor_cols = new.columns
-    else:
-        factor_cols = factor_cols.index.to_list()
-        factor_cols += [factor]
-    factor_cols = [x for x in factor_cols if x in df.columns]
-    st.write(factor_cols)
-    st.dataframe(df[factor_cols])
+    # factor_cols = factor_map[factor_map["factor"] == factor]
+    # if factor_cols.empty:
+    #     factor_cols = new.columns
+    # else:
+    #     factor_cols = factor_cols.index.to_list()
+    #     factor_cols += [factor]
+    # factor_cols = [x for x in factor_cols if x in df.columns]
+    # st.write(factor_cols)
+    st.dataframe(df[cols])
 
-df = df[factor_cols].reset_index()
+df = df[cols].reset_index()
 
 # Melt into format for plotting
 # melted_df = df.drop(columns="State").melt(id_vars=["Time"], value_name="value")
