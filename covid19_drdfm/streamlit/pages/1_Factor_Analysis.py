@@ -94,9 +94,9 @@ factor = st.sidebar.selectbox("Factor", factor_set)
 # new = normalize(new[new.State == state])
 
 # Normalize factors and add to new dataframe
-# if st.sidebar.checkbox("Invert Factor"):
-# df[factor] = df[factor] * -1
-# df = normalize(df[df.State == state]).reset_index(drop=True)
+if st.sidebar.checkbox("Invert Factor"):
+    df[factor] = df[factor] * -1
+df = normalize(df[df.State == state])  # .reset_index(drop=True)
 
 df = df[df["State"] == state]
 df = df[[factor]].join(new, on="Time")
