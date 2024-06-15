@@ -11,7 +11,7 @@ packages = [
 ]
 
 [tool.poetry.scripts]
-c19dfm = "dfmdash.cli:app"
+dfmdash = "dfmdash.cli:app"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.9.7 || >3.9.7,<3.12"

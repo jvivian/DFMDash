@@ -70,7 +70,7 @@ def create_project_data(outdir: Path):
 
 
 @app.command("launch")
-def launch(port: int = 8501):
+def launch(port: str = 8501):
     """
     Launch Dynamic Factor Dashboard
     """
