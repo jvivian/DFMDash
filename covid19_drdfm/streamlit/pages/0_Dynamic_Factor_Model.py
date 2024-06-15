@@ -53,7 +53,8 @@ class DataHandler:
             st.stop()
         self.batch_col = st.sidebar.selectbox("Select a batch column (optional):", ["None", *list(self.df.columns)])
         if self.batch_col == "None":
-            self.batch_col = None
+            self.df["Batch"] = "Batch1"
+            # self.batch_col = None
         self.non_batch_cols = [col for col in self.df.columns if col != self.batch_col]
         return self
 
@@ -84,9 +85,7 @@ class DataHandler:
         return read_function(file)
 
     def apply_transforms(self) -> "DataHandler":
-        options = st.multiselect(
-            "Select columns to apply transformations:", self.non_batch_cols, format_func=lambda x: f"Transform {x}"
-        )
+        options = st.multiselect("Select columns to apply transformations:", self.non_batch_cols)
         transforms = {}
         for i, opt in enumerate(options):
             if i % 2 == 0:
