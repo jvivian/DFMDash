@@ -7,13 +7,13 @@ import plotly_express as px
 import streamlit as st
 from sklearn.preprocessing import MinMaxScaler
 
-from covid19_drdfm.constants import FACTORS_GROUPED
-from covid19_drdfm.covid19 import get_df
+from dfmdash.constants import FACTORS_GROUPED
+from dfmdash.covid19 import get_df
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
 
-EX_PATH = Path("./covid19_drdfm/data/example-data/pandemic-only")
+EX_PATH = Path("./dfmdash/data/example-data/pandemic-only")
 
 
 def center_title(text):
@@ -33,7 +33,7 @@ center_title("Factor Analysis")
 
 # Read in data
 # raw = get_df()
-# TEST_DIR = Path('covid19_drdfm/data/example-output/')
+# TEST_DIR = Path('dfmdash/data/example-output/')
 
 # Parameter for results
 def get_factors(res_dir):

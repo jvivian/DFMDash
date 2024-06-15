@@ -44,6 +44,6 @@ help:
 
 .PHONY: dashboard
 dashboard:
-	@streamlit run covid19_drdfm/streamlit/Dashboard.py
+	@streamlit run dfmdash/streamlit/Dashboard.py
 
 .DEFAULT_GOAL := help

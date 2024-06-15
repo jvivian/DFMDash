@@ -18,9 +18,9 @@ import anndata as ann
 import typer
 from rich import print
 
-from covid19_drdfm.covid19 import get_project_h5ad
-from covid19_drdfm.dfm import ModelRunner
-from covid19_drdfm.io import DataLoader
+from dfmdash.covid19 import get_project_h5ad
+from dfmdash.dfm import ModelRunner
+from dfmdash.io import DataLoader
 
 app = typer.Typer()
 
@@ -69,14 +69,14 @@ def create_project_data(outdir: Path):
     print(f"Project data successfully created at {outdir}/data.h5ad !")
 
 
-@app.command("launch_dashboard")
-def launch_dashboard():
+@app.command("launch")
+def launch(port: int = 8501):
     """
-    Launch the Dashboard
+    Launch Dynamic Factor Dashboard
     """
     current_dir = Path(__file__).resolve().parent
     dashboard_path = current_dir / "streamlit" / "Dashboard.py"
-    subprocess.run(["streamlit", "run", dashboard_path])
+    subprocess.run(["streamlit", "run", dashboard_path, "--server.port", port])
 
 
 if __name__ == "__main__":

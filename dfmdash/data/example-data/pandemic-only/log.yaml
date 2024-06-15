@@ -17,4 +17,4 @@ Pandemic:
 Response: []
 Uncat: []
 global_multiplier: 1
-outdir: covid19_drdfm/data/example-data/pandemic-only
+outdir: dfmdash/data/example-data/pandemic-only

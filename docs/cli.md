@@ -1,1 +1,1 @@
-::: covid19_drdfm.cli
+::: dfmdash.cli

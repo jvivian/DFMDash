@@ -12,13 +12,13 @@ import streamlit as st
 from SyntheticControlMethods import DiffSynth, Synth
 from datetime import datetime
 
-from covid19_drdfm.constants import FACTORS_GROUPED
-from covid19_drdfm.covid19 import get_df, get_project_h5ad
+from dfmdash.constants import FACTORS_GROUPED
+from dfmdash.covid19 import get_df, get_project_h5ad
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_dark"
 
-EX_PATH = Path("./covid19_drdfm/data/example-data/pandemic-only")
+EX_PATH = Path("./dfmdash/data/example-data/pandemic-only")
 
 
 def center_title(text):

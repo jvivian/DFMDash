@@ -7,7 +7,7 @@ import streamlit as st
 from sklearn.preprocessing import MinMaxScaler
 import plotly.figure_factory as ff
 
-from covid19_drdfm.processing import get_df, get_factors
+from dfmdash.processing import get_df, get_factors
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
@@ -20,7 +20,7 @@ def center_title(text):
 
 
 # def get_factors():
-#     with open("covid19_drdfm/streamlit/factors.json") as f:
+#     with open("dfmdash/streamlit/factors.json") as f:
 #         return json.load(f)
 
 

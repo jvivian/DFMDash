@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "covid19_drdfm"
+name = "dfmdash"
 version = "0.0.1"
 description = "Repository for Covid-19 Dynamic Factor Model"
 authors = ["J. Vivian, A. Cooke, J. Fitz <fjtvivian@gmail.com>"]
@@ -7,11 +7,11 @@ repository = "https://github.com/jvivian/covid19-drDFM"
 documentation = "https://jvivian.github.io/covid19-drDFM/"
 readme = "README.md"
 packages = [
-  {include = "covid19_drdfm"}
+  {include = "dfmdash"}
 ]
 
 [tool.poetry.scripts]
-c19dfm = "covid19_drdfm.cli:app"
+c19dfm = "dfmdash.cli:app"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.9.7 || >3.9.7,<3.12"
@@ -60,7 +60,7 @@ target-version = ['py37']
 preview = true
 
 [tool.mypy]
-files = ["covid19_drdfm"]
+files = ["dfmdash"]
 disallow_untyped_defs = "True"
 disallow_any_unimported = "True"
 no_implicit_optional = "True"
@@ -120,4 +120,4 @@ skip_empty = true
 
 [tool.coverage.run]
 branch = true
-source = ["covid19_drdfm"]
+source = ["dfmdash"]

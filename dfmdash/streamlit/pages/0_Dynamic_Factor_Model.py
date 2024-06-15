@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.io as pio
 import streamlit as st
 
-from covid19_drdfm.dfm import ModelRunner
+from dfmdash.dfm import ModelRunner
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"

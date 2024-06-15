@@ -5,8 +5,8 @@ from pathlib import Path
 import pytest
 from typer.testing import CliRunner
 
-from covid19_drdfm.cli import app
-from covid19_drdfm.covid19 import DATA_DIR
+from dfmdash.cli import app
+from dfmdash.covid19 import DATA_DIR
 
 runner = CliRunner()
 

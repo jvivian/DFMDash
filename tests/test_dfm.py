@@ -1,9 +1,9 @@
 import shutil
 import unittest
 from pathlib import Path
-from covid19_drdfm.dfm import ModelRunner
+from dfmdash.dfm import ModelRunner
 from anndata import AnnData
-from covid19_drdfm.covid19 import get_project_h5ad
+from dfmdash.covid19 import get_project_h5ad
 
 COLUMNS = ["PCE", "CPIU", "Hosp1", "Hosp2"]
 STATES = ["AK", "CA"]

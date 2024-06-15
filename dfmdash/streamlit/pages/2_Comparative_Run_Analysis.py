@@ -9,7 +9,7 @@ import plotly_express as px
 import pymc as pm
 import streamlit as st
 
-from covid19_drdfm.results import parse_multiple_runs
+from dfmdash.results import parse_multiple_runs
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
@@ -23,7 +23,7 @@ def center_title(text):
 center_title("Comparative Run Analysis")
 
 # Parameter to runs
-run_dir = Path(st.text_input("Path directory of runs", value="./covid19_drdfm/data/example-data"))
+run_dir = Path(st.text_input("Path directory of runs", value="./dfmdash/data/example-data"))
 df = parse_multiple_runs(run_dir)
 
 
