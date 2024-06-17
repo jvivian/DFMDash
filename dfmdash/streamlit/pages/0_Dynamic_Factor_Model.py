@@ -28,6 +28,7 @@ class DataHandler:
         self.non_batch_cols: Optional[list[str]] = None
 
     def get_data(self) -> "DataHandler":
+        st.sidebar.subheader("Options")
         self.file_uploader().get_factor_mappings().create_anndata().apply_transforms()
         return self
 
@@ -85,7 +86,8 @@ class DataHandler:
         return read_function(file)
 
     def apply_transforms(self) -> "DataHandler":
-        options = st.multiselect("Select columns to apply transformations:", self.non_batch_cols)
+        st.subheader("Variable Transforms")
+        options = st.multiselect("Select columns to apply transformations (optional):", self.non_batch_cols)
         transforms = {}
         for i, opt in enumerate(options):
             if i % 2 == 0:
@@ -100,6 +102,7 @@ class DataHandler:
         return self
 
     def get_factor_mappings(self) -> "DataHandler":
+        st.subheader("Map Factors to Variables")
         factor_input = st.text_input("Enter all factor options separated by space:")
         factor_options = factor_input.split()
         if not factor_options:
@@ -177,7 +180,9 @@ batch = None if ad.obs.empty else ad.obs.columns[0]
 if not st.button("Run Model"):
     st.stop()
 
-dfm = run_model(ad, out_dir, batch, global_multiplier)
+with st.spinner("Running Model(s)..."):
+    dfm = run_model(ad, out_dir, batch, global_multiplier)
+    dfm.write_failures()
 st.balloons()
 
 filt_paths = [subdir / "factors.csv" for subdir in out_dir.iterdir() if (subdir / "factors.csv").exists()]
@@ -186,7 +191,8 @@ try:
     filt_df = pd.concat([x for x in dfs if ~x.empty]).set_index("Time")
     filt_df.to_csv(out_dir / "factors.csv")
     st.dataframe(filt_df)
-    dfm.ad.write(out_dir / "data.h5ad")
+    #! TODO: Decide if i care enough
+    # dfm.ad.write(out_dir / "data.h5ad")
     st.balloons()
 except ValueError:
     st.error(f"No runs succeeded!! Check failures.txt in {out_dir}")
