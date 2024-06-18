@@ -24,7 +24,7 @@ center_title("Comparative Run Analysis")
 
 # Parameter to runs
 run_dir = Path(st.text_input("Path directory of runs", value="./dfmdash/data/example-data"))
-df = parse_multiple_runs(run_dir)
+df = parse_multiple_runs(run_dir).sort_values("Run")
 
 
 def create_plot(df):
