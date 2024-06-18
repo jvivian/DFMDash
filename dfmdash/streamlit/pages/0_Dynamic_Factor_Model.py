@@ -150,7 +150,7 @@ class DataHandler:
 
 
 def additional_params():
-    global_multiplier = st.sidebar.slider("Global Multiplier", min_value=0, max_value=4, value=0)
+    global_multiplier = st.sidebar.slider("Global Multiplier", min_value=0, max_value=15, value=2)
     out_dir = st.sidebar.text_input("Output Directory", value=None)
     if not out_dir:
         st.warning("Specify output directory (in sidebar) to continue")
