@@ -1,8 +1,8 @@
 import pandas as pd
 import pytest
 
-from covid19_drdfm.covid19 import ROOT_DIR
-from covid19_drdfm.results import parse_multiple_runs, parse_results, parse_run_results
+from dfmdash.covid19 import ROOT_DIR
+from dfmdash.results import parse_multiple_runs, parse_results, parse_run_results
 
 
 @pytest.fixture

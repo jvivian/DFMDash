@@ -55,4 +55,4 @@ Uncat:
 - TBill30yr
 - FFR
 global_multiplier: 2
-outdir: ./covid19_drdfm/data/example-data/full-2019-global-2
+outdir: ./dfmdash/data/example-data/full-2019-global-2

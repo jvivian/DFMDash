@@ -6,10 +6,10 @@ import plotly.io as pio
 import streamlit as st
 import yaml
 
-from covid19_drdfm.constants import FACTORS
-from covid19_drdfm.covid19 import get_df, get_project_h5ad
-from covid19_drdfm.dfm import ModelRunner
-from covid19_drdfm.streamlit.plots import plot_correlations
+from dfmdash.constants import FACTORS
+from dfmdash.covid19 import get_df, get_project_h5ad
+from dfmdash.dfm import ModelRunner
+from dfmdash.streamlit.plots import plot_correlations
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"

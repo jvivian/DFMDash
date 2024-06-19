@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from anndata import AnnData
-from covid19_drdfm.io import DataLoader
-from covid19_drdfm.covid19 import DATA_DIR
+from dfmdash.io import DataLoader
+from dfmdash.covid19 import DATA_DIR
 import pytest
 
 

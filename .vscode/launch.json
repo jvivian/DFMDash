@@ -13,8 +13,8 @@
             "justMyCode": true,
             "args": [
                 "run",
-                "covid19_drdfm/data/processed/data.h5ad",
-                "./covid19_drdfm/data/example-data/full-global-2",
+                "dfmdash/data/processed/data.h5ad",
+                "./dfmdash/data/example-data/full-global-2",
                 "--batch",
                 "State"
             ]

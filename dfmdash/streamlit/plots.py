@@ -3,7 +3,7 @@ import plotly.express as px
 import streamlit as st
 from sklearn.preprocessing import MinMaxScaler
 
-from covid19_drdfm.constants import FACTORS
+from dfmdash.constants import FACTORS
 
 
 def plot_correlations(df: pd.DataFrame, var_df: pd.DataFrame, normalize=False) -> None:

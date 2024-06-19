@@ -7,7 +7,7 @@ import pandas as pd
 import yaml
 from anndata import AnnData
 
-from covid19_drdfm.constants import NAME_MAP
+from dfmdash.constants import NAME_MAP
 
 ROOT_DIR = Path(__file__).parent.absolute()
 DATA_DIR = ROOT_DIR / "data/processed"

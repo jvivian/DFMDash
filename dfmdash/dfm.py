@@ -10,7 +10,7 @@ from anndata import AnnData
 from rich import print
 from rich.progress import track
 
-from covid19_drdfm.processing import DataProcessor
+from dfmdash.processing import DataProcessor
 
 
 @dataclass

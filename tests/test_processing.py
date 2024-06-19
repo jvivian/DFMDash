@@ -4,8 +4,8 @@ import pandas as pd
 import pytest
 from pathlib import Path
 
-from covid19_drdfm.covid19 import get_project_h5ad
-from covid19_drdfm.processing import DataProcessor, is_constant
+from dfmdash.covid19 import get_project_h5ad
+from dfmdash.processing import DataProcessor, is_constant
 
 
 @pytest.fixture()

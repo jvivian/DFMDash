@@ -1,7 +1,7 @@
 import pandas as pd
 from anndata import AnnData
 
-from covid19_drdfm.covid19 import (
+from dfmdash.covid19 import (
     _get_raw_df,
     get_raw,
     get_df,
