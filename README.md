@@ -15,7 +15,17 @@ Repository for Covid-19 Dynamic Factor Model
 > Tested on Ubuntu, Windows WSL2: Ubuntu, and Mac OSX (M1)
 
 ## Python
-- Download and install [Anaconda]() to your PATH and run:
+1. Install [Poetry](https://python-poetry.org/docs/#installation)
+
+```bash
+git clone https://github.com/jvivian/DFMDash/ # Get source code
+cd DFMDash
+poetry install  # Install dependencies and package
+c19dfm --help  # Run tool's help message
+```
+
+## Anaconda / Mamba
+- Download and install [Anaconda](https://www.anaconda.com/download) to your PATH and run:
 
 ```bash
 git clone https://github.com/jvivian/DFMDash/ # Get source code
@@ -28,15 +38,15 @@ c19dfm --help  # Run tool's help message
 
 ## Docker
 
-`docker run jvivian/covid19-dfm`
+`docker run jvivian/dfmdash`
 
 or to build locally
 
 ```bash
 git clone https://github.com/jvivian/DFMDash/ # Get source code
 cd DFMDash
-docker build -t covid19-dfm .
-docker run covid19-dfm
+docker build -t dfmdash .
+docker run dfmdash
 ```
 
 # Development
