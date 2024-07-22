@@ -10,7 +10,7 @@ from anndata import AnnData
 @dataclass
 class DataLoader:
     """
-    A class for loading and manipulating data for the covid19-drDFM project.
+    A class for loading and manipulating data for the DFMDash project.
 
     Attributes:
         ad (Optional[AnnData]): An optional AnnData object representing the loaded data.
