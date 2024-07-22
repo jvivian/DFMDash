@@ -35,6 +35,7 @@ center_title("Factor Analysis")
 # raw = get_df()
 # TEST_DIR = Path('dfmdash/data/example-output/')
 
+
 # Parameter for results
 def get_factors(res_dir):
     factor_path = res_dir / "factors.csv"
@@ -45,6 +46,26 @@ def get_factors(res_dir):
     df = df.drop(columns=cols_to_drop)
     df.columns = [x.lstrip("Factor_") for x in df.columns]
     return df
+
+
+def parse_factor_blocks(file_path: Path) -> list[str]:
+    factor_blocks = []
+    start_collecting = False
+
+    with file_path.open("r") as file:
+        for line in file:
+            if "order" in line:
+                start_collecting = True
+                continue
+
+            if start_collecting:
+                if line.strip():
+                    factor_name = line.split(",")[0].strip()
+                    factor_blocks.append(factor_name)
+                else:
+                    break
+
+    return factor_blocks
 
 
 res_dir = Path(st.text_input("Path to results", value=EX_PATH))
@@ -67,10 +88,8 @@ new = pd.read_csv(res_dir / state / "df.csv", index_col=0)
 
 # Normalize original data for state / valid variables
 ad = ann.read_h5ad(res_dir / "data.h5ad")
-factor_map = ad.var["factor"].to_frame()
-factor_set = factor_map["factor"].unique().to_list() + [x for x in df.columns if "Global" in x]
+factor_set = parse_factor_blocks(res_dir / state / "model.csv") + [x for x in df.columns if "Global" in x]
 factor = st.sidebar.selectbox("Factor", factor_set)
-
 
 # Normalize factors and add to new dataframe
 if st.sidebar.checkbox("Invert Factor"):
