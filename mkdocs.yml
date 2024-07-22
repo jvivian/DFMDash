@@ -1,10 +1,10 @@
-site_name: covid19-drDFM
-repo_url: https://github.com/jvivian/covid19-drDFM
-site_url: https://jvivian.github.io/covid19-drDFM
+site_name: DFMDash
+repo_url: https://github.com/jvivian/DFMDash
+site_url: https://jvivian.github.io/DFMDash
 site_description: Repository for Covid-19 Dynamic Factor Model
 site_author: J. Vivian, A. Cooke, J. Fitz
 edit_uri: edit/main/docs/
-repo_name: jvivian/covid19-drDFM
+repo_name: jvivian/DFMDash
 copyright: Maintained by <a href="https://jvivian.github.io/">jvivian</a>.
 
 nav:
@@ -48,9 +48,9 @@ theme:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/jvivian/covid19-drDFM
+      link: https://github.com/jvivian/DFMDash
     - icon: fontawesome/brands/python
-      link: https://pypi.org/project/covid19-drDFM
+      link: https://pypi.org/project/DFMDash
 
 markdown_extensions:
   - toc:
