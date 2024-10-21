@@ -28,7 +28,6 @@ class DataHandler:
         self.non_batch_cols: Optional[list[str]] = None
 
     def get_data(self) -> "DataHandler":
-        st.sidebar.subheader("Options")
         self.file_uploader().get_factor_mappings().create_anndata().apply_transforms()
         return self
 
@@ -43,16 +42,21 @@ class DataHandler:
             RuntimeError: If no file is uploaded.
         """
         file = st.file_uploader("Upload a data file (CSV, TSV, XLSX)", type=["csv", "tsv", "xlsx"])
-        if file is None:
-            st.error("Please provide input file")
+        load_covid_example = st.sidebar.checkbox("Load Covid Example")
+        if file is None and not load_covid_example:
+            st.warning("Please provide input file or check box in sidebar to see Covid-19 Example")
             st.stop()
-        self.df = self.load_data(file)
-        with st.expander("Raw Input Data"):
+        if load_covid_example:
+            self.df = pd.read_csv(Path(__file__).parent / "../data/processed/test_input_2state.csv", index_col=0)
+        else:
+            self.df = self.load_data(file)
+        c1, _, c2 = st.columns([0.25, 0.05, 0.7])
+        with c2.expander("Raw Input Data"):
             st.dataframe(self.df)
         if self.df is None:
             st.error("DataFrame is empty! Check input data")
             st.stop()
-        self.batch_col = st.sidebar.selectbox("Select a batch column (optional):", ["None", *list(self.df.columns)])
+        self.batch_col = c1.selectbox("Select a batch column (optional):", ["None", *list(self.df.columns)])
         if self.batch_col == "None":
             self.df["Batch"] = "Batch1"
             # self.batch_col = None
@@ -150,11 +154,15 @@ class DataHandler:
 
 
 def additional_params():
-    global_multiplier = st.sidebar.slider("Global Multiplier", min_value=0, max_value=15, value=2)
-    out_dir = st.sidebar.text_input("Output Directory", value=None)
-    if not out_dir:
-        st.warning("Specify output directory (in sidebar) to continue")
+    with st.form("params"):
+        c1, c2 = st.columns(2)
+        global_multiplier = c1.slider("Global Multiplier", min_value=0, max_value=15, value=1)
+        out_dir = c2.text_input("Output Directory", value="./DFM-results/")
+        button = st.form_submit_button(label="Run Model")
+
+    if not button:
         st.stop()
+
     return global_multiplier, Path(out_dir)
 
 
@@ -176,9 +184,6 @@ data = DataHandler().get_data()
 ad = data.ad
 global_multiplier, out_dir = additional_params()
 batch = None if ad.obs.empty else ad.obs.columns[0]
-
-if not st.button("Run Model"):
-    st.stop()
 
 with st.spinner("Running Model(s)..."):
     dfm = run_model(ad, out_dir, batch, global_multiplier)
