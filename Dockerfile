@@ -1,6 +1,4 @@
-# syntax=docker/dockerfile:1
-
-FROM --platform=linux/amd64 python:3.9-slim-buster
+FROM python:3.9-slim-buster
 
 ENV POETRY_VERSION=1.4 \
     POETRY_VIRTUALENVS_CREATE=false

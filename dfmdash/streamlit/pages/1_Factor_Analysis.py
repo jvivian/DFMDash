@@ -1,50 +1,52 @@
 from pathlib import Path
 
-import anndata as ann
 import pandas as pd
 import plotly.io as pio
 import plotly_express as px
 import streamlit as st
 from sklearn.preprocessing import MinMaxScaler
 
-from dfmdash.constants import FACTORS_GROUPED
-from dfmdash.covid19 import get_df
-
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
 
-EX_PATH = Path("./dfmdash/data/example-data/pandemic-only")
+FILE = Path(__file__)
+EX_PATH = FILE.parent / "../../data/example-data/pandemic-only"
 
 
 def center_title(text):
     return st.markdown(f"<h1 style='text-align: center; color: grey;'>{text}</h1>", unsafe_allow_html=True)
 
 
-def normalize(df):
-    metadata = df[["State", "Time"]]
-    df = df.drop(columns=["State", "Time"])
-    df = pd.DataFrame(MinMaxScaler().fit_transform(df), columns=df.columns)
-    df.index = metadata.index
-    df[["State", "Time"]] = metadata[["State", "Time"]]
+def normalize(df, batch_col=None):
+    time = df.index
+    if batch_col:
+        batch_column = df[batch_col].copy()
+        df = df.drop(columns=[batch_col])
+        df = pd.DataFrame(MinMaxScaler().fit_transform(df), columns=df.columns, index=time)
+        df[batch_col] = batch_column
+    else:
+        df = pd.DataFrame(MinMaxScaler().fit_transform(df), columns=df.columns, index=time)
     return df
 
 
 center_title("Factor Analysis")
 
-# Read in data
-# raw = get_df()
-# TEST_DIR = Path('dfmdash/data/example-output/')
-
 
 # Parameter for results
 def get_factors(res_dir):
-    factor_path = res_dir / "factors.csv"
-    df = pd.read_csv(factor_path, index_col=0)
-    df["Time"] = df.index
-    df.index.name = "Time"
-    cols_to_drop = [x for x in df.columns if "Time." in x]
-    df = df.drop(columns=cols_to_drop)
-    df.columns = [x.lstrip("Factor_") for x in df.columns]
+    try:
+        factor_path = res_dir / "factors.csv"
+        df = pd.read_csv(factor_path, index_col=0)
+        df["Time"] = df.index
+        df.index.name = "Time"
+        cols_to_drop = [x for x in df.columns if "time" in x.lower()]
+        df = df.drop(columns=cols_to_drop)
+        df.columns = [x.lstrip("Factor_") for x in df.columns]
+    except FileNotFoundError:
+        st.error(
+            f"The path provided does not contain results from the Dynamic Factor Model, please double check: {res_dir}"
+        )
+        st.stop()
     return df
 
 
@@ -74,32 +76,44 @@ if not res_dir:
     st.stop()
 df = get_factors(res_dir)
 
-filter_list = ["Unnamed", "Time", "State"]
-state = st.sidebar.selectbox("State", sorted(df.State.unique()))
+# ? Filter out values based on `df.csv`
+batch_colname = None
+subdir = None
+if (res_dir / "df.csv").exists():
+    batch_col = None
+    input_df = pd.read_csv(res_dir / "df.csv", index_col=0)
+    st.sidebar.subheader("Single Batch Found")
+else:
+    subdir = next(x for x in res_dir.iterdir() if x.is_dir())
+    input_df = pd.read_csv(subdir / "df.csv", index_col=0)
+    batch_colname = df.columns[-1]
+    batch_col = st.sidebar.selectbox("Select Batch Variable", options=sorted(df[df.columns[-1]].unique()))
 
-with st.expander("State Factors"):
-    st.dataframe(df[df.State == state])
+
+filter_list = ["Unnamed", "Time"]
 
 
-# Grab first state to fetch valid variables
-state_df = pd.read_csv(res_dir / state / "df.csv")
-cols = [x for x in df.columns if x in state_df.columns] + ["State"]
-new = pd.read_csv(res_dir / state / "df.csv", index_col=0)
+df = df[df[batch_colname] == batch_col] if batch_col else df
+with st.expander("Factors"):
+    st.dataframe(df)
 
 # Normalize original data for state / valid variables
-ad = ann.read_h5ad(res_dir / "data.h5ad")
-factor_set = parse_factor_blocks(res_dir / state / "model.csv") + [x for x in df.columns if "Global" in x]
-factor = st.sidebar.selectbox("Factor", factor_set)
+if subdir:
+    factor_set = parse_factor_blocks(subdir / "model.csv") + [x for x in df.columns if "Global" in x]
+else:
+    factor_set = parse_factor_blocks(res_dir / "model.csv") + [x for x in df.columns if "Global" in x]
+
+factor = st.sidebar.selectbox("Factor", set(sorted(factor_set)))
 
 # Normalize factors and add to new dataframe
 if st.sidebar.checkbox("Invert Factor"):
     df[factor] = df[factor] * -1
-df = normalize(df[df.State == state])
+df = normalize(df, batch_colname) if batch_col else normalize(df)
 
-df = df[df["State"] == state]
-df = df[[factor]].join(new, on="Time")
 
-col_opts = [x for x in df.columns.to_list() if x != "State"]
+df = df[[factor]].join(input_df)
+
+col_opts = [x for x in df.columns.to_list() if x != batch_col]
 cols = st.multiselect("Variables to plot", col_opts, default=col_opts)
 with st.expander("Graph Data"):
     st.dataframe(df[cols])
@@ -115,8 +129,12 @@ f = px.line(melted_df, x="Time", y="value", color="variable", hover_data="variab
 st.plotly_chart(f, use_container_width=True)
 
 # Model Results
-results_path = res_dir / state / "results.csv"
-model_path = res_dir / state / "model.csv"
+if batch_col:
+    results_path = res_dir / batch_col / "results.csv"
+    model_path = res_dir / batch_col / "model.csv"
+else:
+    results_path = res_dir / "results.cvs"
+    model_path = res_dir / "model.csv"
 
 # Metrics for run
 values = pd.Series()
@@ -134,4 +152,4 @@ help_msgs = ["LogLikelihood: Higher is better", "AIC: Lower is better", "Number 
 for val, col, msg in zip(values.index, [c1, c2, c3], help_msgs):
     col.metric(val, values[val], help=msg)
 
-# TODO: Plot values against distribution of (i.e. against AIC for all states)
+# TODO: The first column _must_ be set to `Time` by the Dynamic Factor Model page!
