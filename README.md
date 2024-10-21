@@ -70,3 +70,10 @@ make install
 - Documentation with MkDocs
 - Compatibility testing for multiple versions of Python with Tox
 - Containerization with Docker
+
+# Citation
+> If you use this tool in your research, please cite the following paper
+
+```
+Cooke, A., & Vivian, J. (2024). Pandemic Intensity Estimation using Dynamic Factor Modelling. Statistics, Politics and Policy. Manuscript under review.
+```
