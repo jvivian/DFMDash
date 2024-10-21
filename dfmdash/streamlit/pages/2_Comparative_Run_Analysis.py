@@ -23,20 +23,22 @@ def center_title(text):
 center_title("Comparative Run Analysis")
 
 # Parameter to runs
-run_dir = Path(st.text_input("Path directory of runs", value="./dfmdash/data/example-data"))
+FILE_PATH = Path(__file__).parent
+EXAMPLE_RESULT_DIR = FILE_PATH / "../../data/example-data"
+run_dir = Path(st.text_input("Path directory of runs", value=EXAMPLE_RESULT_DIR))
 df = parse_multiple_runs(run_dir).sort_values("Run")
 
 
 def create_plot(df):
     # Create Streamlit expander for user inputs
     with st.expander("Filter options"):
-        states = st.multiselect("Select States", df["State"].unique(), default=df["State"].unique())
+        states = st.multiselect("Select Batchs", df["Batch"].unique(), default=df["Batch"].unique())
     metric = st.sidebar.selectbox("Select Metric", df.columns[:3])
     nbins = st.sidebar.slider("nbins", min_value=10, max_value=500, value=50)
     log_x = st.sidebar.checkbox("Log X-axis")
 
     # Filter DataFrame based on user inputs
-    df_filtered = df[df["State"].isin(states)]
+    df_filtered = df[df["Batch"].isin(states)]
 
     # Create Plotly figure
     fig = px.histogram(
@@ -45,7 +47,7 @@ def create_plot(df):
         color="Run",
         marginal="box",
         nbins=nbins,
-        hover_data=["State"],
+        hover_data=["Batch"],
         log_x=log_x,
         opacity=0.5,
         barmode="overlay",
@@ -75,7 +77,7 @@ def get_summary(df: pd.DataFrame):
     # Median metrics
     run_name = df.Run.iloc[0]
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Number of Failed States", num_failures(run_dir, run_name), delta_failures(run_dir, run_name))
+    col1.metric("Number of Failed Batchs", num_failures(run_dir, run_name), delta_failures(run_dir, run_name))
     col2.metric("Median Log Likelihood", df["Log Likelihood"].median())
     col3.metric("Median AIC", df["AIC"].median())
     col4.metric("Median EM Iterations", df["EM Iterations"].median())
