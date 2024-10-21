@@ -24,6 +24,7 @@ Designed initially for evaluating the impacts of **COVID-19**, `DFMDash` is flex
 - **Drag-and-Drop**: Drop in files - options are then dynamically generated from the input data.
 
 ## Installation
+There are multiple ways to run `DFMDash`,
 
 ### Prerequisites
 
@@ -104,16 +105,16 @@ dfmdash launch
 This will open the Streamlit dashboard in your default browser. From the dashboard, users can:
 
 - **Main Page**: Select data series and define the dynamic factor model specifications.
-  - *Screenshot suggestion: Show the dynamic factor model runner interface here.*
+![Dynamic Factor Model Runner](imgs/DFM.png)
 
 - **Factor Analysis Page**: Review and visualize latent factor estimates based on the selected inputs.
-  - *Screenshot suggestion: Include an image of the factor analysis results page.*
+![Analyze factors directly after generation](imgs/factor.png)
 
 - **Comparative Run Analysis**: Compare different model runs to evaluate fit and consistency.
-  - *Screenshot suggestion: Show an example of the comparative run analysis page.*
+![Quantitatively compare models using different metrics](imgs/CA.png)
 
 - **Synthetic Control Model Page** (Experimental): Test SCMs with user-defined counterfactuals.
-  - *Screenshot suggestion: Depict the SCM interface, noting its experimental nature.*
+> Work in progress
 
 ## Troubleshooting
 
