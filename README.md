@@ -23,13 +23,24 @@ Designed initially for evaluating the impacts of **COVID-19**, `DFMDash` is flex
 - **Dynamic Factor Models**: Build models that combine pandemic and economic series to estimate latent variables representing pandemic intensity.
 - **Drag-and-Drop**: Drop in files - options are then dynamically generated from the input data.
 
+
 ## Installation
-There are multiple ways to run `DFMDash`,
+There are multiple ways to install and run `DFMDash`.
+
+> **Note**: Due to PyPI constraints, the example data files are stored on the GitHub repository rather than in the pip-installed package. If you wish to use `DFMDash` with the provided example data, please clone the repository and follow the installation steps below.
 
 ### Prerequisites
 
 - Python 3.10+ is required.
 - Tested environments: **Ubuntu**, **WSL2 (Windows)**, **MacOS** (M1 compatible).
+
+### Option 0: Using Pip
+> **Advanced:** If you have a Python environment set up, prefer to install via `pip` and _do not_ want/need the example data.
+
+1. Install the package:
+   ```bash
+   pip install dfmdash
+   ```
 
 ### Option 1: Using Poetry
 
