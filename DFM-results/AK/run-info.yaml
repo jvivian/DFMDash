@@ -1,0 +1,20 @@
+diff_cols:
+- Pandemic_9
+factor_map:
+  Pandemic_1: !!python/tuple
+  - Global
+  - Pandemic
+  Pandemic_10: !!python/tuple
+  - Global
+  - Pandemic
+  Pandemic_7: !!python/tuple
+  - Global
+  - Pandemic
+  Pandemic_9: !!python/tuple
+  - Global
+  - Pandemic
+global_multiplier: 1
+logdiff_cols:
+- Pandemic_10
+maxiter: 10000
+non_stationary_cols: null
