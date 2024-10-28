@@ -10,7 +10,7 @@ st.set_page_config(layout="wide")
 pio.templates.default = "plotly_white"
 
 FILE = Path(__file__)
-EX_PATH = FILE.parent / "../../data/example-data/pandemic-only"
+EX_PATH = FILE.parent / "../../../data/example-data/pandemic-only"
 
 
 def center_title(text):

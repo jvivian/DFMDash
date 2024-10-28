@@ -24,7 +24,7 @@ center_title("Comparative Run Analysis")
 
 # Parameter to runs
 FILE_PATH = Path(__file__).parent
-EXAMPLE_RESULT_DIR = FILE_PATH / "../../data/example-data"
+EXAMPLE_RESULT_DIR = FILE_PATH / "../../../data/example-data"
 run_dir = Path(st.text_input("Path directory of runs", value=EXAMPLE_RESULT_DIR))
 df = parse_multiple_runs(run_dir).sort_values("Run")
 
