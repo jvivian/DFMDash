@@ -18,6 +18,8 @@ Designed initially for evaluating the impacts of **COVID-19**, `DFMDash` is flex
 - Performing comparative run analysis.
 - Implementing synthetic control models for policy impact evaluation.
 
+See our [Documentation](https://jvivian.github.io/DFMDash/) page for API details.
+
 ## Key Features
 
 - **Dynamic Factor Models**: Build models that combine pandemic and economic series to estimate latent variables representing pandemic intensity.
