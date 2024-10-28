@@ -5,7 +5,7 @@
 [![Build status](https://img.shields.io/github/actions/workflow/status/jvivian/DFMDash/main.yml?branch=main)](https://github.com/jvivian/DFMDash/actions/workflows/main.yml?query=branch%3Amain)
 [![codecov](https://codecov.io/gh/jvivian/DFMDash/graph/badge.svg?token=RVT01PK8TT)](https://codecov.io/gh/jvivian/DFMDash)
 [![Commit activity](https://img.shields.io/github/commit-activity/m/jvivian/DFMDash)](https://img.shields.io/github/commit-activity/m/jvivian/DFMDash)
-[![License](https://img.shields.io/github/license/jvivian/DFMDash)](https://img.shields.io/github/license/jvivian/DFMDash)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
 
