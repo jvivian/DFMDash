@@ -1,18 +1,20 @@
 import shutil
-import pandas as pd
-import numpy as np
 from pathlib import Path
-from anndata import AnnData
-from dfmdash.io import DataLoader
-from dfmdash.covid19 import DATA_DIR
+
+import numpy as np
+import pandas as pd
 import pytest
+from anndata import AnnData
+
+from dfmdash.covid19 import DATA_DIR
+from dfmdash.io import DataLoader
 
 
 @pytest.fixture()
 def dfs():
     data = pd.read_csv(DATA_DIR / "data.csv")
-    factors = pd.read_csv(DATA_DIR / "factors.csv", index_col=0)
-    metadata = pd.read_csv(DATA_DIR / "metadata.csv", index_col=0)
+    factors = pd.read_csv(DATA_DIR / "../factors.csv", index_col=0)
+    metadata = pd.read_csv(DATA_DIR / "../metadata.csv", index_col=0)
     return data, factors, metadata
 
 

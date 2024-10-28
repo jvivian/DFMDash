@@ -1,0 +1,38 @@
+                         Dynamic Factor Results
+Dep. Variable:  ,"GDP", and 16 more     ,  No. Observations:  ,131
+Model:          ,Dynamic Factor Model   ,  Log Likelihood     ,-991.522
+                ,+ 2 factors in 2 blocks,  AIC                ,2093.044
+                ,+ AR(1) idiosyncratic  ,  BIC                ,2251.180
+Date:           ,Sat, 26 Oct 2024       ,  HQIC               ,2157.302
+Time:           ,18:48:41               ,  EM Iterations      ,358
+Sample:         ,02-01-2012             ,                     ,
+                ,- 12-01-2022           ,                     ,
+Covariance Type:,Not computed           ,                     ,
+                      Observation equation:
+Factor loadings:,Pandemic,Consumption,   idiosyncratic: AR(1),var.
+GDP             ,.       ,-0.11      ,0.53                   ,0.70
+Cons3           ,.       ,-0.44      ,0.91                   ,0.06
+Cons4           ,.       ,-0.52      ,0.90                   ,0.03
+Cons5           ,.       ,-0.47      ,0.94                   ,0.05
+Cons2           ,.       ,-0.55      ,0.93                   ,0.00
+Cases5          ,-0.29   ,.          ,0.56                   ,0.40
+Cases2          ,-0.29   ,.          ,0.56                   ,0.40
+Deaths5         ,-0.30   ,.          ,0.13                   ,0.35
+Deaths2         ,-0.30   ,.          ,0.13                   ,0.35
+Cases3          ,-0.29   ,.          ,0.53                   ,0.41
+Deaths3         ,-0.28   ,.          ,-0.04                  ,0.32
+Cases4          ,-0.29   ,.          ,0.58                   ,0.36
+Cases1          ,-0.29   ,.          ,0.60                   ,0.35
+Hosp2           ,-0.32   ,.          ,-0.12                  ,0.00
+Hosp1           ,-0.32   ,.          ,-0.13                  ,0.00
+Deaths4         ,-0.24   ,.          ,0.52                   ,0.22
+Deaths1         ,-0.25   ,.          ,0.58                   ,0.17
+      Transition: Factor block 0
+        ,L1.Pandemic,   error variance
+Pandemic,0.65       ,5.67
+         Transition: Factor block 1
+           ,L1.Consumption,   error variance
+Consumption,0.47          ,2.62
+
+Warnings:
+[1] Covariance matrix not calculated.

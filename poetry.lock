@@ -3466,14 +3466,15 @@ watchdog = {version = ">=2.1.5", markers = "platform_system != \"Darwin\""}
 snowflake = ["snowflake-connector-python (>=2.8.0)", "snowflake-snowpark-python (>=0.9.0)"]
 
 [[package]]
-name = "SyntheticControlMethods"
+name = "syntheticcontrolmethods"
 version = "1.1.17"
 description = "A Python package for causal inference using various Synthetic Control Methods"
 category = "main"
 optional = false
 python-versions = "*"
-files = []
-develop = false
+files = [
+    {file = "SyntheticControlMethods-1.1.17.tar.gz", hash = "sha256:941c77427ef1a87d5cf5863047c5d0c77c280a6b3aea04de3302e56fa76fe505"},
+]
 
 [package.dependencies]
 cvxpy = ">=1.1.7"
@@ -3482,12 +3483,6 @@ matplotlib = ">=2.2.3"
 numpy = ">=1.17"
 pandas = ">=1.1.2"
 scipy = ">=1.4.1"
-
-[package.source]
-type = "git"
-url = "https://github.com/jvivian/SyntheticControlMethods"
-reference = "master"
-resolved_reference = "3f496b36ed46c4e5c1e08ce6e903013e6eeb29df"
 
 [[package]]
 name = "tenacity"
@@ -3849,4 +3844,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.9.7 || >3.9.7,<3.12"
-content-hash = "7a36a6a0d662b8e01066a795f9d2b7bb3e8f4dfd65ed004d58b37e4f4f654f22"
+content-hash = "a34066e9b6a9ff6b86ee9adde5d7ec4374292b496e4a55376b7e469ef87b970d"

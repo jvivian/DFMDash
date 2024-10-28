@@ -7,7 +7,7 @@ from dfmdash.results import parse_multiple_runs, parse_results, parse_run_result
 
 @pytest.fixture
 def runs_dir() -> pd.DataFrame:
-    return ROOT_DIR / "data" / "example-data"
+    return ROOT_DIR / "../data" / "example-data"
 
 
 @pytest.fixture

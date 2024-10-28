@@ -1,8 +1,8 @@
 from functools import reduce
+from pathlib import Path
 
 import pandas as pd
 import pytest
-from pathlib import Path
 
 from dfmdash.covid19 import get_project_h5ad
 from dfmdash.processing import DataProcessor, is_constant

@@ -75,7 +75,7 @@ def launch(port: str = 8501):
     Launch Dynamic Factor Dashboard
     """
     current_dir = Path(__file__).resolve().parent
-    dashboard_path = current_dir / "streamlit" / "Dashboard.py"
+    dashboard_path = current_dir / "streamlit" / "Dynamic_Factor_Model.py"
     subprocess.run(["streamlit", "run", dashboard_path, "--server.port", port])
 
 

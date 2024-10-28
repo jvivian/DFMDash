@@ -1,0 +1,45 @@
+diff_cols: []
+factor_map:
+  Cases1: !!python/tuple
+  - Pandemic
+  Cases2: !!python/tuple
+  - Pandemic
+  Cases3: !!python/tuple
+  - Pandemic
+  Cases4: !!python/tuple
+  - Pandemic
+  Cases5: !!python/tuple
+  - Pandemic
+  Cons2: !!python/tuple
+  - Consumption
+  Cons3: !!python/tuple
+  - Consumption
+  Cons4: !!python/tuple
+  - Consumption
+  Cons5: !!python/tuple
+  - Consumption
+  Deaths1: !!python/tuple
+  - Pandemic
+  Deaths2: !!python/tuple
+  - Pandemic
+  Deaths3: !!python/tuple
+  - Pandemic
+  Deaths4: !!python/tuple
+  - Pandemic
+  Deaths5: !!python/tuple
+  - Pandemic
+  GDP: !!python/tuple
+  - Consumption
+  Hosp1: !!python/tuple
+  - Pandemic
+  Hosp2: !!python/tuple
+  - Pandemic
+global_multiplier: 0
+logdiff_cols:
+- GDP
+- Cons3
+- Cons4
+- Cons5
+- Cons2
+maxiter: 10000
+non_stationary_cols: null

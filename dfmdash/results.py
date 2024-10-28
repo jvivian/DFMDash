@@ -57,7 +57,7 @@ def parse_run_results(directory: Path):
             df = parse_results(path)
 
             # Add the state initials as a column
-            df["State"] = state_initials
+            df["Batch"] = state_initials
 
             # Append the result to all_results
             all_results.append(df)

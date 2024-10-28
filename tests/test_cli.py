@@ -1,14 +1,12 @@
-import shutil
-import os
 from pathlib import Path
 
-import pytest
 from typer.testing import CliRunner
 
 from dfmdash.cli import app
 from dfmdash.covid19 import DATA_DIR
 
 runner = CliRunner()
+
 
 # TODO: Change to be test.h5ad with small state subset
 def test_run_dfm(tmpdir):

@@ -10,7 +10,7 @@ from anndata import AnnData
 from dfmdash.constants import NAME_MAP
 
 ROOT_DIR = Path(__file__).parent.absolute()
-DATA_DIR = ROOT_DIR / "data/processed"
+DATA_DIR = ROOT_DIR / "../data/processed"
 
 
 def _get_raw_df() -> pd.DataFrame:

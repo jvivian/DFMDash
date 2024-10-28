@@ -47,7 +47,7 @@ class DataHandler:
             st.warning("Please provide input file or check box in sidebar to see Covid-19 Example")
             st.stop()
         if load_covid_example:
-            self.df = pd.read_csv(Path(__file__).parent / "../data/processed/test_input_2state.csv", index_col=0)
+            self.df = pd.read_csv(Path(__file__).parent / "../../data/processed/test_input_2state.csv", index_col=0)
         else:
             self.df = self.load_data(file)
         c1, _, c2 = st.columns([0.25, 0.05, 0.7])

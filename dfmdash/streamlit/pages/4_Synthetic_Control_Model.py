@@ -1,24 +1,16 @@
 from pathlib import Path
-import matplotlib.pyplot as plt
 
-import seaborn as sns
-import plotly.express as px
-import anndata as ann
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
 import streamlit as st
-from SyntheticControlMethods import DiffSynth, Synth
-from datetime import datetime
-
-from dfmdash.constants import FACTORS_GROUPED
-from dfmdash.covid19 import get_df, get_project_h5ad
+from SyntheticControlMethods import Synth
 
 st.set_page_config(layout="wide")
 pio.templates.default = "plotly_dark"
 
-EX_PATH = Path("./dfmdash/data/example-data/pandemic-only")
+EX_PATH = Path(__file__).parent / "../../../data/example-data/pandemic-only"
 
 
 def center_title(text):
