@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "dfmdash"
 version = "1.0.0"
-description = "Repository for Covid-19 Dynamic Factor Model"
+description = "A Dynamic Factor Model Browser-Based GUI"
 authors = ["J. Vivian, A. Cooke, J. Fitz <fjtvivian@gmail.com>"]
 repository = "https://github.com/jvivian/DFMDash"
 documentation = "https://jvivian.github.io/DFMDash/"
