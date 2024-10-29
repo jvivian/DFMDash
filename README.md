@@ -115,7 +115,7 @@ Or, build locally:
 
 ```bash
 docker build -t dfmdash .
-docker run -p 8501:8501 jvivian/dfmdash
+docker run -p 8501:8501 dfmdash
 ```
 
 Then, open your browser to `localhost:8501`.
