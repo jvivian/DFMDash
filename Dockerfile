@@ -20,5 +20,4 @@ COPY . /code/
 # Project initialization:
 RUN poetry install --no-interaction
 
-ENTRYPOINT ["poetry", "run", "c19dfm"]
-CMD ["--help"]
+CMD ["poetry", "run", "dfmdash", "launch"]
