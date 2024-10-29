@@ -16,6 +16,16 @@ check: ## Run code quality tools.
 	# @echo "🚀 Checking for obsolete dependencies: Running deptry"
 	# @poetry run deptry .
 
+.PHONY: docker-build
+docker-build: ## Build the docker image
+	@echo "🚀 Building the docker image"
+	@docker build -t jvivian/dfmdash:latest .
+
+.PHONY: docker-push
+docker-push: ## Push the docker image to the registry
+	@echo "🚀 Pushing the docker image"
+	@docker push jvivian/dfmdash:latest
+
 .PHONY: test
 test: ## Test the code with pytest
 	@echo "🚀 Testing code: Running pytest"
