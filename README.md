@@ -212,5 +212,5 @@ For larger changes, please open an issue for discussion before submitting a PR.
 > If you use this tool in your research, please cite the following paper
 
 ```
-Cooke, A., & Vivian, J. (2024). Pandemic Intensity Estimation using Dynamic Factor Modelling. Statistics, Politics and Policy. Manuscript under review.
+Cooke, Aaron and Vivian, John. "Pandemic Intensity Estimation using Dynamic Factor Modeling" Statistics, Politics and Policy, 2025. https://doi.org/10.1515/spp-2024-0042
 ```
